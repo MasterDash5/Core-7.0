@@ -17,12 +17,14 @@ public class User implements CommandSender {
     private boolean staffChat;
     private boolean adminChat;
     private boolean ownerChat;
+    private boolean commandSpy;
 
     private User(ProxiedPlayer player) {
         this.player = player;
         this.staffChat = false;
         this.adminChat = false;
         this.ownerChat = false;
+        this.commandSpy = false;
 
         loadSaves();
 
@@ -74,12 +76,36 @@ public class User implements CommandSender {
         return staffChat;
     }
 
+    public void setStaffChat(boolean staffChat) {
+        this.staffChat = staffChat;
+    }
+
     public boolean inAdminChat() {
         return adminChat;
     }
 
+    public void setAdminChat(boolean adminChat) {
+        this.adminChat = adminChat;
+    }
+
     public boolean inOwnerChat() {
         return ownerChat;
+    }
+
+    public void setOwnerChat(boolean ownerChat) {
+        this.ownerChat = ownerChat;
+    }
+
+    public boolean inCommandSpy() {
+        return commandSpy;
+    }
+
+    public void setCommandSpy(boolean commandSpy) {
+        this.commandSpy = commandSpy;
+    }
+
+    public boolean allowedChatColors() {
+        return isStaff();
     }
 
     @Override

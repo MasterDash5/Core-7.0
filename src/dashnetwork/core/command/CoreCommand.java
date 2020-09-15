@@ -12,7 +12,7 @@ public abstract class CoreCommand extends Command implements TabExecutor {
     private PermissionType permission;
 
     public CoreCommand(boolean async, PermissionType permission, String label, String... aliases) {
-        super(label, permission.toPermission(), aliases);
+        super(label, null, aliases);
 
         this.async = async;
         this.permission = permission;

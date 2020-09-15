@@ -25,9 +25,23 @@ public class LazyUtils {
         return false;
     }
 
+    public static boolean anyStartsWithIgnoreCase(String string, String... starts) {
+        for (String startsObject : starts)
+            if (StringUtils.startsWithIgnoreCase(string, startsObject))
+                return true;
+        return false;
+    }
+
     public static boolean anyEndsWith(String string, String... ends) {
         for (String endsObject : ends)
             if (string.endsWith(endsObject))
+                return true;
+        return false;
+    }
+
+    public static boolean anyEndsWithIgnoreCase(String string, String... ends) {
+        for (String endsObject : ends)
+            if (StringUtils.endsWithIgnoreCase(string, endsObject))
                 return true;
         return false;
     }

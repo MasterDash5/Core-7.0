@@ -1,0 +1,42 @@
+package dashnetwork.core.utils;
+
+import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class NameUtils {
+
+    private static BungeeCord bungee = BungeeCord.getInstance();
+
+    public static String getDisplayName(CommandSender sender) {
+        if (sender instanceof ProxiedPlayer)
+            return ((ProxiedPlayer) sender).getDisplayName();
+
+        if (sender.equals(bungee.getConsole()))
+            return "Console";
+
+        return sender.getName();
+    }
+
+    public static List<String> toNames(List<ProxiedPlayer> players) {
+        List<String> names = new ArrayList<>();
+
+        for (ProxiedPlayer player : players)
+            names.add(player.getName());
+
+        return names;
+    }
+
+    public static List<String> toDisplayNames(List<ProxiedPlayer> players) {
+        List<String> displayNames = new ArrayList<>();
+
+        for (ProxiedPlayer player : players)
+            displayNames.add(player.getDisplayName());
+
+        return displayNames;
+    }
+
+}
