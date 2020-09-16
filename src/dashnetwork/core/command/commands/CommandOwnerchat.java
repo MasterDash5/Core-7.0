@@ -82,7 +82,7 @@ public class CommandOwnerchat extends CoreCommand {
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-        return null;
+        return NameUtils.toNames(bungee.getPlayers());
     }
 
 }

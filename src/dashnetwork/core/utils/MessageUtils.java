@@ -21,7 +21,11 @@ public class MessageUtils {
     }
 
     public static void noPermissions(CommandSender sender) {
-        message(sender, ColorUtils.translate("&6&l» &7You don't have permission for that"));
+        message(sender, ColorUtils.translate("&6&l» &cYou don't have permission for that."));
+    }
+
+    public static void playersOnly() {
+        message(bungee.getConsole(), ColorUtils.translate("&6&l» &cOnly players can do that."));
     }
 
 }

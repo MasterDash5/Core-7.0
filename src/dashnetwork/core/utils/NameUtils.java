@@ -5,6 +5,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class NameUtils {
@@ -21,7 +22,7 @@ public class NameUtils {
         return sender.getName();
     }
 
-    public static List<String> toNames(List<ProxiedPlayer> players) {
+    public static List<String> toNames(Collection<ProxiedPlayer> players) {
         List<String> names = new ArrayList<>();
 
         for (ProxiedPlayer player : players)
@@ -30,7 +31,7 @@ public class NameUtils {
         return names;
     }
 
-    public static List<String> toDisplayNames(List<ProxiedPlayer> players) {
+    public static List<String> toDisplayNames(Collection<ProxiedPlayer> players) {
         List<String> displayNames = new ArrayList<>();
 
         for (ProxiedPlayer player : players)

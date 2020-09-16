@@ -2,12 +2,14 @@ package dashnetwork.core.command;
 
 import dashnetwork.core.utils.MessageUtils;
 import dashnetwork.core.utils.PermissionType;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
 public abstract class CoreCommand extends Command implements TabExecutor {
 
+    protected static BungeeCord bungee = BungeeCord.getInstance();
     private boolean async;
     private PermissionType permission;
 
