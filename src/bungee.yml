@@ -1,4 +1,4 @@
 name: Core
 version: 7.0
 author: MasterDash5
-main: dashnetwork.core.Core
+main: dashnetwork.core.bungee.Core

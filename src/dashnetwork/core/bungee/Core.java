@@ -1,8 +1,9 @@
-package dashnetwork.core;
+package dashnetwork.core.bungee;
 
-import dashnetwork.core.command.commands.*;
-import dashnetwork.core.listeners.*;
-import dashnetwork.core.utils.DataUtils;
+import dashnetwork.core.bungee.command.commands.*;
+import dashnetwork.core.bungee.listeners.*;
+import dashnetwork.core.bungee.utils.DataUtils;
+import dashnetwork.core.bungee.utils.User;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
@@ -40,6 +41,9 @@ public class Core extends Plugin {
 
     @Override
     public void onDisable() {
+        for (User user : User.getUsers())
+            user.remove();
+
         DataUtils.save();
     }
 

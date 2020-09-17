@@ -1,4 +1,4 @@
-package dashnetwork.core.utils;
+package dashnetwork.core.bungee.utils;
 
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;

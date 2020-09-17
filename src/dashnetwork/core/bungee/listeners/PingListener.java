@@ -1,7 +1,11 @@
-package dashnetwork.core.listeners;
+package dashnetwork.core.bungee.listeners;
 
-import dashnetwork.core.Core;
-import dashnetwork.core.utils.*;
+import dashnetwork.core.bungee.Core;
+import dashnetwork.core.bungee.utils.*;
+import dashnetwork.core.utils.ColorUtils;
+import dashnetwork.core.utils.ListUtils;
+import dashnetwork.core.utils.MessageBuilder;
+import dashnetwork.core.utils.ProtocolVersion;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -33,7 +37,7 @@ public class PingListener implements Listener {
         String software = "DashNetwork 1.7 - 1.16";
 
         List<ServerPing.PlayerInfo> list = new ArrayList<>();
-        list.add(new ServerPing.PlayerInfo(ColorUtils.translate("&f              &6&n&lDashNetwork"), UUID.randomUUID()));
+        list.add(new ServerPing.PlayerInfo(ColorUtils.translate("&f             &6&n&lDashNetwork"), UUID.randomUUID()));
         list.add(new ServerPing.PlayerInfo(ColorUtils.translate("&6&lMinecraft &7play.dashnetwork.xyz"), UUID.randomUUID()));
         list.add(new ServerPing.PlayerInfo(ColorUtils.translate("&6&lDiscord &7discord.dashnetwork.xyz"), UUID.randomUUID()));
 

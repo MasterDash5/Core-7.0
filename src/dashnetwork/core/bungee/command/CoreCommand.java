@@ -1,8 +1,8 @@
-package dashnetwork.core.command;
+package dashnetwork.core.bungee.command;
 
-import dashnetwork.core.Core;
-import dashnetwork.core.utils.MessageUtils;
-import dashnetwork.core.utils.PermissionType;
+import dashnetwork.core.bungee.Core;
+import dashnetwork.core.bungee.utils.MessageUtils;
+import dashnetwork.core.bungee.utils.PermissionType;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
@@ -15,7 +15,7 @@ public abstract class CoreCommand extends Command implements TabExecutor {
     private PermissionType permission;
 
     public CoreCommand(boolean async, PermissionType permission, String label, String... aliases) {
-        super(label, null, aliases);
+        super(label, null, aliases); // TODO: Replace "null" with "permission.toPermission()"
 
         this.async = async;
         this.permission = permission;

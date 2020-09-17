@@ -1,17 +1,27 @@
-package dashnetwork.core.utils;
+package dashnetwork.core.bungee.utils;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public enum PermissionType {
 
-    NONE,
-    STAFF,
-    ADMIN,
-    OWNER;
+    NONE((byte) 0),
+    STAFF((byte) 1),
+    ADMIN((byte) 2),
+    OWNER((byte) 3);
 
-    public static PermissionType fromByte(byte data) {
+    private byte id;
+
+    PermissionType(byte id) {
+        this.id = id;
+    }
+
+    public static PermissionType fromId(byte data) {
         return values()[data];
+    }
+
+    public byte toId() {
+        return id;
     }
 
     public boolean hasPermission(CommandSender sender) {

@@ -1,8 +1,8 @@
-package dashnetwork.core.command.commands;
+package dashnetwork.core.bungee.command.commands;
 
-import dashnetwork.core.command.CoreCommand;
-import dashnetwork.core.utils.MessageUtils;
-import dashnetwork.core.utils.PermissionType;
+import dashnetwork.core.bungee.command.CoreCommand;
+import dashnetwork.core.bungee.utils.MessageUtils;
+import dashnetwork.core.bungee.utils.PermissionType;
 import net.md_5.bungee.api.CommandSender;
 
 import java.util.Arrays;

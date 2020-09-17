@@ -1,9 +1,9 @@
-package dashnetwork.core.listeners;
+package dashnetwork.core.bungee.listeners;
 
 import dashnetwork.core.utils.MessageBuilder;
-import dashnetwork.core.utils.MessageUtils;
-import dashnetwork.core.utils.PermissionType;
-import dashnetwork.core.utils.User;
+import dashnetwork.core.bungee.utils.MessageUtils;
+import dashnetwork.core.bungee.utils.PermissionType;
+import dashnetwork.core.bungee.utils.User;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -17,8 +17,8 @@ public class QuitListener implements Listener {
         ProxiedPlayer player = event.getPlayer();
 
         MessageBuilder message = new MessageBuilder();
-        message.append("&e" + player.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&e" + player.getName());
-        message.append("&e left the game.");
+        message.append("&6&l» &e" + player.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&e" + player.getName());
+        message.append("&f left the server.");
 
         MessageUtils.broadcast(PermissionType.NONE, message.build());
 

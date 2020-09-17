@@ -1,6 +1,6 @@
-package dashnetwork.core.utils;
+package dashnetwork.core.bungee.utils;
 
-import dashnetwork.core.Core;
+import dashnetwork.core.bungee.Core;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;

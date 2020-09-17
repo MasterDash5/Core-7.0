@@ -1,6 +1,9 @@
-package dashnetwork.core.listeners;
+package dashnetwork.core.bungee.listeners;
 
-import dashnetwork.core.utils.*;
+import dashnetwork.core.bungee.utils.*;
+import dashnetwork.core.utils.ColorUtils;
+import dashnetwork.core.utils.LazyUtils;
+import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;

@@ -1,7 +1,11 @@
-package dashnetwork.core.command.commands;
+package dashnetwork.core.bungee.command.commands;
 
-import dashnetwork.core.command.CoreCommand;
-import dashnetwork.core.utils.*;
+import dashnetwork.core.bungee.command.CoreCommand;
+import dashnetwork.core.bungee.utils.*;
+import dashnetwork.core.utils.ColorUtils;
+import dashnetwork.core.utils.ListUtils;
+import dashnetwork.core.utils.MessageBuilder;
+import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -9,10 +13,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandAdminchat extends CoreCommand {
+public class CommandOwnerchat extends CoreCommand {
 
-    public CommandAdminchat() {
-        super(true, PermissionType.ADMIN, "adminchat", "ac");
+    public CommandOwnerchat() {
+        super(true, PermissionType.OWNER, "ownerchat", "oc", "dc");
     }
 
     @Override
@@ -22,7 +26,7 @@ public class CommandAdminchat extends CoreCommand {
             List<ProxiedPlayer> targets = new ArrayList<>();
 
             if (args.length > 0) {
-                targets.addAll(SelectorUtils.getPlayers(args[0]));
+                targets.addAll(SelectorUtils.getPlayers(sender, args[0]));
 
                 if (targets.isEmpty()) {
                     MessageUtils.message(sender, "&6&l» &7No players were found.");
@@ -36,17 +40,17 @@ public class CommandAdminchat extends CoreCommand {
 
             for (ProxiedPlayer target : targets) {
                 User user = User.getUser(target);
-                boolean adminchat = !user.inAdminChat();
+                boolean ownerchat = !user.inOwnerChat();
 
-                user.setAdminChat(adminchat);
+                user.setOwnerChat(ownerchat);
 
-                if (adminchat) {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in AdminChat"));
+                if (ownerchat) {
+                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in OwnerChat"));
 
                     if (!target.equals(player))
                         added.add(target);
                 } else {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in AdminChat"));
+                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in OwnerChat"));
 
                     if (!target.equals(player))
                         removed.add(target);
@@ -60,7 +64,7 @@ public class CommandAdminchat extends CoreCommand {
                 MessageBuilder message = new MessageBuilder();
                 message.append("&6&l» ");
                 message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-                message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in AdminChat");
+                message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in OwnerChat");
 
                 player.sendMessage(message.build());
             }
@@ -72,12 +76,12 @@ public class CommandAdminchat extends CoreCommand {
                 MessageBuilder message = new MessageBuilder();
                 message.append("&6&l» ");
                 message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-                message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in AdminChat");
+                message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in OwnerChat");
 
                 player.sendMessage(message.build());
             }
         } else
-            MessageUtils.broadcast(PermissionType.ADMIN, ColorUtils.translate("&9&lAdmin &6Console &6&l> &3" + StringUtils.unsplit(args, ' ')));
+            MessageUtils.broadcast(PermissionType.OWNER, ColorUtils.translate("&9&lOwner &6Console &6&l> &c" + StringUtils.unsplit(args, ' ')));
     }
 
     @Override

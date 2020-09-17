@@ -1,5 +1,6 @@
-package dashnetwork.core.utils;
+package dashnetwork.core.bungee.utils;
 
+import dashnetwork.core.utils.LazyUtils;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -37,7 +38,8 @@ public class User implements CommandSender {
 
     public static List<User> getUsers() {
         for (ProxiedPlayer online : bungee.getPlayers())
-            User.getUser(online);
+            if (!hasInstance(online))
+                new User(online);
         return users;
     }
 

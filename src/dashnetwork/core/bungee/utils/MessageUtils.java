@@ -1,5 +1,6 @@
-package dashnetwork.core.utils;
+package dashnetwork.core.bungee.utils;
 
+import dashnetwork.core.utils.ColorUtils;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;

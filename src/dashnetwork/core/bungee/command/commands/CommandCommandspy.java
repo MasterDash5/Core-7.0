@@ -1,7 +1,10 @@
-package dashnetwork.core.command.commands;
+package dashnetwork.core.bungee.command.commands;
 
-import dashnetwork.core.command.CoreCommand;
-import dashnetwork.core.utils.*;
+import dashnetwork.core.bungee.command.CoreCommand;
+import dashnetwork.core.bungee.utils.*;
+import dashnetwork.core.utils.ColorUtils;
+import dashnetwork.core.utils.ListUtils;
+import dashnetwork.core.utils.MessageBuilder;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -9,10 +12,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandAltspy extends CoreCommand {
+public class CommandCommandspy extends CoreCommand {
 
-    public CommandAltspy() {
-        super(true, PermissionType.STAFF, "altspy");
+    public CommandCommandspy() {
+        super(true, PermissionType.STAFF, "commandspy", "cmdspy", "cs");
     }
 
     @Override
@@ -21,8 +24,8 @@ public class CommandAltspy extends CoreCommand {
             ProxiedPlayer player = (ProxiedPlayer) sender;
             List<ProxiedPlayer> targets = new ArrayList<>();
 
-            if (args.length > 0) {
-                targets.addAll(SelectorUtils.getPlayers(args[0]));
+            if (args.length > 0 && PermissionType.ADMIN.hasPermission(sender)) {
+                targets.addAll(SelectorUtils.getPlayers(sender, args[0]));
 
                 if (targets.isEmpty()) {
                     MessageUtils.message(sender, "&6&l» &cNo players were found.");
@@ -36,17 +39,17 @@ public class CommandAltspy extends CoreCommand {
 
             for (ProxiedPlayer target : targets) {
                 User user = User.getUser(target);
-                boolean altspy = !user.inAltSpy();
+                boolean commandspy = !user.inCommandSpy();
 
-                user.setAltSpy(altspy);
+                user.setCommandSpy(commandspy);
 
-                if (altspy) {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in AltSpy"));
+                if (commandspy) {
+                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in CommandSpy"));
 
                     if (!target.equals(player))
                         added.add(target);
                 } else {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in AltSpy"));
+                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in CommandSpy"));
 
                     if (!target.equals(player))
                         removed.add(target);
@@ -60,7 +63,7 @@ public class CommandAltspy extends CoreCommand {
                 MessageBuilder message = new MessageBuilder();
                 message.append("&6&l» ");
                 message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-                message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in AltSpy");
+                message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in CommandSpy");
 
                 player.sendMessage(message.build());
             }
@@ -72,7 +75,7 @@ public class CommandAltspy extends CoreCommand {
                 MessageBuilder message = new MessageBuilder();
                 message.append("&6&l» ");
                 message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-                message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in AltSpy");
+                message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in CommandSpy");
 
                 player.sendMessage(message.build());
             }

@@ -1,7 +1,11 @@
-package dashnetwork.core.command.commands;
+package dashnetwork.core.bungee.command.commands;
 
-import dashnetwork.core.command.CoreCommand;
-import dashnetwork.core.utils.*;
+import dashnetwork.core.bungee.command.CoreCommand;
+import dashnetwork.core.bungee.utils.*;
+import dashnetwork.core.utils.ColorUtils;
+import dashnetwork.core.utils.ListUtils;
+import dashnetwork.core.utils.MessageBuilder;
+import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -9,10 +13,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandPingspy extends CoreCommand {
+public class CommandStaffchat extends CoreCommand {
 
-    public CommandPingspy() {
-        super(true, PermissionType.ADMIN, "pingspy");
+    public CommandStaffchat() {
+        super(true, PermissionType.STAFF, "staffchat", "sc");
     }
 
     @Override
@@ -21,11 +25,11 @@ public class CommandPingspy extends CoreCommand {
             ProxiedPlayer player = (ProxiedPlayer) sender;
             List<ProxiedPlayer> targets = new ArrayList<>();
 
-            if (args.length > 0) {
-                targets.addAll(SelectorUtils.getPlayers(args[0]));
+            if (args.length > 0 && PermissionType.ADMIN.hasPermission(sender)) {
+                targets.addAll(SelectorUtils.getPlayers(sender, args[0]));
 
                 if (targets.isEmpty()) {
-                    MessageUtils.message(sender, "&6&l» &cNo players were found.");
+                    MessageUtils.message(sender, "&6&l» &7No players were found.");
                     return;
                 }
             } else
@@ -36,17 +40,17 @@ public class CommandPingspy extends CoreCommand {
 
             for (ProxiedPlayer target : targets) {
                 User user = User.getUser(target);
-                boolean pingspy = !user.inPingSpy();
+                boolean staffchat = !user.inStaffChat();
 
-                user.setPingSpy(pingspy);
+                user.setStaffChat(staffchat);
 
-                if (pingspy) {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in PingSpy"));
+                if (staffchat) {
+                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in StaffChat"));
 
                     if (!target.equals(player))
                         added.add(target);
                 } else {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in PingSpy"));
+                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in StaffChat"));
 
                     if (!target.equals(player))
                         removed.add(target);
@@ -60,7 +64,7 @@ public class CommandPingspy extends CoreCommand {
                 MessageBuilder message = new MessageBuilder();
                 message.append("&6&l» ");
                 message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-                message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in PingSpy");
+                message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in StaffChat");
 
                 player.sendMessage(message.build());
             }
@@ -72,12 +76,12 @@ public class CommandPingspy extends CoreCommand {
                 MessageBuilder message = new MessageBuilder();
                 message.append("&6&l» ");
                 message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-                message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in PingSpy");
+                message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in StaffChat");
 
                 player.sendMessage(message.build());
             }
         } else
-            MessageUtils.playersOnly();
+            MessageUtils.broadcast(PermissionType.STAFF, ColorUtils.translate("&9&lStaff &6Console &6&l> &6" + StringUtils.unsplit(args, ' ')));
     }
 
     @Override
