@@ -1,6 +1,5 @@
 package dashnetwork.core.bungee.listeners;
 
-import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.bungee.utils.MessageUtils;
 import dashnetwork.core.bungee.utils.PermissionType;
 import dashnetwork.core.bungee.utils.User;

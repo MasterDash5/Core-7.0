@@ -4,10 +4,8 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MessageBuilder {
@@ -54,15 +52,17 @@ public class MessageBuilder {
             return this;
         }
 
+        @SuppressWarnings("deprecation")
         public MessageComponent hoverEvent(HoverEvent.Action action, String string) {
             for (BaseComponent component : components)
-                component.setHoverEvent(new HoverEvent(action, new ArrayList(Collections.singletonList(new Text(TextComponent.fromLegacyText(ColorUtils.translate(string)))))));
+                component.setHoverEvent(new HoverEvent(action, TextComponent.fromLegacyText(ColorUtils.translate(string))));
             return this;
         }
 
+        @SuppressWarnings("deprecation")
         public MessageComponent hoverEvent(HoverEvent.Action action, BaseComponent... input) {
             for (BaseComponent component : components)
-                component.setHoverEvent(new HoverEvent(action, new ArrayList(Collections.singletonList(new Text(input)))));
+                component.setHoverEvent(new HoverEvent(action, input));
             return this;
         }
 

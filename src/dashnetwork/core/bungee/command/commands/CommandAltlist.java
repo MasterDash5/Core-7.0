@@ -13,7 +13,7 @@ public class CommandAltlist extends CoreCommand {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-
+        // TODO
     }
 
     @Override
