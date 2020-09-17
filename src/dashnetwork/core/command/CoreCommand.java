@@ -1,5 +1,6 @@
 package dashnetwork.core.command;
 
+import dashnetwork.core.Core;
 import dashnetwork.core.utils.MessageUtils;
 import dashnetwork.core.utils.PermissionType;
 import net.md_5.bungee.BungeeCord;
@@ -26,9 +27,7 @@ public abstract class CoreCommand extends Command implements TabExecutor {
     public void execute(CommandSender sender, String[] args) {
         if (permission.hasPermission(sender)) {
             if (async) {
-                new Thread(() -> {
-                    onCommand(sender, args);
-                }).start();
+                bungee.getScheduler().runAsync(Core.getInstance(), () -> onCommand(sender, args));
             } else
                 onCommand(sender, args);
         } else

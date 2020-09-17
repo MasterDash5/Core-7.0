@@ -2,6 +2,7 @@ package dashnetwork.core.utils;
 
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class MessageUtils {
@@ -12,7 +13,19 @@ public class MessageUtils {
         sender.sendMessage(TextComponent.fromLegacyText(message));
     }
 
+    public static void message(CommandSender sender, BaseComponent... message) {
+        sender.sendMessage(message);
+    }
+
     public static void broadcast(PermissionType permission, String message) {
+        for (User user : User.getUsers())
+            if (permission.hasPermission(user))
+                message(user, message);
+
+        message(bungee.getConsole(), message);
+    }
+
+    public static void broadcast(PermissionType permission, BaseComponent... message) {
         for (User user : User.getUsers())
             if (permission.hasPermission(user))
                 message(user, message);

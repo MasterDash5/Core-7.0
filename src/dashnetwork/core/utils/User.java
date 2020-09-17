@@ -18,6 +18,8 @@ public class User implements CommandSender {
     private boolean adminChat;
     private boolean ownerChat;
     private boolean commandSpy;
+    private boolean altSpy;
+    private boolean pingSpy;
 
     private User(ProxiedPlayer player) {
         this.player = player;
@@ -25,6 +27,8 @@ public class User implements CommandSender {
         this.adminChat = false;
         this.ownerChat = false;
         this.commandSpy = false;
+        this.altSpy = false;
+        this.pingSpy = false;
 
         loadSaves();
 
@@ -44,8 +48,85 @@ public class User implements CommandSender {
         return new User(player);
     }
 
+    public static boolean hasInstance(ProxiedPlayer player) {
+        for (User user : users)
+            if (user.getPlayer().equals(player))
+                return true;
+        return false;
+    }
+
     public void loadSaves() {
-        // TODO: load from data.yml
+        String uuid = player.getUniqueId().toString();
+
+        if (DataUtils.getStaffchat().contains(uuid))
+            this.staffChat = true;
+
+        if (DataUtils.getAdminchat().contains(uuid))
+            this.adminChat = true;
+
+        if (DataUtils.getOwnerchat().contains(uuid))
+            this.ownerChat = true;
+
+        if (DataUtils.getCommandspy().contains(uuid))
+            this.commandSpy = true;
+
+        if (DataUtils.getAltspy().contains(uuid))
+            this.altSpy = true;
+
+        if (DataUtils.getPingspy().contains(uuid))
+            this.pingSpy = true;
+    }
+
+    public void save() {
+        String uuid = player.getUniqueId().toString();
+        List<String> staffchatList = DataUtils.getStaffchat();
+        List<String> adminchatList = DataUtils.getAdminchat();
+        List<String> ownerchatList = DataUtils.getOwnerchat();
+        List<String> commandspyList = DataUtils.getCommandspy();
+        List<String> altspyList = DataUtils.getAltspy();
+        List<String> pingspyList = DataUtils.getPingspy();
+
+        if (staffChat) {
+            if (!staffchatList.contains(uuid))
+                staffchatList.add(uuid);
+        } else
+            staffchatList.remove(uuid);
+
+        if (adminChat) {
+            if (!adminchatList.contains(uuid))
+                adminchatList.add(uuid);
+        } else
+            adminchatList.remove(uuid);
+
+        if (ownerChat) {
+            if (!ownerchatList.contains(uuid))
+                ownerchatList.add(uuid);
+        } else
+            ownerchatList.remove(uuid);
+
+        if (commandSpy) {
+            if (!commandspyList.contains(uuid))
+                commandspyList.add(uuid);
+        } else
+            commandspyList.remove(uuid);
+
+        if (altSpy) {
+            if (!altspyList.contains(uuid))
+                altspyList.add(uuid);
+        } else
+            altspyList.remove(uuid);
+
+        if (pingSpy) {
+            if (!pingspyList.contains(uuid))
+                pingspyList.add(uuid);
+        } else
+            pingspyList.remove(uuid);
+    }
+
+    public void remove() {
+        save();
+
+        users.remove(this);
     }
 
     public ProxiedPlayer getPlayer() {
@@ -102,6 +183,22 @@ public class User implements CommandSender {
 
     public void setCommandSpy(boolean commandSpy) {
         this.commandSpy = commandSpy;
+    }
+
+    public boolean inAltSpy() {
+        return altSpy;
+    }
+
+    public void setAltSpy(boolean altspy) {
+        this.altSpy = altspy;
+    }
+
+    public boolean inPingSpy() {
+        return pingSpy;
+    }
+
+    public void setPingSpy(boolean pingSpy) {
+        this.pingSpy = pingSpy;
     }
 
     public boolean allowedChatColors() {
