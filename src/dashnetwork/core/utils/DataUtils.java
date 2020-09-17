@@ -1,4 +1,5 @@
 package dashnetwork.core.utils;
+
 import dashnetwork.core.Core;
 import org.yaml.snakeyaml.Yaml;
 
@@ -24,27 +25,27 @@ public class DataUtils {
     private static File altspyFile = new File(path + "altspy.yml");
     private static File pingspyFile = new File(path + "pingspy.yml");
 
-    private static Map<String, List<String>> ips = new HashMap<>();
-    private static Map<String, String> names = new HashMap<>();
-    private static List<String> staffchat = new ArrayList<>();
-    private static List<String> adminchat = new ArrayList<>();
-    private static List<String> ownerchat = new ArrayList<>();
-    private static List<String> commandspy = new ArrayList<>();
-    private static List<String> altspy = new ArrayList<>();
-    private static List<String> pingspy = new ArrayList<>();
+    private static Map<String, List<String>> ips;
+    private static Map<String, String> names;
+    private static List<String> staffchat;
+    private static List<String> adminchat;
+    private static List<String> ownerchat;
+    private static List<String> commandspy;
+    private static List<String> altspy;
+    private static List<String> pingspy;
 
     public static void startup() {
         try {
             folder.mkdirs();
 
-            readFile(ipsFile, ips);
-            readFile(namesFile, names);
-            readFile(staffchatFile, staffchat);
-            readFile(adminchatFile, adminchat);
-            readFile(ownerchatFile, ownerchat);
-            readFile(commandspyFile, commandspy);
-            readFile(altspyFile, altspy);
-            readFile(pingspyFile, pingspy);
+            ips = readFile(ipsFile);
+            names = readFile(namesFile);
+            staffchat = readFile(staffchatFile);
+            adminchat = readFile(adminchatFile);
+            ownerchat = readFile(ownerchatFile);
+            commandspy = readFile(commandspyFile);
+            altspy = readFile(altspyFile);
+            pingspy = readFile(pingspyFile);
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -106,14 +107,13 @@ public class DataUtils {
         yaml.dump(data, writer);
     }
 
-    private static void readFile(File file, Object represent) throws IOException {
+    private static <T>T readFile(File file) throws IOException {
         file.createNewFile();
 
         Yaml yaml = new Yaml();
         FileReader reader = new FileReader(file);
 
-        yaml.load(reader);
-        yaml.represent(represent);
+        return yaml.load(reader);
     }
 
 }
