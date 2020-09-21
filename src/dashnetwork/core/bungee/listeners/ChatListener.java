@@ -30,9 +30,13 @@ public class ChatListener implements Listener {
 
                 String trimmed = message.length() > 3 ? message.substring((message.substring(3).startsWith(" ") ? 4 : 3)) : "";
 
-                if (user.inOwnerChat())
+                if (user.inLocalChat())
+                    localChat(event, message);
+                else if (user.isOwner() && StringUtils.startsWithIgnoreCase(message, "@lc"))
+                    localChat(event, trimmed);
+                else if (user.inOwnerChat())
                     ownerChat(player, message);
-                else if (user.isOwner() && LazyUtils.anyStartsWith(message.toLowerCase(), "@oc", "@dc"))
+                else if (user.isOwner() && LazyUtils.anyStartsWithIgnoreCase(message, "@oc", "@dc"))
                     ownerChat(player, trimmed);
                 else if (user.inAdminChat())
                     adminChat(player, message);
@@ -50,6 +54,11 @@ public class ChatListener implements Listener {
                 }
             }
         }
+    }
+
+    private void localChat(ChatEvent event, String message) {
+        event.setCancelled(false);
+        event.setMessage(message);
     }
 
     private void ownerChat(ProxiedPlayer player, String input) {

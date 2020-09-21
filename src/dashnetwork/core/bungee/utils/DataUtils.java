@@ -1,6 +1,7 @@
 package dashnetwork.core.bungee.utils;
 
 import dashnetwork.core.bungee.Core;
+import dashnetwork.core.utils.PunishData;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -24,28 +25,30 @@ public class DataUtils {
     private static File commandspyFile = new File(path + "commandspy.yml");
     private static File altspyFile = new File(path + "altspy.yml");
     private static File pingspyFile = new File(path + "pingspy.yml");
+    private static File mutesFile = new File(path + "mutes.yml");
+    private static File bansFile = new File(path + "bans.yml");
+    private static File ipbansFile = new File(path + "ipbans.yml");
 
     private static Map<String, List<String>> ips;
     private static Map<String, String> names;
-    private static List<String> staffchat;
-    private static List<String> adminchat;
-    private static List<String> ownerchat;
-    private static List<String> commandspy;
-    private static List<String> altspy;
-    private static List<String> pingspy;
+    private static Map<String, PunishData> mutes, bans, ipbans;
+    private static List<String> staffchat, adminchat, ownerchat, commandspy, altspy, pingspy;
 
     public static void startup() {
-        try {
-            folder.mkdirs();
+        folder.mkdirs();
 
-            ips = readFile(ipsFile);
+        try {
             names = readFile(namesFile);
+            ips = readFile(ipsFile);
             staffchat = readFile(staffchatFile);
             adminchat = readFile(adminchatFile);
             ownerchat = readFile(ownerchatFile);
             commandspy = readFile(commandspyFile);
             altspy = readFile(altspyFile);
             pingspy = readFile(pingspyFile);
+            mutes = readFile(mutesFile);
+            bans = readFile(bansFile);
+            ipbans = readFile(ipbansFile);
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -61,6 +64,9 @@ public class DataUtils {
             writeFile(commandspyFile, commandspy);
             writeFile(altspyFile, altspy);
             writeFile(pingspyFile, pingspy);
+            writeFile(mutesFile, mutes);
+            writeFile(bansFile, bans);
+            writeFile(ipbansFile, ipbans);
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -72,6 +78,18 @@ public class DataUtils {
 
     public static Map<String, String> getNames() {
         return names;
+    }
+
+    public static Map<String, PunishData> getMutes() {
+        return mutes;
+    }
+
+    public static Map<String, PunishData> getBans() {
+        return bans;
+    }
+
+    public static Map<String, PunishData> getIpbans() {
+        return ipbans;
     }
 
     public static List<String> getStaffchat() {

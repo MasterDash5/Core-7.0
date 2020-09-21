@@ -7,6 +7,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public class NameUtils {
 
@@ -15,7 +16,13 @@ public class NameUtils {
     public static String getDisplayName(CommandSender sender) {
         if (sender instanceof ProxiedPlayer)
             return ((ProxiedPlayer) sender).getDisplayName();
+        else if (sender.equals(bungee.getConsole()))
+            return "Console";
 
+        return sender.getName();
+    }
+
+    public static String getName(CommandSender sender) {
         if (sender.equals(bungee.getConsole()))
             return "Console";
 

@@ -49,6 +49,10 @@ public class MessageUtils {
         message(sender, ColorUtils.translate("&6&l» &cYou don't have permission for that."));
     }
 
+    public static void noPlayerFound(CommandSender sender) {
+        message(sender, ColorUtils.translate("&6&l» &cNo player was found."));
+    }
+
     public static void playersOnly() {
         message(plugin.getServer().getConsoleSender(), ColorUtils.translate("&6&l» &cOnly players can do that."));
     }

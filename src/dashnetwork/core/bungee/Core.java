@@ -30,13 +30,22 @@ public class Core extends Plugin {
         manager.registerListener(this, new QuitListener());
 
         manager.registerCommand(this, new CommandAdminchat());
+        manager.registerCommand(this, new CommandAltlist());
         manager.registerCommand(this, new CommandAltspy());
         manager.registerCommand(this, new CommandCommandspy());
+        manager.registerCommand(this, new CommandIpban());
+        manager.registerCommand(this, new CommandKick());
+        manager.registerCommand(this, new CommandLobby());
+        manager.registerCommand(this, new CommandLocalchat());
+        manager.registerCommand(this, new CommandMute());
         manager.registerCommand(this, new CommandOwnerchat());
         manager.registerCommand(this, new CommandPingspy());
         manager.registerCommand(this, new CommandStaffchat());
+        manager.registerCommand(this, new CommandTempban());
+        manager.registerCommand(this, new CommandTempipban());
+        manager.registerCommand(this, new CommandTempmute());
         manager.registerCommand(this, new CommandTest());
-
+        manager.registerCommand(this, new CommandVersionlist());
     }
 
     @Override

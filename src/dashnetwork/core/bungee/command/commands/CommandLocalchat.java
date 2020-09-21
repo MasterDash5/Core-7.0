@@ -12,10 +12,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandAltspy extends CoreCommand {
+public class CommandLocalchat extends CoreCommand {
 
-    public CommandAltspy() {
-        super(true, PermissionType.STAFF, "altspy");
+    public CommandLocalchat() {
+        super(true, PermissionType.OWNER, "localchat", "globalchat", "lc");
     }
 
     @Override
@@ -24,7 +24,7 @@ public class CommandAltspy extends CoreCommand {
             ProxiedPlayer player = (ProxiedPlayer) sender;
             List<ProxiedPlayer> targets = new ArrayList<>();
 
-            if (args.length > 0 && PermissionType.ADMIN.hasPermission(sender)) {
+            if (args.length > 0) {
                 targets.addAll(SelectorUtils.getPlayers(sender, args[0]));
 
                 if (targets.isEmpty()) {
@@ -39,17 +39,17 @@ public class CommandAltspy extends CoreCommand {
 
             for (ProxiedPlayer target : targets) {
                 User user = User.getUser(target);
-                boolean altspy = !user.inAltSpy();
+                boolean localchat = !user.inLocalChat();
 
-                user.setAltSpy(altspy);
+                user.setLocalChat(localchat);
 
-                if (altspy) {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in AltSpy"));
+                if (localchat) {
+                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in LocalChat"));
 
                     if (!target.equals(player))
                         added.add(target);
                 } else {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in AltSpy"));
+                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in LocalChat"));
 
                     if (!target.equals(player))
                         removed.add(target);
@@ -63,19 +63,19 @@ public class CommandAltspy extends CoreCommand {
                 MessageBuilder message = new MessageBuilder();
                 message.append("&6&l» ");
                 message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-                message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in AltSpy");
+                message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in LocalChat");
 
                 player.sendMessage(message.build());
             }
 
             if (!removed.isEmpty()) {
-                String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(removed), false, false);
-                String names = ListUtils.fromList(NameUtils.toNames(removed), false, false);
+                String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(added), false, false);
+                String names = ListUtils.fromList(NameUtils.toNames(added), false, false);
 
                 MessageBuilder message = new MessageBuilder();
                 message.append("&6&l» ");
                 message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-                message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in AltSpy");
+                message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in LocalChat");
 
                 player.sendMessage(message.build());
             }

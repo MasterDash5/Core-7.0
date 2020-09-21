@@ -29,7 +29,7 @@ public class CommandAdminchat extends CoreCommand {
                 targets.addAll(SelectorUtils.getPlayers(sender, args[0]));
 
                 if (targets.isEmpty()) {
-                    MessageUtils.message(sender, "&6&l» &7No players were found.");
+                    MessageUtils.noPlayerFound(sender);
                     return;
                 }
             } else

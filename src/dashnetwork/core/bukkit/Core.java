@@ -1,9 +1,13 @@
 package dashnetwork.core.bukkit;
 
 import dashnetwork.core.bukkit.command.commands.CommandServerinfo;
+import dashnetwork.core.bukkit.listeners.JoinListener;
+import dashnetwork.core.bukkit.listeners.QuitListener;
 import dashnetwork.core.bukkit.utils.TpsUtils;
 import dashnetwork.core.bukkit.utils.User;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.Messenger;
 
 public class Core extends JavaPlugin {
 
@@ -17,11 +21,16 @@ public class Core extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        new CommandServerinfo();
+        Messenger messenger = getServer().getMessenger();
+        messenger.registerOutgoingPluginChannel(this, "dashnetwork:broadcast");
 
         TpsUtils.startup();
 
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "dashnetwork:broadcast");
+        PluginManager manager = getServer().getPluginManager();
+        manager.registerEvents(new JoinListener(), this);
+        manager.registerEvents(new QuitListener(), this);
+
+        new CommandServerinfo();
     }
 
     @Override

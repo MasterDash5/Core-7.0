@@ -11,11 +11,12 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 public abstract class CoreCommand extends Command implements TabExecutor {
 
     protected static BungeeCord bungee = BungeeCord.getInstance();
+    protected static Core plugin = Core.getInstance();
     private boolean async;
     private PermissionType permission;
 
     public CoreCommand(boolean async, PermissionType permission, String label, String... aliases) {
-        super(label, null, aliases); // TODO: Replace "null" with "permission.toPermission()"
+        super(label, permission.toPermission(), aliases);
 
         this.async = async;
         this.permission = permission;
@@ -27,7 +28,7 @@ public abstract class CoreCommand extends Command implements TabExecutor {
     public void execute(CommandSender sender, String[] args) {
         if (permission.hasPermission(sender)) {
             if (async) {
-                bungee.getScheduler().runAsync(Core.getInstance(), () -> onCommand(sender, args));
+                bungee.getScheduler().runAsync(plugin, () -> onCommand(sender, args));
             } else
                 onCommand(sender, args);
         } else

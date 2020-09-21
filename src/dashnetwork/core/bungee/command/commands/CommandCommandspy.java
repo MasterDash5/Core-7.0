@@ -28,7 +28,7 @@ public class CommandCommandspy extends CoreCommand {
                 targets.addAll(SelectorUtils.getPlayers(sender, args[0]));
 
                 if (targets.isEmpty()) {
-                    MessageUtils.message(sender, "&6&l» &cNo players were found.");
+                    MessageUtils.noPlayerFound(sender);
                     return;
                 }
             } else

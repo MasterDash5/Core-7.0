@@ -18,7 +18,7 @@ public class QuitListener implements Listener {
 
         MessageBuilder message = new MessageBuilder();
         message.append("&6&l» &e" + player.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&e" + player.getName());
-        message.append("&f left the server.");
+        message.append("&6 left the server.");
 
         MessageUtils.broadcast(PermissionType.NONE, message.build());
 

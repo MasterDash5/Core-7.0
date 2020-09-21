@@ -1,6 +1,7 @@
 package dashnetwork.core.bungee.utils;
 
 import dashnetwork.core.utils.LazyUtils;
+import dashnetwork.core.utils.ProtocolVersion;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -18,18 +19,22 @@ public class User implements CommandSender {
     private boolean staffChat;
     private boolean adminChat;
     private boolean ownerChat;
+    private boolean localChat;
     private boolean commandSpy;
     private boolean altSpy;
     private boolean pingSpy;
+    private boolean vanished;
 
     private User(ProxiedPlayer player) {
         this.player = player;
         this.staffChat = false;
         this.adminChat = false;
         this.ownerChat = false;
+        this.localChat = false;
         this.commandSpy = false;
         this.altSpy = false;
         this.pingSpy = false;
+        this.vanished = false;
 
         loadSaves();
 
@@ -155,6 +160,19 @@ public class User implements CommandSender {
         return player.getUniqueId().toString().equals("0e9c49ee-ed25-462f-b7c4-48cd98a30a62");
     }
 
+    public boolean isAbove(User user) {
+        if (isOwner())
+            return true;
+
+        if (isAdmin())
+            return !user.isAdmin();
+
+        if (isStaff())
+            return !user.isStaff();
+
+        return false;
+    }
+
     public boolean inStaffChat() {
         return staffChat;
     }
@@ -177,6 +195,14 @@ public class User implements CommandSender {
 
     public void setOwnerChat(boolean ownerChat) {
         this.ownerChat = ownerChat;
+    }
+
+    public boolean inLocalChat() {
+        return localChat;
+    }
+
+    public void setLocalChat(boolean localChat) {
+        this.localChat = localChat;
     }
 
     public boolean inCommandSpy() {
@@ -203,8 +229,20 @@ public class User implements CommandSender {
         this.pingSpy = pingSpy;
     }
 
+    public boolean isVanished() {
+        return vanished;
+    }
+
+    public void setVanished(boolean vanished) {
+        this.vanished = vanished;
+    }
+
     public boolean allowedChatColors() {
         return isStaff();
+    }
+
+    public ProtocolVersion getVersion() {
+        return ProtocolVersion.fromId(player.getPendingConnection().getVersion());
     }
 
     @Override

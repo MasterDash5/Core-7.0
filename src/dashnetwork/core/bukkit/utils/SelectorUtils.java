@@ -1,5 +1,6 @@
 package dashnetwork.core.bukkit.utils;
 
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,8 +22,12 @@ public class SelectorUtils {
 
         List<Player> players = new ArrayList<>();
 
-        for (String split : selector.split(","))
-            players.add(getPlayer(sender, split));
+        for (String split : selector.split(",")) {
+            Player player = getPlayer(sender, split);
+
+            if (player != null)
+                players.add(player);
+        }
 
         return players;
     }

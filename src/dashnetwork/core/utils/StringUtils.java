@@ -1,5 +1,7 @@
 package dashnetwork.core.utils;
 
+import java.util.List;
+
 public class StringUtils {
 
     public static String unsplit(String[] strings, char split) {
@@ -9,6 +11,18 @@ public class StringUtils {
             if (i > 0)
                 builder.append(split);
             builder.append(strings[i]);
+        }
+
+        return builder.toString();
+    }
+
+    public static String unsplit(List<String> strings, char split) {
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 0; i < strings.size(); i++) {
+            if (i > 0)
+                builder.append(split);
+            builder.append(strings.get(i));
         }
 
         return builder.toString();
