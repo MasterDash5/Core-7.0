@@ -19,7 +19,7 @@ public class MessageUtils {
     }
 
     public static void broadcast(PermissionType permission, String message) {
-        for (User user : User.getUsers())
+        for (User user : User.getUsers(true))
             if (permission.hasPermission(user))
                 message(user, message);
 
@@ -27,7 +27,7 @@ public class MessageUtils {
     }
 
     public static void broadcast(PermissionType permission, BaseComponent... message) {
-        for (User user : User.getUsers())
+        for (User user : User.getUsers(true))
             if (permission.hasPermission(user))
                 message(user, message);
 

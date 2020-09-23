@@ -52,7 +52,7 @@ public class CommandBan extends CoreCommand {
             reason = StringUtils.unsplit(list, ' ');
         }
 
-        PunishUtils.ban(target, null, sender, reason);
+        PunishUtils.ban(User.getUser(target), null, sender, reason);
     }
 
     @Override

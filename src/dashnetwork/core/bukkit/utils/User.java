@@ -1,6 +1,8 @@
 package dashnetwork.core.bukkit.utils;
 
 import dashnetwork.core.utils.LazyUtils;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -18,6 +20,7 @@ import java.util.Set;
 public class User implements CommandSender {
 
     private static List<User> users = new ArrayList<>();
+    private static LuckPerms lp = LuckPermsProvider.get();
     private Player player;
 
     private User(Player player) {
@@ -26,10 +29,11 @@ public class User implements CommandSender {
         users.add(this);
     }
 
-    public static List<User> getUsers() {
-        for (Player online : Bukkit.getOnlinePlayers())
-            if (!online.hasMetadata("NPC") && !hasInstance(online))
-                new User(online);
+    public static List<User> getUsers(boolean createNew) {
+        if (createNew)
+            for (Player online : Bukkit.getOnlinePlayers())
+                if (!online.hasMetadata("NPC") && !hasInstance(online))
+                    new User(online);
         return users;
     }
 

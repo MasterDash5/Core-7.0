@@ -2,6 +2,7 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.MessageUtils;
+import dashnetwork.core.bungee.utils.NameUtils;
 import dashnetwork.core.bungee.utils.PermissionType;
 import dashnetwork.core.bungee.utils.User;
 import dashnetwork.core.utils.ColorUtils;
@@ -9,8 +10,7 @@ import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.HoverEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.*;
 
@@ -22,28 +22,23 @@ public class CommandVersionlist extends CoreCommand {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        Map<String, List<String>> versionlist = new HashMap<>();
+        Map<String, List<ProxiedPlayer>> versionlist = new HashMap<>();
         MessageBuilder message = new MessageBuilder();
 
-        for (User user : User.getUsers()) {
+        for (User user : User.getUsers(true)) {
             if (!user.isVanished() || user.isStaff()) {
                 String version = user.getVersion().getName();
-                List<String> players = versionlist.getOrDefault(version, new ArrayList<>());
+                List<ProxiedPlayer> players = versionlist.getOrDefault(version, new ArrayList<>());
 
-                players.add(user.getPlayer().getUniqueId().toString());
+                players.add(user.getPlayer());
                 versionlist.put(version, players);
             }
         }
 
-        for (Map.Entry<String, List<String>> entry : versionlist.entrySet()) {
-            List<String> displaynames = new ArrayList<>();
-            List<String> names = new ArrayList<>();
-
-            for (String uuid : entry.getValue()) {
-                Player target = Bukkit.getPlayer(UUID.fromString(uuid));
-                displaynames.add(target.getDisplayName());
-                names.add(target.getName());
-            }
+        for (Map.Entry<String, List<ProxiedPlayer>> entry : versionlist.entrySet()) {
+            List<ProxiedPlayer> players = entry.getValue();
+            List<String> displaynames = NameUtils.toDisplayNames(players);
+            List<String> names = NameUtils.toNames(players);
 
             if (!message.isEmpty())
                 message.append("\n");

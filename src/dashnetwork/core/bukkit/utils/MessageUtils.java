@@ -38,7 +38,7 @@ public class MessageUtils {
                 player.sendPluginMessage(plugin, "dashnetwork:broadcast", output.toByteArray());
             }
         } else
-            for (User user : User.getUsers())
+            for (User user : User.getUsers(true))
                 if (permission.hasPermission(user))
                     message(user, message);
 

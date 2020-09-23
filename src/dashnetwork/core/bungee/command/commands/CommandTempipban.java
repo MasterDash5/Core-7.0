@@ -52,7 +52,7 @@ public class CommandTempipban extends CoreCommand {
         long duration = System.currentTimeMillis() + input;
         String reason = "no reason provided";
 
-        if (length > 1) {
+        if (length > 2) {
             List<String> list = new ArrayList<>(Arrays.asList(args));
             list.remove(0);
             list.remove(0);

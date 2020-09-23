@@ -15,9 +15,10 @@ public class QuitListener implements Listener {
     @EventHandler
     public void onPlayerDisconnect(PlayerDisconnectEvent event) {
         ProxiedPlayer player = event.getPlayer();
+        User user = User.getUser(player);
 
         MessageBuilder message = new MessageBuilder();
-        message.append("&6&l» &e" + player.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&e" + player.getName());
+        message.append("&6&l» &e" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&e" + player.getName());
         message.append("&6 left the server.");
 
         MessageUtils.broadcast(PermissionType.NONE, message.build());

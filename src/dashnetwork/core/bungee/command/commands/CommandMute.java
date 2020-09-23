@@ -52,7 +52,7 @@ public class CommandMute extends CoreCommand {
             reason = StringUtils.unsplit(list, ' ');
         }
 
-        PunishUtils.mute(target, null, sender, reason);
+        PunishUtils.mute(User.getUser(target), null, sender, reason);
     }
 
     @Override

@@ -69,7 +69,7 @@ public class PingListener implements Listener {
                     MessageBuilder message = new MessageBuilder();
                     message.append("&c&lPS &6" + address + " &7pinged the server with &6" + version).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + fromNames);
 
-                    for (User user : User.getUsers())
+                    for (User user : User.getUsers(true))
                         if (user.inPingSpy())
                             MessageUtils.message(user, message.build());
                 }

@@ -2,6 +2,9 @@ package dashnetwork.core.bungee.utils;
 
 import dashnetwork.core.utils.LazyUtils;
 import dashnetwork.core.utils.ProtocolVersion;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.cacheddata.CachedMetaData;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -9,13 +12,16 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class User implements CommandSender {
 
     private static List<User> users = new CopyOnWriteArrayList<>();
     private static BungeeCord bungee = BungeeCord.getInstance();
+    private static LuckPerms lp = LuckPermsProvider.get();
     private ProxiedPlayer player;
+    private String nickname;
     private boolean staffChat;
     private boolean adminChat;
     private boolean ownerChat;
@@ -27,6 +33,7 @@ public class User implements CommandSender {
 
     private User(ProxiedPlayer player) {
         this.player = player;
+        this.nickname = null;
         this.staffChat = false;
         this.adminChat = false;
         this.ownerChat = false;
@@ -41,10 +48,11 @@ public class User implements CommandSender {
         users.add(this);
     }
 
-    public static List<User> getUsers() {
-        for (ProxiedPlayer online : bungee.getPlayers())
-            if (!hasInstance(online))
-                new User(online);
+    public static List<User> getUsers(boolean createNew) {
+        if (createNew)
+            for (ProxiedPlayer online : bungee.getPlayers())
+                if (!hasInstance(online))
+                    new User(online);
         return users;
     }
 
@@ -64,6 +72,10 @@ public class User implements CommandSender {
 
     public void loadSaves() {
         String uuid = player.getUniqueId().toString();
+        Map<String, String> nicknameMap = DataUtils.getNicknames();
+
+        if (nicknameMap.containsKey(uuid))
+            this.nickname = nicknameMap.get(uuid);
 
         if (DataUtils.getStaffchat().contains(uuid))
             this.staffChat = true;
@@ -86,12 +98,18 @@ public class User implements CommandSender {
 
     public void save() {
         String uuid = player.getUniqueId().toString();
+        Map<String, String> nicknameMap = DataUtils.getNicknames();
         List<String> staffchatList = DataUtils.getStaffchat();
         List<String> adminchatList = DataUtils.getAdminchat();
         List<String> ownerchatList = DataUtils.getOwnerchat();
         List<String> commandspyList = DataUtils.getCommandspy();
         List<String> altspyList = DataUtils.getAltspy();
         List<String> pingspyList = DataUtils.getPingspy();
+
+        if (nickname != null)
+            nicknameMap.put(uuid, nickname);
+        else
+            nicknameMap.remove(uuid);
 
         if (staffChat) {
             if (!staffchatList.contains(uuid))
@@ -171,6 +189,32 @@ public class User implements CommandSender {
             return !user.isStaff();
 
         return false;
+    }
+
+    public String getDisplayName() {
+        CachedMetaData data = lp.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData();
+        String nickname = getNickname();
+        String prefix = data.getPrefix();
+        String suffix = data.getSuffix();
+
+        if (nickname == null)
+            nickname = getName();
+
+        if (prefix == null)
+            prefix = "";
+
+        if (suffix == null)
+            suffix = "";
+
+        return prefix + nickname + suffix;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public boolean inStaffChat() {

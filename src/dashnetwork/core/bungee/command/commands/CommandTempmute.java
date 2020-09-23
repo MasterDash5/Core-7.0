@@ -54,7 +54,7 @@ public class CommandTempmute extends CoreCommand {
         long duration = System.currentTimeMillis() + input;
         String reason = "no reason provided";
 
-        if (length > 1) {
+        if (length > 2) {
             List<String> list = new ArrayList<>(Arrays.asList(args));
             list.remove(0);
             list.remove(0);
@@ -62,7 +62,7 @@ public class CommandTempmute extends CoreCommand {
             reason = StringUtils.unsplit(list, ' ');
         }
 
-        PunishUtils.mute(target, duration, sender, reason);
+        PunishUtils.mute(User.getUser(target), duration, sender, reason);
     }
 
     @Override

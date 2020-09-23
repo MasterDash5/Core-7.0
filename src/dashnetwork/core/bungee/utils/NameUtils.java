@@ -15,7 +15,7 @@ public class NameUtils {
 
     public static String getDisplayName(CommandSender sender) {
         if (sender instanceof ProxiedPlayer)
-            return ((ProxiedPlayer) sender).getDisplayName();
+            return User.getUser((ProxiedPlayer) sender).getDisplayName();
         else if (sender.equals(bungee.getConsole()))
             return "Console";
 
@@ -38,11 +38,21 @@ public class NameUtils {
         return names;
     }
 
+
+    public static List<String> fromUuids(Collection<String> uuids) {
+        List<String> names = new ArrayList<>();
+
+        for (String uuid : uuids)
+            names.add(DataUtils.getNames().get(uuid));
+
+        return names;
+    }
+
     public static List<String> toDisplayNames(Collection<ProxiedPlayer> players) {
         List<String> displayNames = new ArrayList<>();
 
         for (ProxiedPlayer player : players)
-            displayNames.add(player.getDisplayName());
+            displayNames.add(User.getUser(player).getDisplayName());
 
         return displayNames;
     }

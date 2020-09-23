@@ -3,6 +3,7 @@ package dashnetwork.core.bungee.utils;
 import dashnetwork.core.bungee.Core;
 import dashnetwork.core.utils.PunishData;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 
 import java.io.File;
 import java.io.FileReader;
@@ -19,6 +20,7 @@ public class DataUtils {
     private static String path = folder.getPath() + slash;
     private static File ipsFile = new File(path + "ips.yml");
     private static File namesFile = new File(path + "names.yml");
+    private static File nicknamesFile = new File(path + "nicknames.yml");
     private static File staffchatFile = new File(path + "staffchat.yml");
     private static File adminchatFile = new File(path + "adminchat.yml");
     private static File ownerchatFile = new File(path + "ownerchat.yml");
@@ -30,7 +32,7 @@ public class DataUtils {
     private static File ipbansFile = new File(path + "ipbans.yml");
 
     private static Map<String, List<String>> ips;
-    private static Map<String, String> names;
+    private static Map<String, String> names, nicknames;
     private static Map<String, PunishData> mutes, bans, ipbans;
     private static List<String> staffchat, adminchat, ownerchat, commandspy, altspy, pingspy;
 
@@ -38,8 +40,9 @@ public class DataUtils {
         folder.mkdirs();
 
         try {
-            names = readFile(namesFile);
             ips = readFile(ipsFile);
+            names = readFile(namesFile);
+            nicknames = readFile(nicknamesFile);
             staffchat = readFile(staffchatFile);
             adminchat = readFile(adminchatFile);
             ownerchat = readFile(ownerchatFile);
@@ -58,6 +61,7 @@ public class DataUtils {
         try {
             writeFile(ipsFile, ips);
             writeFile(namesFile, names);
+            writeFile(nicknamesFile, nicknames);
             writeFile(staffchatFile, staffchat);
             writeFile(adminchatFile, adminchat);
             writeFile(ownerchatFile, ownerchat);
@@ -78,6 +82,10 @@ public class DataUtils {
 
     public static Map<String, String> getNames() {
         return names;
+    }
+
+    public static Map<String, String> getNicknames() {
+        return nicknames;
     }
 
     public static Map<String, PunishData> getMutes() {
@@ -128,7 +136,7 @@ public class DataUtils {
     private static <T>T readFile(File file) throws IOException {
         file.createNewFile();
 
-        Yaml yaml = new Yaml();
+        Yaml yaml = new Yaml(new CustomClassLoaderConstructor(Core.class.getClassLoader()));
         FileReader reader = new FileReader(file);
 
         return yaml.load(reader);

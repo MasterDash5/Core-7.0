@@ -35,7 +35,7 @@ public class Core extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (User user : User.getUsers())
+        for (User user : User.getUsers(false))
             user.remove();
     }
 

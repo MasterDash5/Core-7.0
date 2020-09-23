@@ -52,7 +52,7 @@ public class CommandKick extends CoreCommand {
             reason = StringUtils.unsplit(list, ' ');
         }
 
-        PunishUtils.kick(target, sender, reason);
+        PunishUtils.kick(User.getUser(target), sender, reason);
     }
 
     @Override
