@@ -8,6 +8,7 @@ import net.luckperms.api.cacheddata.CachedMetaData;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Collection;
@@ -196,17 +197,19 @@ public class User implements CommandSender {
         String nickname = getNickname();
         String prefix = data.getPrefix();
         String suffix = data.getSuffix();
+        boolean hasPrefix = prefix != null;
+        boolean hasSuffix = suffix != null;
 
         if (nickname == null)
             nickname = getName();
 
-        if (prefix == null)
+        if (!hasPrefix)
             prefix = "";
 
-        if (suffix == null)
+        if (!hasSuffix)
             suffix = "";
 
-        return prefix + nickname + suffix;
+        return (hasPrefix ? prefix + " ": "") + nickname + (hasSuffix ? suffix + " " : "");
     }
 
     public String getNickname() {
@@ -296,7 +299,7 @@ public class User implements CommandSender {
 
     @Override
     public void sendMessage(String message) {
-        MessageUtils.message(this, message);
+        sendMessage(TextComponent.fromLegacyText(message));
     }
 
     @Override

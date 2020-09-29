@@ -29,7 +29,7 @@ public class ChatListener implements Listener {
             if (event.isProxyCommand() || event.isCommand()) {
                 for (User online : User.getUsers(true))
                     if (online.inCommandSpy())
-                        MessageUtils.message(online, ColorUtils.translate("&c&lCS &6" + user.getDisplayName() + " &e&l> &b") + message);
+                        MessageUtils.message(online, "&c&lCS &6" + user.getDisplayName() + " &e&l> &b" + message);
             } else {
                 event.setCancelled(true);
 
@@ -55,7 +55,8 @@ public class ChatListener implements Listener {
                     if (user.allowedChatColors())
                         message = ColorUtils.translate(message);
 
-                    MessageUtils.broadcast(PermissionType.NONE, ColorUtils.translate(user.getDisplayName() + " &e&l>&f ") + message);
+                    for (User online : User.getUsers(true))
+                        online.sendMessage(ColorUtils.translate(user.getDisplayName() + " &e&l>&f ") + message);
                 }
             }
         }
@@ -67,15 +68,15 @@ public class ChatListener implements Listener {
     }
 
     private void ownerChat(User user, String input) {
-        MessageUtils.broadcast(PermissionType.OWNER, ColorUtils.translate("&9&lOwner &6" + user.getDisplayName() + " &6&l> &c" + input));
+        MessageUtils.broadcast(PermissionType.OWNER, "&9&lOwner &6" + user.getDisplayName() + " &6&l> &c" + input);
     }
 
     private void adminChat(User user, String input) {
-        MessageUtils.broadcast(PermissionType.ADMIN, ColorUtils.translate("&9&lAdmin &6" + user.getDisplayName() + " &6&l> &3" + input));
+        MessageUtils.broadcast(PermissionType.ADMIN, "&9&lAdmin &6" + user.getDisplayName() + " &6&l> &3" + input);
     }
 
     private void staffChat(User user, String input) {
-        MessageUtils.broadcast(PermissionType.STAFF, ColorUtils.translate("&9&lStaff &6" + user.getDisplayName() + " &6&l> &6" + input));
+        MessageUtils.broadcast(PermissionType.STAFF, "&9&lStaff &6" + user.getDisplayName() + " &6&l> &6" + input);
 
         // if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV"))
         //     DiscordSRV.getPlugin().processChatMessage(player, input, "staffchat", false);

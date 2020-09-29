@@ -2,7 +2,6 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.StringUtils;
@@ -45,12 +44,12 @@ public class CommandAdminchat extends CoreCommand {
                 user.setAdminChat(adminchat);
 
                 if (adminchat) {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in AdminChat"));
+                    MessageUtils.message(target, "&6&l» &7You are now in AdminChat");
 
                     if (!target.equals(player))
                         added.add(target);
                 } else {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in AdminChat"));
+                    MessageUtils.message(target, "&6&l» &7You are no longer in AdminChat");
 
                     if (!target.equals(player))
                         removed.add(target);
@@ -81,7 +80,7 @@ public class CommandAdminchat extends CoreCommand {
                 player.sendMessage(message.build());
             }
         } else
-            MessageUtils.broadcast(PermissionType.ADMIN, ColorUtils.translate("&9&lAdmin &6Console &6&l> &3" + StringUtils.unsplit(args, ' ')));
+            MessageUtils.broadcast(PermissionType.ADMIN, "&9&lAdmin &6Console &6&l> &3" + StringUtils.unsplit(args, ' '));
     }
 
     @Override

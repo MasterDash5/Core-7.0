@@ -3,7 +3,6 @@ package dashnetwork.core.bungee.command.commands;
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.MessageUtils;
 import dashnetwork.core.bungee.utils.PermissionType;
-import dashnetwork.core.utils.ColorUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -20,9 +19,9 @@ public class CommandLobby extends CoreCommand {
         if (sender instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &7sending you to &6Lobby"));
+            MessageUtils.message(sender, "&6&l» &7sending you to &6Lobby");
 
-            player.connect(bungee.getServerInfo("Lobby"));
+            player.connect(bungee.getServerInfo("lobby"));
         } else
             MessageUtils.playersOnly();
     }

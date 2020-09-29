@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DataUtils {
 
@@ -55,6 +56,42 @@ public class DataUtils {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+
+        if (ips == null)
+            ips = new HashMap<>();
+
+        if (names == null)
+            names = new HashMap<>();
+
+        if (nicknames == null)
+            nicknames = new HashMap<>();
+
+        if (staffchat == null)
+            staffchat = new ArrayList<>();
+
+        if (adminchat == null)
+            adminchat = new ArrayList<>();
+
+        if (ownerchat == null)
+            ownerchat = new ArrayList<>();
+
+        if (commandspy == null)
+            commandspy = new ArrayList<>();
+
+        if (altspy == null)
+            altspy = new ArrayList<>();
+
+        if (pingspy == null)
+            pingspy = new ArrayList<>();
+
+        if (mutes == null)
+            mutes = new ConcurrentHashMap<>();
+
+        if (bans == null)
+            bans = new ConcurrentHashMap<>();
+
+        if (ipbans == null)
+            ipbans = new ConcurrentHashMap<>();
     }
 
     public static void save() {

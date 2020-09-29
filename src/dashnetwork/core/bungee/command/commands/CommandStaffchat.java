@@ -2,7 +2,6 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.StringUtils;
@@ -45,12 +44,12 @@ public class CommandStaffchat extends CoreCommand {
                 user.setStaffChat(staffchat);
 
                 if (staffchat) {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in StaffChat"));
+                    MessageUtils.message(target, "&6&l» &7You are now in StaffChat");
 
                     if (!target.equals(player))
                         added.add(target);
                 } else {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in StaffChat"));
+                    MessageUtils.message(target, "&6&l» &7You are no longer in StaffChat");
 
                     if (!target.equals(player))
                         removed.add(target);
@@ -81,7 +80,7 @@ public class CommandStaffchat extends CoreCommand {
                 player.sendMessage(message.build());
             }
         } else
-            MessageUtils.broadcast(PermissionType.STAFF, ColorUtils.translate("&9&lStaff &6Console &6&l> &6" + StringUtils.unsplit(args, ' ')));
+            MessageUtils.broadcast(PermissionType.STAFF, "&9&lStaff &6Console &6&l> &6" + StringUtils.unsplit(args, ' '));
     }
 
     @Override

@@ -2,7 +2,6 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.StringUtils;
 import dashnetwork.core.utils.TimeUtils;
 import net.md_5.bungee.api.CommandSender;
@@ -24,7 +23,7 @@ public class CommandTempban extends CoreCommand {
         int length = args.length;
 
         if (length <= 1) {
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &7/tempban <player> <time> <reason>"));
+            MessageUtils.message(sender, "&6&l» &7/tempban <player> <time> <reason>");
             return;
         }
 
@@ -39,7 +38,7 @@ public class CommandTempban extends CoreCommand {
             User user = User.getUser((ProxiedPlayer) sender);
 
             if (!user.isAbove(User.getUser(target))) {
-                MessageUtils.message(sender, ColorUtils.translate("&6&l» &7You don't have permission to ban that player."));
+                MessageUtils.message(sender, "&6&l» &7You don't have permission to ban that player.");
                 return;
             }
         }
@@ -47,7 +46,7 @@ public class CommandTempban extends CoreCommand {
         Long input = TimeUtils.fromTimeArgument(args[1]);
 
         if (input == null) {
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &cInvalid time input"));
+            MessageUtils.message(sender, "&6&l» &cInvalid time input");
             return;
         }
 

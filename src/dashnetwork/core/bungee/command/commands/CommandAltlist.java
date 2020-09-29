@@ -2,7 +2,6 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.bungee.command.CoreCommand;
-import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.ListUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,7 +20,7 @@ public class CommandAltlist extends CoreCommand {
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         if (args.length <= 0) {
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &7/altlist <player>"));
+            MessageUtils.message(sender, "&6&l» &7/altlist <player>");
             return;
         }
 
@@ -43,9 +42,9 @@ public class CommandAltlist extends CoreCommand {
                 if (!account.equals(uuid))
                     names.add(DataUtils.getNames().getOrDefault(account, "Unknown"));
 
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &7Alts: &6" + ListUtils.fromList(names, false, true)));
+            MessageUtils.message(sender, "&6&l» &7Alts: &6" + ListUtils.fromList(names, false, true));
         } else
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &7No alts found."));
+            MessageUtils.message(sender, "&6&l» &7No alts found.");
     }
 
     @Override

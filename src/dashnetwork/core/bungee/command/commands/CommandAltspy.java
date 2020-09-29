@@ -2,7 +2,6 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import net.md_5.bungee.api.CommandSender;
@@ -44,12 +43,12 @@ public class CommandAltspy extends CoreCommand {
                 user.setAltSpy(altspy);
 
                 if (altspy) {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in AltSpy"));
+                    MessageUtils.message(target, "&6&l» &7You are now in AltSpy");
 
                     if (!target.equals(player))
                         added.add(target);
                 } else {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in AltSpy"));
+                    MessageUtils.message(target, "&6&l» &7You are no longer in AltSpy");
 
                     if (!target.equals(player))
                         removed.add(target);

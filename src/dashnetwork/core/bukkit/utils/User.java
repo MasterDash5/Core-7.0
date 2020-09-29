@@ -4,6 +4,7 @@ import dashnetwork.core.utils.LazyUtils;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -88,7 +89,7 @@ public class User implements CommandSender {
 
     @Override
     public void sendMessage(String message) {
-        MessageUtils.message(this, message);
+        sendMessage(TextComponent.fromLegacyText(message));
     }
 
     @Override

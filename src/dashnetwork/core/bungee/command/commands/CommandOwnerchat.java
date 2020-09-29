@@ -2,7 +2,6 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.StringUtils;
@@ -45,12 +44,12 @@ public class CommandOwnerchat extends CoreCommand {
                 user.setOwnerChat(ownerchat);
 
                 if (ownerchat) {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are now in OwnerChat"));
+                    MessageUtils.message(target, "&6&l» &7You are now in OwnerChat");
 
                     if (!target.equals(player))
                         added.add(target);
                 } else {
-                    MessageUtils.message(target, ColorUtils.translate("&6&l» &7You are no longer in OwnerChat"));
+                    MessageUtils.message(target, "&6&l» &7You are no longer in OwnerChat");
 
                     if (!target.equals(player))
                         removed.add(target);
@@ -81,7 +80,7 @@ public class CommandOwnerchat extends CoreCommand {
                 player.sendMessage(message.build());
             }
         } else
-            MessageUtils.broadcast(PermissionType.OWNER, ColorUtils.translate("&9&lOwner &6Console &6&l> &c" + StringUtils.unsplit(args, ' ')));
+            MessageUtils.broadcast(PermissionType.OWNER, "&9&lOwner &6Console &6&l> &c" + StringUtils.unsplit(args, ' '));
     }
 
     @Override

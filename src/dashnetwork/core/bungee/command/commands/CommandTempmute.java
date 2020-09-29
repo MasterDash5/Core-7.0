@@ -24,7 +24,7 @@ public class CommandTempmute extends CoreCommand {
         int length = args.length;
 
         if (length <= 1) {
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &7/tempmute <player> <time> <reason>"));
+            MessageUtils.message(sender, "&6&l» &7/tempmute <player> <time> <reason>");
             return;
         }
 
@@ -39,7 +39,7 @@ public class CommandTempmute extends CoreCommand {
             User user = User.getUser((ProxiedPlayer) sender);
 
             if (!user.isAbove(User.getUser(target))) {
-                MessageUtils.message(sender, ColorUtils.translate("&6&l» &7You don't have permission to mute that player."));
+                MessageUtils.message(sender, "&6&l» &7You don't have permission to mute that player.");
                 return;
             }
         }
@@ -47,7 +47,7 @@ public class CommandTempmute extends CoreCommand {
         Long input = TimeUtils.fromTimeArgument(args[1]);
 
         if (input == null) {
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &cInvalid time input"));
+            MessageUtils.message(sender, "&6&l» &cInvalid time input");
             return;
         }
 

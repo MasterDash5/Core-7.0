@@ -2,7 +2,6 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.StringUtils;
 import dashnetwork.core.utils.TimeUtils;
 import net.md_5.bungee.api.CommandSender;
@@ -25,7 +24,7 @@ public class CommandTempipban extends CoreCommand {
         int length = args.length;
 
         if (length <= 1) {
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &7/tempipban <player/address> <time> <reason>"));
+            MessageUtils.message(sender, "&6&l» &7/tempipban <player/address> <time> <reason>");
             return;
         }
 
@@ -35,7 +34,7 @@ public class CommandTempipban extends CoreCommand {
             ProxiedPlayer target = SelectorUtils.getPlayer(sender, args[0]);
 
             if (target == null) {
-                MessageUtils.message(sender, ColorUtils.translate("&6&l» &cInvalid IP address"));
+                MessageUtils.message(sender, "&6&l» &cInvalid IP address");
                 return;
             }
 
@@ -45,7 +44,7 @@ public class CommandTempipban extends CoreCommand {
         Long input = TimeUtils.fromTimeArgument(args[1]);
 
         if (input == null) {
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &cInvalid time input"));
+            MessageUtils.message(sender, "&6&l» &cInvalid time input");
             return;
         }
 

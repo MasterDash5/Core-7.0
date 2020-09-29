@@ -1,13 +1,11 @@
 package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
-import dashnetwork.core.bungee.utils.MessageUtils;
-import dashnetwork.core.bungee.utils.PermissionType;
-import dashnetwork.core.bungee.utils.User;
+import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.utils.ColorUtils;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import org.bukkit.ChatColor;
 
 import java.util.Collections;
 
@@ -19,29 +17,50 @@ public class CommandNickname extends CoreCommand {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        // TODO: Edit other player's nickname
+        int length = args.length;
+        ProxiedPlayer target = null;
 
-        if (sender instanceof ProxiedPlayer) {
-            ProxiedPlayer player = (ProxiedPlayer) sender;
-            User user = User.getUser(player);
+        if (length == 0) {
+            MessageUtils.message(sender, "&6&l»&7 /nickname <name/off>");
+            return;
+        }
 
-            if (args.length <= 0) {
-                MessageUtils.message(sender, ColorUtils.translate("&6&l» &7/nickname <name/off>"));
-                return;
-            }
+        String arg = args[0];
+        boolean admin = PermissionType.ADMIN.hasPermission(sender);
 
-            String nickname = ColorUtils.translate(args[0]);
+        if (length > 1 && admin)
+            target = SelectorUtils.getPlayer(sender, arg);
+        else if (sender instanceof ProxiedPlayer)
+            target = (ProxiedPlayer) sender;
 
-            if (ChatColor.stripColor(nickname).length() > 16) {
-                MessageUtils.message(sender, "&6&l» &cThat nickname is too long");
-                return;
-            }
+        if (target == null) {
+            MessageUtils.noPlayerFound(sender);
+            return;
+        }
 
-            user.setNickname(nickname);
+        User user = User.getUser(target);
+        String input = sender.equals(target) ? arg : args[1];
 
-            MessageUtils.message(sender, "6&l» &7Your nickname is now &6" + nickname);
-        } else
-            MessageUtils.playersOnly();
+        if (input.equalsIgnoreCase("off")) {
+            user.setNickname(null);
+            MessageUtils.message(sender, "&6&l»&7 You no longer have a nickname");
+        }
+
+        if (!admin && input.length() > 16) {
+            MessageUtils.message(sender, "&6&l»&c That nickname is too long");
+            return;
+        }
+
+        String nickname = ColorUtils.translate(input);
+
+        if (!admin && DataUtils.getNames().containsValue(ChatColor.stripColor(nickname))) {
+            MessageUtils.message(sender, "&6&l»&c You are not allowed to use that name");
+            return;
+        }
+
+        user.setNickname(nickname);
+
+        MessageUtils.message(sender, "6&l»&7 Your nickname is now &6" + nickname);
     }
 
     @Override

@@ -2,7 +2,6 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -24,7 +23,7 @@ public class CommandIpban extends CoreCommand {
         int length = args.length;
 
         if (length <= 0) {
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &7/ipban <player/address> <reason>"));
+            MessageUtils.message(sender, "&6&l» &7/ipban <player/address> <reason>");
             return;
         }
 
@@ -34,7 +33,7 @@ public class CommandIpban extends CoreCommand {
             ProxiedPlayer target = SelectorUtils.getPlayer(sender, args[0]);
 
             if (target == null) {
-                MessageUtils.message(sender, ColorUtils.translate("&6&l» &cInvalid IP address"));
+                MessageUtils.message(sender, "&6&l» &cInvalid IP address");
                 return;
             }
 

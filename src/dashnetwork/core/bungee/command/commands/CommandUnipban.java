@@ -5,7 +5,6 @@ import dashnetwork.core.bungee.utils.DataUtils;
 import dashnetwork.core.bungee.utils.MessageUtils;
 import dashnetwork.core.bungee.utils.NameUtils;
 import dashnetwork.core.bungee.utils.PermissionType;
-import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -23,7 +22,7 @@ public class CommandUnipban extends CoreCommand {
         int length = args.length;
 
         if (length <= 0) {
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &7/unban <player>"));
+            MessageUtils.message(sender, "&6&l» &7/unban <player>");
             return;
         }
 

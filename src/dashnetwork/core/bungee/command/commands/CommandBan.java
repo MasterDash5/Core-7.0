@@ -2,7 +2,6 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -23,7 +22,7 @@ public class CommandBan extends CoreCommand {
         int length = args.length;
 
         if (length <= 0) {
-            MessageUtils.message(sender, ColorUtils.translate("&6&l» &7/ban <player> <reason>"));
+            MessageUtils.message(sender, "&6&l» &7/ban <player> <reason>");
             return;
         }
 
@@ -38,7 +37,7 @@ public class CommandBan extends CoreCommand {
             User user = User.getUser((ProxiedPlayer) sender);
 
             if (!user.isAbove(User.getUser(target))) {
-                MessageUtils.message(sender, ColorUtils.translate("&6&l» &7You don't have permission to ban that player."));
+                MessageUtils.message(sender, "&6&l» &7You don't have permission to ban that player.");
                 return;
             }
         }
