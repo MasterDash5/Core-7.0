@@ -59,7 +59,7 @@ public class PingListener implements Listener {
 
                 if (ips.containsKey(address)) {
                     List<String> names = new ArrayList<>();
-                    String version = ProtocolVersion.fromId(connection.getVersion()).getName();
+                    String version = ProtocolVersion.fromId(event.getResponse().getVersion().getProtocol()).getName();
 
                     for (String uuid : ips.get(address))
                         names.add(DataUtils.getNames().getOrDefault(uuid, "Unknown"));

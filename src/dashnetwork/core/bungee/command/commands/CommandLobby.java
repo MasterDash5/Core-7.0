@@ -19,7 +19,7 @@ public class CommandLobby extends CoreCommand {
         if (sender instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) sender;
 
-            MessageUtils.message(sender, "&6&l» &7sending you to &6Lobby");
+            MessageUtils.message(sender, "&6&l» &7Sending you to &6Lobby");
 
             player.connect(bungee.getServerInfo("lobby"));
         } else

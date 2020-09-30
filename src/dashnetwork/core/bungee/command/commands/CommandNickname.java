@@ -60,7 +60,7 @@ public class CommandNickname extends CoreCommand {
 
         user.setNickname(nickname);
 
-        MessageUtils.message(sender, "6&l»&7 Your nickname is now &6" + nickname);
+        MessageUtils.message(sender, "&6&l»&7 Your nickname is now &6" + nickname);
     }
 
     @Override

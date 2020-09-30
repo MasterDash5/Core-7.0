@@ -18,13 +18,12 @@ public class QuitListener implements Listener {
         User user = User.getUser(player);
 
         MessageBuilder message = new MessageBuilder();
-        message.append("&6&l» &e" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&e" + player.getName());
-        message.append("&6 left the server.");
+        message.append("&c&l» &6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + player.getName());
+        message.append("&c left the server.");
 
         MessageUtils.broadcast(PermissionType.NONE, message.build());
 
-        if (User.hasInstance(player))
-            User.getUser(player).remove();
+        user.remove();
     }
 
 }

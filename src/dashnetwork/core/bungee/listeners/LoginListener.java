@@ -105,9 +105,9 @@ public class LoginListener implements Listener {
         });
 
         MessageBuilder message = new MessageBuilder();
-        message.append("&6&l» ");
-        message.append("&e" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
-        message.append("&6 joined the server.");
+        message.append("&a&l» ");
+        message.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+        message.append("&a joined the server.");
 
         MessageUtils.broadcast(PermissionType.NONE, message.build());
     }

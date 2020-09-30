@@ -35,7 +35,7 @@ public class MessageUtils {
                 output.writeByte(permission.toId());
                 output.writeUTF(message);
 
-                player.sendPluginMessage(plugin, "dashnetwork:broadcast", output.toByteArray());
+                player.sendPluginMessage(plugin, "dn:broadcast", output.toByteArray());
             }
         } else
             for (User user : User.getUsers(true))

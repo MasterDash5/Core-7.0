@@ -16,7 +16,7 @@ public class ChannelListener implements Listener {
         ByteArrayDataInput input = ByteStreams.newDataInput(event.getData());
 
         switch (tag) {
-            case "dashnetwork:broadcast":
+            case "dn:broadcast":
                 event.setCancelled(true);
 
                 PermissionType permission = PermissionType.fromId(input.readByte());
