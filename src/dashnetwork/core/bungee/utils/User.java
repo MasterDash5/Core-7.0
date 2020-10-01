@@ -1,19 +1,22 @@
 package dashnetwork.core.bungee.utils;
 
-import dashnetwork.core.utils.LazyUtils;
-import dashnetwork.core.utils.ProtocolVersion;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import dashnetwork.core.utils.*;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class User implements CommandSender {
@@ -22,7 +25,9 @@ public class User implements CommandSender {
     private static BungeeCord bungee = BungeeCord.getInstance();
     private static LuckPerms lp = LuckPermsProvider.get();
     private ProxiedPlayer player;
+    private String replyTarget;
     private String nickname;
+    private String displayName;
     private boolean staffChat;
     private boolean adminChat;
     private boolean ownerChat;
@@ -34,7 +39,9 @@ public class User implements CommandSender {
 
     private User(ProxiedPlayer player) {
         this.player = player;
+        this.replyTarget = null;
         this.nickname = null;
+        this.displayName = null;
         this.staffChat = false;
         this.adminChat = false;
         this.ownerChat = false;
@@ -45,6 +52,7 @@ public class User implements CommandSender {
         this.vanished = false;
 
         loadSaves();
+        updateDisplayName(false);
 
         users.add(this);
     }
@@ -192,9 +200,27 @@ public class User implements CommandSender {
         return false;
     }
 
+    public boolean isMuted() {
+        String uuid = getPlayer().getUniqueId().toString();
+        Map<String, PunishData> mutes = DataUtils.getMutes();
+
+        if (mutes.containsKey(uuid)) {
+            PunishData data = mutes.get(uuid);
+
+            if (!data.isExpired())
+                return true;
+        }
+
+        return false;
+    }
+
     public String getDisplayName() {
-        CachedMetaData data = lp.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData();
-        String nickname = getNickname();
+        return displayName;
+    }
+
+    public void updateDisplayName(boolean updateBackends) {
+        UUID uuid = player.getUniqueId();
+        CachedMetaData data = lp.getUserManager().getUser(uuid).getCachedData().getMetaData();
         String prefix = data.getPrefix();
         String suffix = data.getSuffix();
         boolean hasPrefix = prefix != null;
@@ -209,7 +235,23 @@ public class User implements CommandSender {
         if (!hasSuffix)
             suffix = "";
 
-        return (hasPrefix ? prefix + " ": "") + nickname + (hasSuffix ? suffix + " " : "");
+        displayName = ColorUtils.translate(hasPrefix ? prefix + " " : "") + nickname + (hasSuffix ? suffix + " " : "");
+
+        if (updateBackends) {
+            ByteArrayDataOutput output = ByteStreams.newDataOutput();
+            output.writeUTF(uuid.toString());
+            output.writeUTF(displayName);
+
+            player.getServer().getInfo().sendData("dn:displayname", output.toByteArray());
+        }
+    }
+
+    public String getReplyTarget() {
+        return replyTarget;
+    }
+
+    public void setReplyTarget(String replyTarget) {
+        this.replyTarget = replyTarget;
     }
 
     public String getNickname() {
@@ -282,10 +324,29 @@ public class User implements CommandSender {
 
     public void setVanished(boolean vanished) {
         this.vanished = vanished;
-    }
 
-    public boolean allowedChatColors() {
-        return isStaff();
+        String name = player.getName();
+        String uuid = player.getUniqueId().toString();
+
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        output.writeUTF(uuid);
+        output.writeBoolean(vanished);
+
+        player.getServer().getInfo().sendData("dn:vanish", output.toByteArray());
+
+        MessageBuilder message = new MessageBuilder();
+
+        if (vanished) {
+            message.append("&c&l» ");
+            message.append("&6" + displayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+            message.append("&c left the server.");
+        } else {
+            message.append("&a&l» ");
+            message.append("&6" + displayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+            message.append("&a joined the server.");
+        }
+
+        MessageUtils.broadcast(PermissionType.NONE, message.build());
     }
 
     public ProtocolVersion getVersion() {

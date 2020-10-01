@@ -1,8 +1,10 @@
 package dashnetwork.core.bukkit.utils;
 
+import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.LazyUtils;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.cacheddata.CachedMetaData;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -17,15 +19,29 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class User implements CommandSender {
 
-    private static List<User> users = new ArrayList<>();
+    private static List<User> users = new CopyOnWriteArrayList<>();
     private static LuckPerms lp = LuckPermsProvider.get();
+    private List<UserAddon> addons;
     private Player player;
+    private String displayName;
+    private boolean vanished;
+    private boolean bookSpy;
+    private boolean signSpy;
+    private boolean inServerInfo;
 
     private User(Player player) {
+        this.addons = new CopyOnWriteArrayList<>();
         this.player = player;
+        this.displayName = defaultDisplayName();
+        this.vanished = false;
+        this.bookSpy = false;
+        this.signSpy = false;
+        this.inServerInfo = false;
 
         users.add(this);
     }
@@ -52,10 +68,34 @@ public class User implements CommandSender {
         return false;
     }
 
+    private String defaultDisplayName() {
+        CachedMetaData data = lp.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData();
+        String prefix = data.getPrefix();
+        String suffix = data.getSuffix();
+        boolean hasPrefix = prefix != null;
+        boolean hasSuffix = suffix != null;
+
+        if (!hasPrefix)
+            prefix = "";
+
+        if (!hasSuffix)
+            suffix = "";
+
+        return ColorUtils.translate(hasPrefix ? prefix + " " : "") + getName() + (hasSuffix ? suffix + " " : "");
+    }
+
     public void remove() {
         // TODO: Save anything
 
         users.remove(this);
+    }
+
+    public void addAddon(UserAddon addon) {
+        addons.add(addon);
+    }
+
+    public void removeAddon(UserAddon addon) {
+        addons.remove(addon);
     }
 
     public Player getPlayer() {
@@ -80,6 +120,54 @@ public class User implements CommandSender {
 
     public boolean isMatt() {
         return player.getUniqueId().toString().equals("0e9c49ee-ed25-462f-b7c4-48cd98a30a62");
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public boolean isVanished() {
+        return vanished;
+    }
+
+    public void setVanished(boolean vanished) {
+        this.vanished = vanished;
+
+        if (vanished) {
+            for (User online : getUsers(true))
+                if (!online.equals(this) && !online.isStaff())
+                    online.getPlayer().hidePlayer(player);
+        } else
+            for (Player online : Bukkit.getOnlinePlayers())
+                online.showPlayer(player);
+    }
+
+    public boolean inBookSpy() {
+        return bookSpy;
+    }
+
+    public void setBookSpy(boolean bookSpy) {
+        this.bookSpy = bookSpy;
+    }
+
+    public boolean inSignSpy() {
+        return signSpy;
+    }
+
+    public void setSignSpy(boolean signSpy) {
+        this.signSpy = signSpy;
+    }
+
+    public boolean inServerInfo() {
+        return inServerInfo;
+    }
+
+    public void setInServerInfo(boolean inServerInfo) {
+        this.inServerInfo = inServerInfo;
     }
 
     @Override

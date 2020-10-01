@@ -31,6 +31,7 @@ public class Core extends Plugin {
 
         manager.registerListener(this, new ChannelListener());
         manager.registerListener(this, new ChatListener());
+        manager.registerListener(this, new ConnectListener());
         manager.registerListener(this, new LoginListener());
         manager.registerListener(this, new PingListener());
         manager.registerListener(this, new QuitListener());
@@ -39,16 +40,19 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandAltlist());
         manager.registerCommand(this, new CommandAltspy());
         manager.registerCommand(this, new CommandBan());
+        manager.registerCommand(this, new CommandChat());
         manager.registerCommand(this, new CommandColorlist());
         manager.registerCommand(this, new CommandCommandspy());
         manager.registerCommand(this, new CommandIpban());
         manager.registerCommand(this, new CommandKick());
         manager.registerCommand(this, new CommandLobby());
         manager.registerCommand(this, new CommandLocalchat());
+        manager.registerCommand(this, new CommandMsg());
         manager.registerCommand(this, new CommandMute());
         manager.registerCommand(this, new CommandNickname());
         manager.registerCommand(this, new CommandOwnerchat());
         manager.registerCommand(this, new CommandPingspy());
+        manager.registerCommand(this, new CommandReply());
         manager.registerCommand(this, new CommandStaffchat());
         manager.registerCommand(this, new CommandTempban());
         manager.registerCommand(this, new CommandTempipban());
@@ -57,6 +61,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandUnban());
         manager.registerCommand(this, new CommandUnipban());
         manager.registerCommand(this, new CommandUnmute());
+        manager.registerCommand(this, new CommandVanish());
         manager.registerCommand(this, new CommandVersionlist());
 
         scheduler.schedule(this, new PunishTask(), 0, 1, TimeUnit.HOURS);

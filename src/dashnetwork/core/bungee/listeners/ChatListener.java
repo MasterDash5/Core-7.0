@@ -1,17 +1,19 @@
 package dashnetwork.core.bungee.listeners;
 
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ColorUtils;
-import dashnetwork.core.utils.LazyUtils;
-import dashnetwork.core.utils.StringUtils;
+import dashnetwork.core.utils.*;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ChatListener implements Listener {
 
@@ -26,12 +28,31 @@ public class ChatListener implements Listener {
             User user = User.getUser(player);
             String message = event.getMessage();
 
+            user.updateDisplayName(true);
+
             if (event.isProxyCommand() || event.isCommand()) {
                 for (User online : User.getUsers(true))
                     if (online.inCommandSpy())
                         MessageUtils.message(online, "&c&lCS &6" + user.getDisplayName() + " &e&l> &b" + message);
             } else {
                 event.setCancelled(true);
+
+                if (user.isMuted()) {
+                    PunishData data = DataUtils.getMutes().get(player.getUniqueId().toString());
+                    Long expire = data.getExpire();
+                    String date = expire == null ? "never" : new SimpleDateFormat("MMM d, hh:mm a z").format(new Date(expire));
+
+                    MessageBuilder reponse = new MessageBuilder();
+                    reponse.append("&6&l» &7You are muted. Hover for details")
+                            .hoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                    "&6Muted by &7" + data.getBanner()
+                                            + "\n&6Expires &7" + date
+                                            + "\n&6Reason: &7" + data.getReason());
+
+                    MessageUtils.message(user, reponse.build());
+
+                    return;
+                }
 
                 String trimmed = message.length() > 3 ? message.substring((message.substring(3).startsWith(" ") ? 4 : 3)) : "";
 
@@ -51,13 +72,8 @@ public class ChatListener implements Listener {
                     staffChat(user, message);
                 else if (user.isStaff() && StringUtils.startsWithIgnoreCase(message, "@sc"))
                     staffChat(user, trimmed);
-                else {
-                    if (user.allowedChatColors())
-                        message = ColorUtils.translate(message);
-
-                    for (User online : User.getUsers(true))
-                        online.sendMessage(ColorUtils.translate(user.getDisplayName() + " &e&l>&f ") + message);
-                }
+                else
+                    MessageUtils.broadcast(PermissionType.NONE, user.getDisplayName() + " &e&l>&f " + message);
             }
         }
     }

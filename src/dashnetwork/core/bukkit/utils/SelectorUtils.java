@@ -1,6 +1,5 @@
 package dashnetwork.core.bukkit.utils;
 
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

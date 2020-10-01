@@ -1,15 +1,16 @@
 package dashnetwork.core.bukkit.command;
 
+import com.google.common.collect.Lists;
 import dashnetwork.core.bukkit.Core;
 import dashnetwork.core.bukkit.utils.MessageUtils;
 import dashnetwork.core.bukkit.utils.PermissionType;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
+import org.bukkit.command.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public abstract class CoreCommand implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public abstract class CoreCommand implements CommandExecutor, TabCompleter {
 
     protected static Core plugin = Core.getInstance();
     private boolean async;
@@ -25,6 +26,8 @@ public abstract class CoreCommand implements CommandExecutor {
     }
 
     public abstract void onCommand(CommandSender sender, String label, String[] args);
+
+    public abstract Iterable<String> onTabComplete(CommandSender sender, String label, String[] args);
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -43,4 +46,10 @@ public abstract class CoreCommand implements CommandExecutor {
         return true;
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (permission.hasPermission(sender))
+            return Lists.newArrayList(onTabComplete(sender, label, args));
+        return Collections.EMPTY_LIST;
+    }
 }

@@ -5,7 +5,6 @@ import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
-import dashnetwork.core.utils.ProtocolVersion;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -59,7 +58,6 @@ public class PingListener implements Listener {
 
                 if (ips.containsKey(address)) {
                     List<String> names = new ArrayList<>();
-                    String version = ProtocolVersion.fromId(event.getResponse().getVersion().getProtocol()).getName();
 
                     for (String uuid : ips.get(address))
                         names.add(DataUtils.getNames().getOrDefault(uuid, "Unknown"));
@@ -67,7 +65,7 @@ public class PingListener implements Listener {
                     String fromNames = ListUtils.fromList(names, false, true);
 
                     MessageBuilder message = new MessageBuilder();
-                    message.append("&c&lPS &6" + address + " &7pinged the server with &6" + version).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + fromNames);
+                    message.append("&c&lPS &6" + address + " &7pinged the server").hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + fromNames);
 
                     for (User user : User.getUsers(true))
                         if (user.inPingSpy())

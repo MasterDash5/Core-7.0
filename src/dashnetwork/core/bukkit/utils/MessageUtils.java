@@ -24,14 +24,14 @@ public class MessageUtils {
         sender.sendMessage(message);
     }
 
-    public void broadcast(boolean global, PermissionType permission, String message) {
+    public static void broadcast(boolean global, PermissionType permission, String message) {
         if (global) {
             Collection<? extends Player> online = Bukkit.getOnlinePlayers();
 
             if (!online.isEmpty()) {
                 Player player = online.iterator().next();
-                ByteArrayDataOutput output = ByteStreams.newDataOutput();
 
+                ByteArrayDataOutput output = ByteStreams.newDataOutput();
                 output.writeByte(permission.toId());
                 output.writeUTF(message);
 
