@@ -28,7 +28,6 @@ public class ConnectListener implements Listener {
 
     @EventHandler
     public void onServerConnnect(ServerConnectEvent event) {
-        ServerConnectEvent.Reason reason = event.getReason();
         ProxiedPlayer player = event.getPlayer();
         User user = User.getUser(player);
         String uuid = player.getUniqueId().toString();
@@ -48,7 +47,23 @@ public class ConnectListener implements Listener {
             serverInfo.sendData("dn:vanish", vanishOut.toByteArray());
         }
 
-        if (reason.equals(ServerConnectEvent.Reason.JOIN_PROXY)) {
+        if (user.inBookSpy()) {
+            ByteArrayDataOutput vanishOut = ByteStreams.newDataOutput();
+            vanishOut.writeUTF(uuid);
+            vanishOut.writeBoolean(true);
+
+            serverInfo.sendData("dn:bookspy", vanishOut.toByteArray());
+        }
+
+        if (user.inSignSpy()) {
+            ByteArrayDataOutput vanishOut = ByteStreams.newDataOutput();
+            vanishOut.writeUTF(uuid);
+            vanishOut.writeBoolean(true);
+
+            serverInfo.sendData("dn:signspy", vanishOut.toByteArray());
+        }
+
+        if (event.getReason().equals(ServerConnectEvent.Reason.JOIN_PROXY)) {
             String name = player.getName();
             String displayname = user.getDisplayName();
             String address = ((InetSocketAddress) player.getSocketAddress()).getAddress().getHostAddress();

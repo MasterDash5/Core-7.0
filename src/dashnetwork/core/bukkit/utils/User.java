@@ -29,10 +29,7 @@ public class User implements CommandSender {
     private List<UserAddon> addons;
     private Player player;
     private String displayName;
-    private boolean vanished;
-    private boolean bookSpy;
-    private boolean signSpy;
-    private boolean inServerInfo;
+    private boolean vanished, bookSpy, signSpy;
 
     private User(Player player) {
         this.addons = new CopyOnWriteArrayList<>();
@@ -41,7 +38,6 @@ public class User implements CommandSender {
         this.vanished = false;
         this.bookSpy = false;
         this.signSpy = false;
-        this.inServerInfo = false;
 
         users.add(this);
     }
@@ -49,8 +45,7 @@ public class User implements CommandSender {
     public static List<User> getUsers(boolean createNew) {
         if (createNew)
             for (Player online : Bukkit.getOnlinePlayers())
-                if (!online.hasMetadata("NPC") && !hasInstance(online))
-                    new User(online);
+                getUser(online);
         return users;
     }
 
@@ -59,13 +54,6 @@ public class User implements CommandSender {
             if (user.getPlayer().equals(player))
                 return user;
         return new User(player);
-    }
-
-    public static boolean hasInstance(Player player) {
-        for (User user : users)
-            if (user.getPlayer().equals(player))
-                return true;
-        return false;
     }
 
     private String defaultDisplayName() {
@@ -94,8 +82,24 @@ public class User implements CommandSender {
         addons.add(addon);
     }
 
-    public void removeAddon(UserAddon addon) {
-        addons.remove(addon);
+    public <T>void removeAddon(T clazz) {
+        for (UserAddon addon : addons)
+            if (addon.getClass().equals(clazz))
+                addons.remove(addon);
+    }
+
+    public <T>UserAddon getAddon(T clazz) {
+        for (UserAddon addon : addons)
+            if (addon.getClass().equals(clazz))
+                return addon;
+        return null;
+    }
+
+    public <T>boolean hasAddon(T clazz) {
+        for (UserAddon addon : addons)
+            if (addon.getClass().equals(clazz))
+                return true;
+        return false;
     }
 
     public Player getPlayer() {
@@ -160,14 +164,6 @@ public class User implements CommandSender {
 
     public void setSignSpy(boolean signSpy) {
         this.signSpy = signSpy;
-    }
-
-    public boolean inServerInfo() {
-        return inServerInfo;
-    }
-
-    public void setInServerInfo(boolean inServerInfo) {
-        this.inServerInfo = inServerInfo;
     }
 
     @Override

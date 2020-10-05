@@ -4,6 +4,7 @@ import dashnetwork.core.bungee.command.commands.*;
 import dashnetwork.core.bungee.listeners.*;
 import dashnetwork.core.bungee.tasks.PunishTask;
 import dashnetwork.core.bungee.tasks.SaveTask;
+import dashnetwork.core.bungee.tasks.UserTask;
 import dashnetwork.core.bungee.utils.DataUtils;
 import dashnetwork.core.bungee.utils.User;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -29,9 +30,14 @@ public class Core extends Plugin {
         PluginManager manager = getProxy().getPluginManager();
         TaskScheduler scheduler = getProxy().getScheduler();
 
+        scheduler.schedule(this, new PunishTask(), 0, 1, TimeUnit.HOURS);
+        scheduler.schedule(this, new SaveTask(), 1, 1, TimeUnit.HOURS);
+        scheduler.schedule(this, new UserTask(), 50, 50, TimeUnit.MILLISECONDS); // 50 ms = 1 tick
+
         manager.registerListener(this, new ChannelListener());
         manager.registerListener(this, new ChatListener());
         manager.registerListener(this, new ConnectListener());
+        manager.registerListener(this, new KickListener());
         manager.registerListener(this, new LoginListener());
         manager.registerListener(this, new PingListener());
         manager.registerListener(this, new QuitListener());
@@ -40,19 +46,25 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandAltlist());
         manager.registerCommand(this, new CommandAltspy());
         manager.registerCommand(this, new CommandBan());
+        manager.registerCommand(this, new CommandBookspy());
         manager.registerCommand(this, new CommandChat());
+        manager.registerCommand(this, new CommandChatsudo());
+        manager.registerCommand(this, new CommandClearchat());
         manager.registerCommand(this, new CommandColorlist());
         manager.registerCommand(this, new CommandCommandspy());
         manager.registerCommand(this, new CommandIpban());
         manager.registerCommand(this, new CommandKick());
         manager.registerCommand(this, new CommandLobby());
         manager.registerCommand(this, new CommandLocalchat());
+        manager.registerCommand(this, new CommandMattsarmorstands());
         manager.registerCommand(this, new CommandMsg());
         manager.registerCommand(this, new CommandMute());
         manager.registerCommand(this, new CommandNickname());
         manager.registerCommand(this, new CommandOwnerchat());
         manager.registerCommand(this, new CommandPingspy());
+        manager.registerCommand(this, new CommandPlayerinfo());
         manager.registerCommand(this, new CommandReply());
+        manager.registerCommand(this, new CommandSignspy());
         manager.registerCommand(this, new CommandStaffchat());
         manager.registerCommand(this, new CommandTempban());
         manager.registerCommand(this, new CommandTempipban());
@@ -61,11 +73,9 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandUnban());
         manager.registerCommand(this, new CommandUnipban());
         manager.registerCommand(this, new CommandUnmute());
+        manager.registerCommand(this, new CommandUuidconvert());
         manager.registerCommand(this, new CommandVanish());
         manager.registerCommand(this, new CommandVersionlist());
-
-        scheduler.schedule(this, new PunishTask(), 0, 1, TimeUnit.HOURS);
-        scheduler.schedule(this, new SaveTask(), 1, 1, TimeUnit.HOURS);
     }
 
     @Override

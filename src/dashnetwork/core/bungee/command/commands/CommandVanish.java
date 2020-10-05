@@ -81,7 +81,7 @@ public class CommandVanish extends CoreCommand {
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1 && PermissionType.ADMIN.hasPermission(sender))
-            return NameUtils.toNames(bungee.getPlayers());
+            return CompletionUtils.players(args[0]);
         return Collections.EMPTY_LIST;
     }
 

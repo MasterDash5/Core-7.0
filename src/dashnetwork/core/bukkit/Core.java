@@ -1,12 +1,14 @@
 package dashnetwork.core.bukkit;
 
-import dashnetwork.core.bukkit.command.commands.CommandServerinfo;
+import dashnetwork.core.bukkit.command.commands.*;
 import dashnetwork.core.bukkit.listeners.*;
+import dashnetwork.core.bukkit.tasks.UserTask;
 import dashnetwork.core.bukkit.utils.TpsUtils;
 import dashnetwork.core.bukkit.utils.User;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class Core extends JavaPlugin {
 
@@ -27,6 +29,8 @@ public class Core extends JavaPlugin {
         messenger.registerOutgoingPluginChannel(this, "dn:broadcast");
         messenger.registerIncomingPluginChannel(this, "dn:displayname", channelListener);
         messenger.registerIncomingPluginChannel(this, "dn:vanish", channelListener);
+        messenger.registerIncomingPluginChannel(this, "dn:bookspy", channelListener);
+        messenger.registerIncomingPluginChannel(this, "dn:signspy", channelListener);
 
         TpsUtils.startup();
 
@@ -36,6 +40,14 @@ public class Core extends JavaPlugin {
         manager.registerEvents(new LoginListener(), this);
         manager.registerEvents(new QuitListener(), this);
 
+        BukkitScheduler scheduler = getServer().getScheduler();
+        scheduler.runTaskTimerAsynchronously(this, new UserTask(), 1, 1);
+
+        new CommandAnvil();
+        new CommandClearlag();
+        new CommandConsole();
+        new CommandMommy();
+        new CommandNightvision();
         new CommandServerinfo();
     }
 

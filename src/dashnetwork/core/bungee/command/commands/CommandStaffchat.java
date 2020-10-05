@@ -10,6 +10,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandStaffchat extends CoreCommand {
@@ -24,15 +25,15 @@ public class CommandStaffchat extends CoreCommand {
             ProxiedPlayer player = (ProxiedPlayer) sender;
             List<ProxiedPlayer> targets = new ArrayList<>();
 
-            if (args.length > 0 && PermissionType.ADMIN.hasPermission(sender)) {
+            if (args.length > 0 && PermissionType.ADMIN.hasPermission(sender))
                 targets.addAll(SelectorUtils.getPlayers(sender, args[0]));
-
-                if (targets.isEmpty()) {
-                    MessageUtils.noPlayerFound(sender);
-                    return;
-                }
-            } else
+            else
                 targets.add(player);
+
+            if (targets.isEmpty()) {
+                MessageUtils.noPlayerFound(sender);
+                return;
+            }
 
             List<ProxiedPlayer> added = new ArrayList<>();
             List<ProxiedPlayer> removed = new ArrayList<>();
@@ -85,7 +86,9 @@ public class CommandStaffchat extends CoreCommand {
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-        return NameUtils.toNames(bungee.getPlayers());
+        if (args.length == 1 && PermissionType.ADMIN.hasPermission(sender))
+            return CompletionUtils.players(args[0]);
+        return Collections.EMPTY_LIST;
     }
 
 }

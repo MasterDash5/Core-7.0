@@ -45,6 +45,14 @@ public class MessageUtils {
         message(plugin.getServer().getConsoleSender(), message);
     }
 
+    public static void broadcast(PermissionType permission, BaseComponent... message) {
+        for (User user : User.getUsers(true))
+            if (permission.hasPermission(user))
+                message(user, message);
+
+        message(plugin.getServer().getConsoleSender(), message);
+    }
+
     public static void noPermissions(CommandSender sender) {
         message(sender, "&6&l» &cYou don't have permission for that.");
     }

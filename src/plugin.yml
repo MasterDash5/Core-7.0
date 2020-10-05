@@ -5,4 +5,12 @@ softdepend: [LuckPerms]
 main: dashnetwork.core.bukkit.Core
 
 commands:
+  anvil:
+  clearlag:
+    aliases: [cl]
+  console:
+  mommy:
+    aliases: [daddy, grandma, grandpa, aunt, uncle]
+  nightvision:
+    aliases: [nv, see]
   serverinfo:

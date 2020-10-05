@@ -4,6 +4,7 @@ import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.MessageUtils;
 import dashnetwork.core.bungee.utils.PermissionType;
 import dashnetwork.core.bungee.utils.User;
+import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
@@ -38,6 +39,9 @@ public class CommandReply extends CoreCommand {
             String targetName = target.getName();
             String playerDisplayName = playerUser.getDisplayName();
             String targetDisplayName = targetUser.getDisplayName();
+
+            if (!playerUser.isStaff())
+                message = ColorUtils.filter(message, true, true, true, true, false, false);
 
             MessageBuilder toPlayer = new MessageBuilder();
             toPlayer.append("&6&l» &aMe -> ");

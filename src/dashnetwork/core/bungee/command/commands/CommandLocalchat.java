@@ -9,6 +9,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandLocalchat extends CoreCommand {
@@ -84,7 +85,9 @@ public class CommandLocalchat extends CoreCommand {
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-        return NameUtils.toNames(bungee.getPlayers());
+        if (args.length == 1)
+            return CompletionUtils.players(args[0]);
+        return Collections.EMPTY_LIST;
     }
 
 }

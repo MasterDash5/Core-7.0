@@ -41,6 +41,9 @@ public class CommandNickname extends CoreCommand {
         User user = User.getUser(target);
         String input = sender.equals(target) ? arg : args[1];
 
+        if (!admin)
+            input = ColorUtils.filter(input, true, false, true, false, false, false);
+
         if (input.equalsIgnoreCase("off")) {
             user.setNickname(null);
             MessageUtils.message(sender, "&6&l»&7 You no longer have a nickname");

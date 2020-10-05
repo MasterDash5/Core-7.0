@@ -11,11 +11,6 @@ public class QuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
-
-        Player player = event.getPlayer();
-
-        if (User.hasInstance(player))
-            User.getUser(player).remove();
     }
 
 }

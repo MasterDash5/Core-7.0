@@ -2,7 +2,7 @@ package dashnetwork.core.bukkit.listeners;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import dashnetwork.core.bukkit.utils.DataUtils;
+import dashnetwork.core.bukkit.utils.QueueUtils;
 import dashnetwork.core.bukkit.utils.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,7 +23,7 @@ public class ChannelListener implements PluginMessageListener {
                 String displayname = input.readUTF();
 
                 if (target == null)
-                    DataUtils.getDisplaynameQueue().put(uuid, displayname);
+                    QueueUtils.getDisplaynameQueue().put(uuid, displayname);
                 else {
                     User user = User.getUser(target);
 
@@ -36,9 +36,27 @@ public class ChannelListener implements PluginMessageListener {
                 boolean vanished = input.readBoolean();
 
                 if (target == null)
-                    DataUtils.getVanishQueue().add(uuid);
+                    QueueUtils.getVanishQueue().add(uuid);
                 else
                     User.getUser(target).setVanished(vanished);
+
+                break;
+            case "dn:bookspy":
+                boolean bookspy = input.readBoolean();
+
+                if (target == null)
+                    QueueUtils.getBookspyQueue().add(uuid);
+                else
+                    User.getUser(target).setBookSpy(bookspy);
+
+                break;
+            case "dn:signspy":
+                boolean signspy = input.readBoolean();
+
+                if (target == null)
+                    QueueUtils.getSignspyQueue().add(uuid);
+                else
+                    User.getUser(target).setSignSpy(signspy);
 
                 break;
         }

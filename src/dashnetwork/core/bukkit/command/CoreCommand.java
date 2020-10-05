@@ -52,4 +52,5 @@ public abstract class CoreCommand implements CommandExecutor, TabCompleter {
             return Lists.newArrayList(onTabComplete(sender, label, args));
         return Collections.EMPTY_LIST;
     }
+
 }

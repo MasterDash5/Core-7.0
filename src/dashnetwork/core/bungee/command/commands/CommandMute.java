@@ -57,7 +57,7 @@ public class CommandMute extends CoreCommand {
     @Override
     public Iterable<String> onTabComplete(CommandSender sendr, String[] args) {
         if (args.length == 1)
-            return NameUtils.toNames(bungee.getPlayers());
+            return CompletionUtils.players(args[0]);
         return Collections.EMPTY_LIST;
     }
 

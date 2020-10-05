@@ -2,6 +2,8 @@ package dashnetwork.core.bungee.utils;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import dashnetwork.core.bungee.Core;
+import dashnetwork.core.bungee.events.UserVanishEvent;
 import dashnetwork.core.utils.*;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
@@ -23,19 +25,11 @@ public class User implements CommandSender {
 
     private static List<User> users = new CopyOnWriteArrayList<>();
     private static BungeeCord bungee = BungeeCord.getInstance();
+    private static Core plugin = Core.getInstance();
     private static LuckPerms lp = LuckPermsProvider.get();
     private ProxiedPlayer player;
-    private String replyTarget;
-    private String nickname;
-    private String displayName;
-    private boolean staffChat;
-    private boolean adminChat;
-    private boolean ownerChat;
-    private boolean localChat;
-    private boolean commandSpy;
-    private boolean altSpy;
-    private boolean pingSpy;
-    private boolean vanished;
+    private String replyTarget, nickname, displayName;
+    private boolean staffChat, adminChat, ownerChat, localChat, commandSpy, altSpy, pingSpy, bookSpy, signSpy, vanished;
 
     private User(ProxiedPlayer player) {
         this.player = player;
@@ -49,6 +43,8 @@ public class User implements CommandSender {
         this.commandSpy = false;
         this.altSpy = false;
         this.pingSpy = false;
+        this.bookSpy = false;
+        this.signSpy = false;
         this.vanished = false;
 
         loadSaves();
@@ -60,8 +56,7 @@ public class User implements CommandSender {
     public static List<User> getUsers(boolean createNew) {
         if (createNew)
             for (ProxiedPlayer online : bungee.getPlayers())
-                if (!hasInstance(online))
-                    new User(online);
+                getUser(online);
         return users;
     }
 
@@ -70,13 +65,6 @@ public class User implements CommandSender {
             if (user.getPlayer().equals(player))
                 return user;
         return new User(player);
-    }
-
-    public static boolean hasInstance(ProxiedPlayer player) {
-        for (User user : users)
-            if (user.getPlayer().equals(player))
-                return true;
-        return false;
     }
 
     public void loadSaves() {
@@ -318,6 +306,34 @@ public class User implements CommandSender {
         this.pingSpy = pingSpy;
     }
 
+    public boolean inBookSpy() {
+        return bookSpy;
+    }
+
+    public void setBookSpy(boolean bookSpy) {
+        this.bookSpy = bookSpy;
+
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        output.writeUTF(player.getUniqueId().toString());
+        output.writeBoolean(bookSpy);
+
+        player.getServer().getInfo().sendData("dn:bookspy", output.toByteArray());
+    }
+
+    public boolean inSignSpy() {
+        return signSpy;
+    }
+
+    public void setSignSpy(boolean signSpy) {
+        this.signSpy = signSpy;
+
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        output.writeUTF(player.getUniqueId().toString());
+        output.writeBoolean(signSpy);
+
+        player.getServer().getInfo().sendData("dn:signspy", output.toByteArray());
+    }
+
     public boolean isVanished() {
         return vanished;
     }
@@ -334,19 +350,30 @@ public class User implements CommandSender {
 
         player.getServer().getInfo().sendData("dn:vanish", output.toByteArray());
 
-        MessageBuilder message = new MessageBuilder();
+        MessageBuilder staff = new MessageBuilder();
+        MessageBuilder broadcast = new MessageBuilder();
+
+        staff.append("&3&l» ");
+        staff.append("&6" + displayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
 
         if (vanished) {
-            message.append("&c&l» ");
-            message.append("&6" + displayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
-            message.append("&c left the server.");
+            staff.append("&3 has vanished. Poof");
+
+            broadcast.append("&c&l» ");
+            broadcast.append("&6" + displayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+            broadcast.append("&c left the server.");
         } else {
-            message.append("&a&l» ");
-            message.append("&6" + displayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
-            message.append("&a joined the server.");
+            staff.append("&3 is now visible.");
+
+            broadcast.append("&a&l» ");
+            broadcast.append("&6" + displayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+            broadcast.append("&a joined the server.");
         }
 
-        MessageUtils.broadcast(PermissionType.NONE, message.build());
+        plugin.getProxy().getPluginManager().callEvent(new UserVanishEvent(this, vanished));
+
+        MessageUtils.broadcast(PermissionType.STAFF, staff.build());
+        MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
     }
 
     public ProtocolVersion getVersion() {

@@ -2,8 +2,16 @@ package dashnetwork.core.bukkit.utils;
 
 public class UserAddon {
 
-    public UserAddon(User user) {
+    private User user;
+
+    protected UserAddon(User user) {
         user.addAddon(this);
+
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 
 }

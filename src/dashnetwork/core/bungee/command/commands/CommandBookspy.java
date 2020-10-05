@@ -12,17 +12,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandPingspy extends CoreCommand {
+public class CommandBookspy extends CoreCommand {
 
-    public CommandPingspy() {
-        super(true, PermissionType.ADMIN, "pingspy");
+    public CommandBookspy() {
+        super(true, PermissionType.STAFF, "bookspy");
     }
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         List<ProxiedPlayer> targets = new ArrayList<>();
 
-        if (args.length > 0)
+        if (args.length > 0 && PermissionType.ADMIN.hasPermission(sender))
             targets.addAll(SelectorUtils.getPlayers(sender, args[0]));
         else if (sender instanceof ProxiedPlayer)
             targets.add((ProxiedPlayer) sender);
@@ -37,17 +37,17 @@ public class CommandPingspy extends CoreCommand {
 
         for (ProxiedPlayer target : targets) {
             User user = User.getUser(target);
-            boolean pingspy = !user.inPingSpy();
+            boolean bookspy = !user.inBookSpy();
 
-            user.setPingSpy(pingspy);
+            user.setBookSpy(bookspy);
 
-            if (pingspy) {
-                MessageUtils.message(target, "&6&l» &7You are now in PingSpy");
+            if (bookspy) {
+                MessageUtils.message(target, "&6&l» &7You are now in BookSpy");
 
                 if (!target.equals(sender))
                     added.add(target);
             } else {
-                MessageUtils.message(target, "&6&l» &7You are no longer in PingSpy");
+                MessageUtils.message(target, "&6&l» &7You are no longer in BookSpy");
 
                 if (!target.equals(sender))
                     removed.add(target);
@@ -61,7 +61,7 @@ public class CommandPingspy extends CoreCommand {
             MessageBuilder message = new MessageBuilder();
             message.append("&6&l» ");
             message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in PingSpy");
+            message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in BookSpy");
 
             sender.sendMessage(message.build());
         }
@@ -73,7 +73,7 @@ public class CommandPingspy extends CoreCommand {
             MessageBuilder message = new MessageBuilder();
             message.append("&6&l» ");
             message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in PingSpy");
+            message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in BookSpy");
 
             sender.sendMessage(message.build());
         }
@@ -81,7 +81,7 @@ public class CommandPingspy extends CoreCommand {
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-        if (args.length == 1)
+        if (args.length == 1 && PermissionType.ADMIN.hasPermission(sender))
             return CompletionUtils.players(args[0]);
         return Collections.EMPTY_LIST;
     }

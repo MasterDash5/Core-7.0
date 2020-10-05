@@ -47,7 +47,7 @@ public class BookListener implements Listener {
         message.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + player.getName()).clickEvent(ClickEvent.Action.RUN_COMMAND, command);
         message.append(" &7edited book. Click to receive copy.").clickEvent(ClickEvent.Action.RUN_COMMAND, command);
 
-        for (User online : User.getUsers(true))
+        for (User online : User.getUsers(false))
             if (online.inBookSpy())
                 MessageUtils.message(online, message.build());
     }

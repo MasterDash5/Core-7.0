@@ -49,7 +49,9 @@ public class CommandAltlist extends CoreCommand {
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-        return NameUtils.toNames(bungee.getPlayers());
+        if (args.length == 1)
+            return CompletionUtils.players(args[0]);
+        return Collections.EMPTY_LIST;
     }
 
 }

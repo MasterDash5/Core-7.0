@@ -1,5 +1,6 @@
 package dashnetwork.core.bukkit.utils;
 
+import dashnetwork.core.utils.ColorUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -8,12 +9,14 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.material.MaterialData;
 
 import java.util.*;
 
 public class ItemMaker {
 
     private final Material material;
+    private short durability;
     private int amount;
     private String name;
     private Color color;
@@ -24,16 +27,20 @@ public class ItemMaker {
 
     public ItemMaker(Material material) {
         this.material = material;
+        this.durability = 0;
         this.amount = 1;
         this.unbreakable = false;
     }
 
     public ItemMaker name(String name) {
-        this.name = ChatColor.translateAlternateColorCodes('&', name);
+        this.name = ColorUtils.translate(name);
         return this;
     }
 
     public ItemMaker lore(String... lore) {
+        for (int i = 0; i < lore.length; i++)
+            lore[i] = ColorUtils.translate(lore[i]);
+
         this.lore = Arrays.asList(lore);
         return this;
     }
@@ -45,6 +52,11 @@ public class ItemMaker {
 
     public ItemMaker unbreakable() {
         this.unbreakable = true;
+        return this;
+    }
+
+    public ItemMaker durability(int durability) {
+        this.durability = (short) durability;
         return this;
     }
 
@@ -66,9 +78,12 @@ public class ItemMaker {
         return this;
     }
 
+    @SuppressWarnings("deprecation")
     public ItemStack build() {
         ItemStack item = new ItemStack(material, amount);
         ItemMeta meta = item.getItemMeta();
+
+        item.setDurability(durability);
 
         if (meta != null) {
             if (name != null)

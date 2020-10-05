@@ -1,15 +1,17 @@
 package dashnetwork.core.bungee.listeners;
 
+import dashnetwork.core.bungee.events.UserChatEvent;
 import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.utils.*;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.cacheddata.CachedMetaData;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.event.EventHandler;
 
 import java.text.SimpleDateFormat;
@@ -17,6 +19,8 @@ import java.util.Date;
 
 public class ChatListener implements Listener {
 
+    private BungeeCord bungee = BungeeCord.getInstance();
+    private PluginManager pluginManager = bungee.getPluginManager();
     private LuckPerms lp = LuckPermsProvider.get();
 
     @EventHandler
@@ -31,9 +35,14 @@ public class ChatListener implements Listener {
             user.updateDisplayName(true);
 
             if (event.isProxyCommand() || event.isCommand()) {
+                MessageBuilder broadcast = new MessageBuilder();
+                broadcast.append("&c&lCS ");
+                broadcast.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + player.getName());
+                broadcast.append(" &e&l> &b" + message);
+
                 for (User online : User.getUsers(true))
                     if (online.inCommandSpy())
-                        MessageUtils.message(online, "&c&lCS &6" + user.getDisplayName() + " &e&l> &b" + message);
+                        online.sendMessage(broadcast.build());
             } else {
                 event.setCancelled(true);
 
@@ -54,6 +63,9 @@ public class ChatListener implements Listener {
                     return;
                 }
 
+                if (!user.isStaff())
+                    message = ColorUtils.filter(message, true, true, true, false, false, false);
+
                 String trimmed = message.length() > 3 ? message.substring((message.substring(3).startsWith(" ") ? 4 : 3)) : "";
 
                 if (user.inLocalChat())
@@ -73,7 +85,7 @@ public class ChatListener implements Listener {
                 else if (user.isStaff() && StringUtils.startsWithIgnoreCase(message, "@sc"))
                     staffChat(user, trimmed);
                 else
-                    MessageUtils.broadcast(PermissionType.NONE, user.getDisplayName() + " &e&l>&f " + message);
+                    globalChat(user, message);
             }
         }
     }
@@ -84,18 +96,46 @@ public class ChatListener implements Listener {
     }
 
     private void ownerChat(User user, String input) {
-        MessageUtils.broadcast(PermissionType.OWNER, "&9&lOwner &6" + user.getDisplayName() + " &6&l> &c" + input);
+        MessageBuilder broadcast = new MessageBuilder();
+        broadcast.append("&9&lOwner ");
+        broadcast.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + user.getPlayer().getName());
+        broadcast.append(" &6&l> &c" + input);
+
+        MessageUtils.broadcast(PermissionType.OWNER, broadcast.build());
+
+        pluginManager.callEvent(new UserChatEvent(user, PermissionType.OWNER, input));
     }
 
     private void adminChat(User user, String input) {
-        MessageUtils.broadcast(PermissionType.ADMIN, "&9&lAdmin &6" + user.getDisplayName() + " &6&l> &3" + input);
+        MessageBuilder broadcast = new MessageBuilder();
+        broadcast.append("&9&lAdmin ");
+        broadcast.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + user.getPlayer().getName());
+        broadcast.append(" &6&l> &3" + input);
+
+        MessageUtils.broadcast(PermissionType.ADMIN, broadcast.build());
+
+        pluginManager.callEvent(new UserChatEvent(user, PermissionType.ADMIN, input));
     }
 
     private void staffChat(User user, String input) {
-        MessageUtils.broadcast(PermissionType.STAFF, "&9&lStaff &6" + user.getDisplayName() + " &6&l> &6" + input);
+        MessageBuilder broadcast = new MessageBuilder();
+        broadcast.append("&9&lStaff ");
+        broadcast.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + user.getPlayer().getName());
+        broadcast.append(" &6&l> &6" + input);
 
-        // if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV"))
-        //     DiscordSRV.getPlugin().processChatMessage(player, input, "staffchat", false);
+        MessageUtils.broadcast(PermissionType.STAFF, broadcast.build());
+
+        pluginManager.callEvent(new UserChatEvent(user, PermissionType.STAFF, input));
+    }
+
+    private void globalChat(User user, String input) {
+        MessageBuilder broadcast = new MessageBuilder();
+        broadcast.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + user.getPlayer().getName());
+        broadcast.append(" &e&l> &f" + input);
+
+        MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
+
+        pluginManager.callEvent(new UserChatEvent(user, PermissionType.NONE, input));
     }
 
 }

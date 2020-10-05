@@ -1,6 +1,6 @@
 package dashnetwork.core.bukkit.listeners;
 
-import dashnetwork.core.bukkit.utils.DataUtils;
+import dashnetwork.core.bukkit.utils.QueueUtils;
 import dashnetwork.core.bukkit.utils.User;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,8 +19,10 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
         User user = User.getUser(player);
         String uuid = player.getUniqueId().toString();
-        Map<String, String> displaynameQueue = DataUtils.getDisplaynameQueue();
-        List<String> vanishQueue = DataUtils.getVanishQueue();
+        Map<String, String> displaynameQueue = QueueUtils.getDisplaynameQueue();
+        List<String> vanishQueue = QueueUtils.getVanishQueue();
+        List<String> bookspyQueue = QueueUtils.getBookspyQueue();
+        List<String> signspyQueue = QueueUtils.getSignspyQueue();
 
         if (displaynameQueue.containsKey(uuid)) {
             user.setDisplayName(displaynameQueue.get(uuid));
@@ -32,6 +34,18 @@ public class JoinListener implements Listener {
             user.setVanished(true);
 
             vanishQueue.remove(uuid);
+        }
+
+        if (bookspyQueue.contains(uuid)) {
+            user.setBookSpy(true);
+
+            bookspyQueue.remove(uuid);
+        }
+
+        if (signspyQueue.contains(uuid)) {
+            user.setSignSpy(true);
+
+            signspyQueue.remove(uuid);
         }
 
         if (!user.isStaff())

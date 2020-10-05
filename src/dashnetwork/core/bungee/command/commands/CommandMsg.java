@@ -2,6 +2,7 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
+import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
@@ -58,6 +59,9 @@ public class CommandMsg extends CoreCommand {
             String playerDisplayName = playerUser.getDisplayName();
             String targetDisplayName = targetUser.getDisplayName();
 
+            if (!playerUser.isStaff())
+                message = ColorUtils.filter(message, true, true, true, true, false, false);
+
             MessageBuilder toPlayer = new MessageBuilder();
             toPlayer.append("&6&l» &aMe -> ");
             toPlayer.append("&6" + targetDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + targetName);
@@ -89,7 +93,7 @@ public class CommandMsg extends CoreCommand {
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1)
-            return NameUtils.toNames(bungee.getPlayers());
+            return CompletionUtils.players(args[0]);
         return Collections.EMPTY_LIST;
     }
 
