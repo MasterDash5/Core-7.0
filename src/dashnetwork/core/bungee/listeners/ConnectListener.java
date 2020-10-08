@@ -47,14 +47,6 @@ public class ConnectListener implements Listener {
             serverInfo.sendData("dn:vanish", vanishOut.toByteArray());
         }
 
-        if (user.inBookSpy()) {
-            ByteArrayDataOutput vanishOut = ByteStreams.newDataOutput();
-            vanishOut.writeUTF(uuid);
-            vanishOut.writeBoolean(true);
-
-            serverInfo.sendData("dn:bookspy", vanishOut.toByteArray());
-        }
-
         if (user.inSignSpy()) {
             ByteArrayDataOutput vanishOut = ByteStreams.newDataOutput();
             vanishOut.writeUTF(uuid);
@@ -87,7 +79,10 @@ public class ConnectListener implements Listener {
 
                 if (!alts.isEmpty()) {
                     MessageBuilder message = new MessageBuilder();
-                    message.append("&c&lAlt &6" + displayname + " &c&l>&7 hover for list of &6" + alts.size() + " alts").hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + ListUtils.fromList(alts, false, true));
+                    message.append("&c&lAlt ");
+                    message.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+                    message.append("&c&l > ");
+                    message.append("&7hover for list of &6" + alts.size() + " alts").hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + ListUtils.fromList(alts, false, true));
 
                     for (User online : User.getUsers(true))
                         if (online.inAltSpy())

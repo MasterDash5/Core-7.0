@@ -34,6 +34,11 @@ public class PingListener implements Listener {
         TextComponent component = new TextComponent();
 
         String software = "DashNetwork 1.7 - 1.16";
+        int online = players.getOnline();
+
+        for (User user : User.getUsers(false))
+            if (user.isVanished())
+                online--;
 
         List<ServerPing.PlayerInfo> list = new ArrayList<>();
         list.add(new ServerPing.PlayerInfo(ColorUtils.translate("&f             &6&n&lDashNetwork"), UUID.randomUUID()));
@@ -44,7 +49,7 @@ public class PingListener implements Listener {
         component.addExtra(ColorUtils.translate("\n&c&lNew Server IP: &6play.dashnetwork.xyz"));
 
         response.setVersion(new ServerPing.Protocol(software, response.getVersion().getProtocol()));
-        response.setPlayers(new ServerPing.Players(players.getMax(), players.getOnline(), list.toArray(new ServerPing.PlayerInfo[list.size()])));
+        response.setPlayers(new ServerPing.Players(players.getMax(), online, list.toArray(new ServerPing.PlayerInfo[list.size()])));
         response.setDescriptionComponent(component);
 
         PendingConnection connection = event.getConnection();

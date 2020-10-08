@@ -29,7 +29,7 @@ public class User implements CommandSender {
     private static LuckPerms lp = LuckPermsProvider.get();
     private ProxiedPlayer player;
     private String replyTarget, nickname, displayName;
-    private boolean staffChat, adminChat, ownerChat, localChat, commandSpy, altSpy, pingSpy, bookSpy, signSpy, vanished;
+    private boolean staffChat, adminChat, ownerChat, localChat, commandSpy, altSpy, pingSpy, signSpy, vanished;
 
     private User(ProxiedPlayer player) {
         this.player = player;
@@ -43,7 +43,6 @@ public class User implements CommandSender {
         this.commandSpy = false;
         this.altSpy = false;
         this.pingSpy = false;
-        this.bookSpy = false;
         this.signSpy = false;
         this.vanished = false;
 
@@ -304,20 +303,6 @@ public class User implements CommandSender {
 
     public void setPingSpy(boolean pingSpy) {
         this.pingSpy = pingSpy;
-    }
-
-    public boolean inBookSpy() {
-        return bookSpy;
-    }
-
-    public void setBookSpy(boolean bookSpy) {
-        this.bookSpy = bookSpy;
-
-        ByteArrayDataOutput output = ByteStreams.newDataOutput();
-        output.writeUTF(player.getUniqueId().toString());
-        output.writeBoolean(bookSpy);
-
-        player.getServer().getInfo().sendData("dn:bookspy", output.toByteArray());
     }
 
     public boolean inSignSpy() {

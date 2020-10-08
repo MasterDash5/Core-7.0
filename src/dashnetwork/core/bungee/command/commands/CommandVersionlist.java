@@ -25,7 +25,7 @@ public class CommandVersionlist extends CoreCommand {
         MessageBuilder message = new MessageBuilder();
 
         for (User user : User.getUsers(true)) {
-            if (!user.isVanished() || user.isStaff()) {
+            if (!user.isVanished() || PermissionType.STAFF.hasPermission(sender)) {
                 String version = user.getVersion().getName();
                 List<ProxiedPlayer> players = versionlist.getOrDefault(version, new ArrayList<>());
 

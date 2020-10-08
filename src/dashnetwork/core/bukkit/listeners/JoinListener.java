@@ -21,7 +21,6 @@ public class JoinListener implements Listener {
         String uuid = player.getUniqueId().toString();
         Map<String, String> displaynameQueue = QueueUtils.getDisplaynameQueue();
         List<String> vanishQueue = QueueUtils.getVanishQueue();
-        List<String> bookspyQueue = QueueUtils.getBookspyQueue();
         List<String> signspyQueue = QueueUtils.getSignspyQueue();
 
         if (displaynameQueue.containsKey(uuid)) {
@@ -34,12 +33,6 @@ public class JoinListener implements Listener {
             user.setVanished(true);
 
             vanishQueue.remove(uuid);
-        }
-
-        if (bookspyQueue.contains(uuid)) {
-            user.setBookSpy(true);
-
-            bookspyQueue.remove(uuid);
         }
 
         if (signspyQueue.contains(uuid)) {

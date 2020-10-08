@@ -6,6 +6,7 @@ main: dashnetwork.core.bukkit.Core
 
 commands:
   anvil:
+  center:
   clearlag:
     aliases: [cl]
   console:
@@ -13,4 +14,10 @@ commands:
     aliases: [daddy, grandma, grandpa, aunt, uncle]
   nightvision:
     aliases: [nv, see]
+  oplist:
+    aliases: [ops]
+  respawn:
+    aliases: [forcerespawn]
   serverinfo:
+  spin:
+    aliases: [spinmerightround, spinmerightroundbabyrightround]

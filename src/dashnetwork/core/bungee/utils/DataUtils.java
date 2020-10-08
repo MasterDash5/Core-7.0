@@ -15,22 +15,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DataUtils {
 
     private static Core plugin = Core.getInstance();
-    private static boolean windows = System.getProperty("os.name").startsWith("Windows"); // Fuck you Windows
-    private static char slash = windows ? '\\' : '/';
     private static File folder = plugin.getDataFolder();
-    private static String path = folder.getPath() + slash;
-    private static File ipsFile = new File(path + "ips.yml");
-    private static File namesFile = new File(path + "names.yml");
-    private static File nicknamesFile = new File(path + "nicknames.yml");
-    private static File staffchatFile = new File(path + "staffchat.yml");
-    private static File adminchatFile = new File(path + "adminchat.yml");
-    private static File ownerchatFile = new File(path + "ownerchat.yml");
-    private static File commandspyFile = new File(path + "commandspy.yml");
-    private static File altspyFile = new File(path + "altspy.yml");
-    private static File pingspyFile = new File(path + "pingspy.yml");
-    private static File mutesFile = new File(path + "mutes.yml");
-    private static File bansFile = new File(path + "bans.yml");
-    private static File ipbansFile = new File(path + "ipbans.yml");
+    private static File ipsFile = new File(folder, "ips.yml");
+    private static File namesFile = new File(folder, "names.yml");
+    private static File nicknamesFile = new File(folder, "nicknames.yml");
+    private static File staffchatFile = new File(folder, "staffchat.yml");
+    private static File adminchatFile = new File(folder, "adminchat.yml");
+    private static File ownerchatFile = new File(folder, "ownerchat.yml");
+    private static File commandspyFile = new File(folder, "commandspy.yml");
+    private static File altspyFile = new File(folder, "altspy.yml");
+    private static File pingspyFile = new File(folder, "pingspy.yml");
+    private static File mutesFile = new File(folder, "mutes.yml");
+    private static File bansFile = new File(folder, "bans.yml");
+    private static File ipbansFile = new File(folder, "ipbans.yml");
 
     private static Map<String, List<String>> ips;
     private static Map<String, String> names, nicknames;
@@ -56,6 +53,42 @@ public class DataUtils {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+
+        if (ips == null)
+            ips = new HashMap<>();
+
+        if (names == null)
+            names = new HashMap<>();
+
+        if (nicknames == null)
+            nicknames = new HashMap<>();
+
+        if (staffchat == null)
+            staffchat = new ArrayList<>();
+
+        if (adminchat == null)
+            adminchat = new ArrayList<>();
+
+        if (ownerchat == null)
+            ownerchat = new ArrayList<>();
+
+        if (commandspy == null)
+            commandspy = new ArrayList<>();
+
+        if (altspy == null)
+            altspy = new ArrayList<>();
+
+        if (pingspy == null)
+            pingspy = new ArrayList<>();
+
+        if (mutes == null)
+            mutes = new HashMap<>();
+
+        if (bans == null)
+            bans = new HashMap<>();
+
+        if (ipbans == null)
+            ipbans = new HashMap<>();
     }
 
     public static void save() {

@@ -5,6 +5,7 @@ import dashnetwork.core.bungee.utils.MessageUtils;
 import dashnetwork.core.bungee.utils.PermissionType;
 import dashnetwork.core.bungee.utils.User;
 import dashnetwork.core.utils.ColorUtils;
+import dashnetwork.core.utils.LazyUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
@@ -43,6 +44,17 @@ public class CommandReply extends CoreCommand {
             if (!playerUser.isStaff())
                 message = ColorUtils.filter(message, true, true, true, true, false, false);
 
+            MessageBuilder socialSpy = new MessageBuilder();
+            socialSpy.append("&c&lSS ");
+            socialSpy.append("&6" + playerDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + playerName);
+            socialSpy.append("&a -> ");
+            socialSpy.append("&6" + targetDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + targetName);
+            socialSpy.append(" &6&l> &7" + message);
+
+            for (User user : User.getUsers(true))
+                if (user.isStaff() && !user.inCommandSpy() && !LazyUtils.anyEquals(user, playerUser, targetUser))
+                    MessageUtils.message(user, socialSpy.build());
+
             MessageBuilder toPlayer = new MessageBuilder();
             toPlayer.append("&6&l» &aMe -> ");
             toPlayer.append("&6" + targetDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + targetName);
@@ -56,17 +68,6 @@ public class CommandReply extends CoreCommand {
             toTarget.append("&a -> Me &6&l> &7" + message);
 
             MessageUtils.message(target, toTarget.build());
-
-            MessageBuilder socialSpy = new MessageBuilder();
-            socialSpy.append("&c&lSS ");
-            socialSpy.append("&6" + playerDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + playerName);
-            socialSpy.append("&a -> ");
-            socialSpy.append("&6" + targetDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + targetName);
-            socialSpy.append(" &6&l> &7" + message);
-
-            for (User user : User.getUsers(true))
-                if (user.isStaff() && !user.inCommandSpy())
-                    MessageUtils.message(user, socialSpy.build());
         } else
             MessageUtils.playersOnly();
     }

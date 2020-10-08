@@ -41,7 +41,7 @@ public class SignListener implements Listener {
             message.append("&7placed sign " + dimension + " " + coordinates).clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, coordinates).hoverEvent(HoverEvent.Action.SHOW_TEXT, lines.toString());
 
             for (User online : User.getUsers(false))
-                if (online.inBookSpy())
+                if (online.inSignSpy())
                     online.sendMessage(message.build());
         }
     }

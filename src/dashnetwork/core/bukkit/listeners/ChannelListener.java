@@ -41,15 +41,6 @@ public class ChannelListener implements PluginMessageListener {
                     User.getUser(target).setVanished(vanished);
 
                 break;
-            case "dn:bookspy":
-                boolean bookspy = input.readBoolean();
-
-                if (target == null)
-                    QueueUtils.getBookspyQueue().add(uuid);
-                else
-                    User.getUser(target).setBookSpy(bookspy);
-
-                break;
             case "dn:signspy":
                 boolean signspy = input.readBoolean();
 

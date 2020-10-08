@@ -29,15 +29,15 @@ public class User implements CommandSender {
     private List<UserAddon> addons;
     private Player player;
     private String displayName;
-    private boolean vanished, bookSpy, signSpy;
+    private boolean vanished, signSpy, spinning;
 
     private User(Player player) {
         this.addons = new CopyOnWriteArrayList<>();
         this.player = player;
         this.displayName = defaultDisplayName();
         this.vanished = false;
-        this.bookSpy = false;
         this.signSpy = false;
+        this.spinning = false;
 
         users.add(this);
     }
@@ -57,9 +57,8 @@ public class User implements CommandSender {
     }
 
     private String defaultDisplayName() {
-        CachedMetaData data = lp.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData();
-        String prefix = data.getPrefix();
-        String suffix = data.getSuffix();
+        String prefix = getPrefix();
+        String suffix = getSuffix();
         boolean hasPrefix = prefix != null;
         boolean hasSuffix = suffix != null;
 
@@ -134,6 +133,14 @@ public class User implements CommandSender {
         this.displayName = displayName;
     }
 
+    public String getPrefix() {
+        return lp.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getPrefix();
+    }
+
+    public String getSuffix() {
+        return lp.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getSuffix();
+    }
+
     public boolean isVanished() {
         return vanished;
     }
@@ -150,20 +157,20 @@ public class User implements CommandSender {
                 online.showPlayer(player);
     }
 
-    public boolean inBookSpy() {
-        return bookSpy;
-    }
-
-    public void setBookSpy(boolean bookSpy) {
-        this.bookSpy = bookSpy;
-    }
-
     public boolean inSignSpy() {
         return signSpy;
     }
 
     public void setSignSpy(boolean signSpy) {
         this.signSpy = signSpy;
+    }
+
+    public boolean isSpinning() {
+        return spinning;
+    }
+
+    public void setSpinning(boolean spinning) {
+        this.spinning = spinning;
     }
 
     @Override
