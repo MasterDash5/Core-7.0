@@ -47,6 +47,7 @@ public class CommandNickname extends CoreCommand {
         if (input.equalsIgnoreCase("off")) {
             user.setNickname(null);
             MessageUtils.message(sender, "&6&l»&7 You no longer have a nickname");
+            return;
         }
 
         if (!admin && input.length() > 16) {

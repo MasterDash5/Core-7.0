@@ -12,14 +12,17 @@ import java.util.Collections;
 public class CommandChat extends CoreCommand {
 
     public CommandChat() {
-        super(true, PermissionType.STAFF, "chat");
+        super(true, PermissionType.OWNER, "chat");
     }
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        String message = StringUtils.unsplit(args, ' ');
+        if (args.length > 0) {
+            String message = StringUtils.unsplit(args, ' ');
 
-        MessageUtils.broadcast(PermissionType.NONE, "&6" + NameUtils.getDisplayName(sender) + " &e&l>&f " + message);
+            MessageUtils.broadcast(PermissionType.NONE, "&6" + NameUtils.getDisplayName(sender) + " &e&l>&f " + message);
+        } else
+            MessageUtils.message(sender, "&6&l»&7 /chat <message>");
     }
 
     @Override

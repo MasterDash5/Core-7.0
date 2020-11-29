@@ -134,11 +134,21 @@ public class User implements CommandSender {
     }
 
     public String getPrefix() {
-        return lp.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getPrefix();
+        String prefix = lp.getUserManager().getUser(this.player.getUniqueId()).getCachedData().getMetaData().getPrefix();
+
+        if (prefix == null)
+            return "";
+
+        return prefix;
     }
 
     public String getSuffix() {
-        return lp.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getSuffix();
+        String suffix = lp.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getSuffix();
+
+        if (suffix == null)
+            return "";
+
+        return suffix;
     }
 
     public boolean isVanished() {

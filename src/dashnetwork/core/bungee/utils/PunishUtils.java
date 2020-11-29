@@ -49,24 +49,25 @@ public class PunishUtils {
 
         mutes.put(player.getUniqueId().toString(), new PunishData(expire, displayname, reason));
 
-        MessageBuilder message = new MessageBuilder();
-        message.append("&6&l» ");
-        message.append("&6" + displayname + "&7 muted you. &6Hover for details")
-                .hoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        "&6Muted by &7" + name
-                                + "\n&6Expires &7" + date
-                                + "\n&6Reason: &7" + reason);
-
-        MessageUtils.message(user, message.build());
-
         MessageBuilder broadcast = new MessageBuilder();
-        broadcast.append("&6&l» &6" + displayname + "&7 muted &6" + user.getDisplayName())
+        broadcast.append("&6&l» ");
+        broadcast.append("&6" + displayname + "&7 muted &6" + user.getDisplayName())
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT,
                         "&6Muted by &7" + name
                         + "\n&6Expires &7" + date
                         + "\n&6Reason: &7" + reason);
 
         MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
+
+        MessageBuilder message = new MessageBuilder();
+        message.append("&6&l» ");
+        message.append("&7you have been muted. &6Hover for details")
+                .hoverEvent(HoverEvent.Action.SHOW_TEXT,
+                        "&6Muted by &7" + name
+                                + "\n&6Expires &7" + date
+                                + "\n&6Reason: &7" + reason);
+
+        MessageUtils.message(user, message.build());
     }
 
     public static void ban(User user, Long expire, CommandSender punisher, String reason) {
@@ -86,7 +87,8 @@ public class PunishUtils {
         player.disconnect(message.build());
 
         MessageBuilder broadcast = new MessageBuilder();
-        broadcast.append("&6&l» &6" + displayname + "&7 banned &6" + user.getDisplayName())
+        broadcast.append("&6&l» ");
+        broadcast.append("&6" + displayname + "&7 banned &6" + user.getDisplayName())
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT,
                         "&6Banned by &7" + name
                                 + "\n&6Expires &7" + date
@@ -103,7 +105,8 @@ public class PunishUtils {
         ipbans.put(address, new PunishData(expire, displayname, reason));
 
         MessageBuilder broadcast = new MessageBuilder();
-        broadcast.append("&6&l» &6" + displayname + "&7 banned &6" + address)
+        broadcast.append("&6&l» ");
+        broadcast.append("&6" + displayname + "&7 banned &6" + address)
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT,
                         "&6Banned by &7" + name
                                 + "\n&6Expires &7" + date

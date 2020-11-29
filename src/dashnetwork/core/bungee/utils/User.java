@@ -3,6 +3,7 @@ package dashnetwork.core.bungee.utils;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import dashnetwork.core.bungee.Core;
+import dashnetwork.core.bungee.events.UserChatEvent;
 import dashnetwork.core.bungee.events.UserVanishEvent;
 import dashnetwork.core.utils.*;
 import net.luckperms.api.LuckPerms;
@@ -14,6 +15,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.PluginManager;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,6 +28,7 @@ public class User implements CommandSender {
     private static List<User> users = new CopyOnWriteArrayList<>();
     private static BungeeCord bungee = BungeeCord.getInstance();
     private static Core plugin = Core.getInstance();
+    private static PluginManager pluginManager = bungee.getPluginManager();
     private static LuckPerms lp = LuckPermsProvider.get();
     private ProxiedPlayer player;
     private String replyTarget, nickname, displayName;
@@ -102,7 +105,7 @@ public class User implements CommandSender {
         List<String> altspyList = DataUtils.getAltspy();
         List<String> pingspyList = DataUtils.getPingspy();
 
-        if (nickname != null)
+        if (nickname != null && !nickname.equals(getName()))
             nicknameMap.put(uuid, nickname);
         else
             nicknameMap.remove(uuid);
@@ -148,6 +151,58 @@ public class User implements CommandSender {
         save();
 
         users.remove(this);
+    }
+
+    public void chat(Channel channel, String message) {
+        String name = getPlayer().getName();
+        String displayname = getDisplayName();
+        MessageBuilder broadcast = new MessageBuilder();
+
+        switch (channel) {
+            case GLOBAL:
+                broadcast.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+                broadcast.append(" &e&l>&f " + message);
+
+                MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
+
+                pluginManager.callEvent(new UserChatEvent(this, PermissionType.NONE, message));
+
+                break;
+            case LOCAL:
+                getPlayer().chat(message); // Doesn't call ChatEvent apparently.
+
+                break;
+            case STAFF:
+                broadcast.append("&9&lStaff ");
+                broadcast.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+                broadcast.append(" &6&l>&6 " + message);
+
+                MessageUtils.broadcast(PermissionType.STAFF, broadcast.build());
+
+                pluginManager.callEvent(new UserChatEvent(this, PermissionType.STAFF, message));
+
+                break;
+            case ADMIN:
+                broadcast.append("&9&lAdmin ");
+                broadcast.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+                broadcast.append(" &6&l>&3 " + message);
+
+                MessageUtils.broadcast(PermissionType.ADMIN, broadcast.build());
+
+                pluginManager.callEvent(new UserChatEvent(this, PermissionType.ADMIN, message));
+
+                break;
+            case OWNER:
+                broadcast.append("&9&lOwner ");
+                broadcast.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+                broadcast.append(" &6&l>&c " + message);
+
+                MessageUtils.broadcast(PermissionType.OWNER, broadcast.build());
+
+                pluginManager.callEvent(new UserChatEvent(this, PermissionType.OWNER, message));
+
+                break;
+        }
     }
 
     public ProxiedPlayer getPlayer() {
@@ -342,23 +397,23 @@ public class User implements CommandSender {
         staff.append("&6" + displayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
 
         if (vanished) {
-            staff.append("&3 has vanished. Poof");
-
             broadcast.append("&c&l» ");
             broadcast.append("&6" + displayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
             broadcast.append("&c left the server.");
-        } else {
-            staff.append("&3 is now visible.");
 
+            staff.append("&3 has vanished. Poof");
+        } else {
             broadcast.append("&a&l» ");
             broadcast.append("&6" + displayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
             broadcast.append("&a joined the server.");
+
+            staff.append("&3 is now visible.");
         }
 
         plugin.getProxy().getPluginManager().callEvent(new UserVanishEvent(this, vanished));
 
-        MessageUtils.broadcast(PermissionType.STAFF, staff.build());
         MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
+        MessageUtils.broadcast(PermissionType.STAFF, staff.build());
     }
 
     public ProtocolVersion getVersion() {

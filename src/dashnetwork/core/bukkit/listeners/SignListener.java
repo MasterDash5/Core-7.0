@@ -38,7 +38,7 @@ public class SignListener implements Listener {
             message.append("&6&l» ");
             message.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + player.getName());
             message.append(" ");
-            message.append("&7placed sign " + dimension + " " + coordinates).clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, coordinates).hoverEvent(HoverEvent.Action.SHOW_TEXT, lines.toString());
+            message.append("&7placed sign " + dimension + " " + coordinates).clickEvent(ClickEvent.Action.SUGGEST_COMMAND, coordinates).hoverEvent(HoverEvent.Action.SHOW_TEXT, lines.toString());
 
             for (User online : User.getUsers(false))
                 if (online.inSignSpy())

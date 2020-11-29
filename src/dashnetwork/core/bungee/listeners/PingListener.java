@@ -33,12 +33,13 @@ public class PingListener implements Listener {
         ServerPing.Players players = response.getPlayers();
         TextComponent component = new TextComponent();
 
-        String software = "DashNetwork 1.7 - 1.16";
         int online = players.getOnline();
 
         for (User user : User.getUsers(false))
             if (user.isVanished())
                 online--;
+
+        String software = "DashNetwork 1.7 - 1.16";
 
         List<ServerPing.PlayerInfo> list = new ArrayList<>();
         list.add(new ServerPing.PlayerInfo(ColorUtils.translate("&f             &6&n&lDashNetwork"), UUID.randomUUID()));
@@ -56,8 +57,9 @@ public class PingListener implements Listener {
         String address = ((InetSocketAddress) connection.getSocketAddress()).getAddress().getHostAddress();
 
         if (!recentPings.contains(address)) {
-            bungee.getScheduler().schedule(plugin, () -> recentPings.remove(address), 5, TimeUnit.MINUTES);
+            recentPings.add(address);
 
+            bungee.getScheduler().schedule(plugin, () -> recentPings.remove(address), 1, TimeUnit.MINUTES);
             bungee.getScheduler().runAsync(plugin, () -> {
                 Map<String, List<String>> ips = DataUtils.getIps();
 
