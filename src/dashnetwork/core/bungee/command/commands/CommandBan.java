@@ -2,14 +2,10 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.StringUtils;
+import dashnetwork.core.utils.*;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class CommandBan extends CoreCommand {
 
@@ -26,19 +22,45 @@ public class CommandBan extends CoreCommand {
             return;
         }
 
-        ProxiedPlayer target = SelectorUtils.getPlayer(sender, args[0]);
+        Map<String, String> names = DataUtils.getNames();
 
-        if (target == null) {
-            MessageUtils.noPlayerFound(sender);
-            return;
-        }
+        UUID target;
+        String name;
 
-        if (sender instanceof ProxiedPlayer) {
-            User user = User.getUser((ProxiedPlayer) sender);
+        try {
+            target = UUID.fromString(args[0]);
+            name = names.get(target);
 
-            if (!user.isAbove(User.getUser(target))) {
-                MessageUtils.message(sender, "&6&l» &7You don't have permission to ban that player.");
-                return;
+            if (name == null) {
+                MessageUtils.message(sender, "&6&l» &7Unable to find player locally. Looking up from Mojang...");
+
+                Username[] usernames = MojangUtils.getNameHistoryFromUuid(target);
+
+                if (usernames == null) {
+                    MessageUtils.noPlayerFound(sender);
+                    return;
+                }
+
+                name = usernames[usernames.length - 1].getName();
+            }
+        } catch (IllegalArgumentException invalid) {
+            String fromName = MapUtils.getKeyFromValue(names, args[0]);
+
+            if (fromName == null) {
+                MessageUtils.message(sender, "&6&l» &7Unable to find player locally. Looking up from Mojang...");
+
+                PlayerProfile profile = MojangUtils.getUuidFromName(args[0]);
+
+                if (profile == null) {
+                    MessageUtils.noPlayerFound(sender);
+                    return;
+                }
+
+                target = profile.getUuid();
+                name = profile.getName();
+            } else {
+                target = UUID.fromString(fromName);
+                name = names.get(target);
             }
         }
 
@@ -51,7 +73,7 @@ public class CommandBan extends CoreCommand {
             reason = StringUtils.unsplit(list, ' ');
         }
 
-        PunishUtils.ban(User.getUser(target), null, sender, reason);
+        PunishUtils.ban(target, name, null, sender, reason);
     }
 
     @Override

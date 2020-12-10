@@ -31,9 +31,9 @@ public abstract class CoreCommand extends Command implements TabExecutor {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (permission.hasPermission(sender)) {
-            if (async) {
+            if (async)
                 bungee.getScheduler().runAsync(plugin, () -> onCommand(sender, args));
-            } else
+            else
                 onCommand(sender, args);
         } else
             MessageUtils.noPermissions(sender);

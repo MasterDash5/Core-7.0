@@ -44,7 +44,7 @@ public class Core extends JavaPlugin {
 
         BukkitScheduler scheduler = getServer().getScheduler();
         scheduler.runTaskTimer(this, new SpinTask(), 2, 2);
-        scheduler.runTaskTimerAsynchronously(this, new SpectateTask(), 1, 1);
+        scheduler.runTaskTimer(this, new SpectateTask(), 1, 1);
         scheduler.runTaskTimerAsynchronously(this, new UserTask(), 1, 1);
 
         new CommandAnvil();

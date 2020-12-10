@@ -1,5 +1,7 @@
 package dashnetwork.core.bungee.utils;
 
+import dashnetwork.core.utils.MojangUtils;
+import dashnetwork.core.utils.Username;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -42,8 +44,20 @@ public class NameUtils {
     public static List<String> fromUuids(Collection<String> uuids) {
         List<String> names = new ArrayList<>();
 
-        for (String uuid : uuids)
-            names.add(DataUtils.getNames().get(uuid));
+        for (String uuid : uuids) {
+            String name = DataUtils.getNames().get(uuid);
+
+            if (name == null) {
+                Username[] usernames = MojangUtils.getNameHistoryFromUuid(UUID.fromString(uuid));
+
+                if (usernames == null)
+                    name = uuid;
+                else
+                    name = usernames[usernames.length - 1].getName();
+            }
+
+            names.add(name);
+        }
 
         return names;
     }

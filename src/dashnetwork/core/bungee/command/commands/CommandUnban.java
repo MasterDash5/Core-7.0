@@ -6,6 +6,8 @@ import dashnetwork.core.bungee.utils.MessageUtils;
 import dashnetwork.core.bungee.utils.NameUtils;
 import dashnetwork.core.bungee.utils.PermissionType;
 import dashnetwork.core.utils.MessageBuilder;
+import dashnetwork.core.utils.MojangUtils;
+import dashnetwork.core.utils.PlayerProfile;
 import dashnetwork.core.utils.PunishData;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -32,13 +34,17 @@ public class CommandUnban extends CoreCommand {
             return;
         }
 
+        String name = null;
         String uuid = null;
 
         try {
             uuid = UUID.fromString(args[0]).toString();
         } catch (IllegalArgumentException exception) {
             for (Map.Entry<String, String> entry : names.entrySet()) {
-                if (entry.getValue().equalsIgnoreCase(args[0])) {
+                String value = entry.getValue();
+
+                if (value.equalsIgnoreCase(args[0])) {
+                    name = value;
                     uuid = entry.getKey();
                     break;
                 }
@@ -46,8 +52,15 @@ public class CommandUnban extends CoreCommand {
         }
 
         if (uuid == null) {
-            MessageUtils.noPlayerFound(sender);
-            return;
+            PlayerProfile profile = MojangUtils.getUuidFromName(args[0]);
+
+            if (profile == null) {
+                MessageUtils.noPlayerFound(sender);
+                return;
+            }
+
+            name = profile.getName();
+            uuid = profile.getUuid().toString();
         }
 
         DataUtils.getBans().remove(uuid);
@@ -56,7 +69,7 @@ public class CommandUnban extends CoreCommand {
         broadcast.append("&6&l» ");
         broadcast.append("&6" + NameUtils.getDisplayName(sender)).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + NameUtils.getName(sender));
         broadcast.append(" &7unbanned ");
-        broadcast.append("&6" + names.get(uuid)).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + uuid);
+        broadcast.append("&6" + name).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + uuid);
 
         MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
     }

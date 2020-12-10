@@ -21,22 +21,26 @@ public class CommandList extends CoreCommand {
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
+        boolean staff = PermissionType.STAFF.hasPermission(sender);
         Map<String, List<ProxiedPlayer>> players = new HashMap<>();
         int total = 0;
 
+
         for (ServerInfo server : bungee.getServers().values()) {
-            List<ProxiedPlayer> list = new ArrayList<>();
+            if (!server.isRestricted() || staff) {
+                List<ProxiedPlayer> list = new ArrayList<>();
 
-            for (ProxiedPlayer player : server.getPlayers()) {
-                User user = User.getUser(player);
+                for (ProxiedPlayer player : server.getPlayers()) {
+                    User user = User.getUser(player);
 
-                if (!user.isVanished() || PermissionType.STAFF.hasPermission(sender)) {
-                    list.add(player);
-                    total++;
+                    if (!user.isVanished() || staff) {
+                        list.add(player);
+                        total++;
+                    }
                 }
-            }
 
-            players.put(server.getName(), list);
+                players.put(server.getMotd(), list);
+            }
         }
 
         MessageBuilder message = new MessageBuilder();
