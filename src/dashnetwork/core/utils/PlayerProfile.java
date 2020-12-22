@@ -11,6 +11,7 @@ public class PlayerProfile {
     public PlayerProfile(UUID uuid, String name) {
         this.uuid = uuid;
         this.name = name;
+        this.skin = null;
     }
 
     public UUID getUuid() {

@@ -20,7 +20,7 @@ public class KickListener implements Listener {
         event.setCancelled(true);
 
         if (lobby)
-            event.setCancelServer(bungee.getServerInfo("creative"));
+            event.setCancelServer(bungee.getServerInfo("pvp"));
         else
             event.setCancelServer(bungee.getServerInfo("lobby"));
     }

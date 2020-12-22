@@ -93,7 +93,41 @@ public class MojangUtils {
     }
 
     public static PlayerProfile getProfileFromUuid(UUID uuid) {
-        return null; // TODO
+        String stringUuid = uuid.toString();
+
+        if (!profileCache.containsKey(stringUuid)) {
+            try {
+                URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + stringUuid);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                JsonObject json = new JsonParser().parse(reader).getAsJsonObject();
+
+                String name = json.get("name").getAsString();
+
+                PlayerProfile profile = new PlayerProfile(uuid, name);
+
+                if (json.has("properties")) {
+                    JsonArray properties = json.get("properties").getAsJsonArray();
+
+                    if (properties.size() > 0)
+                        profile.setSkin(properties.get(0).getAsJsonObject().get("value").getAsString());
+                }
+
+                profileCache.put(stringUuid, profile);
+
+                reader.close();
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        profileCache.remove(stringUuid);
+                    }
+                }, 60000); // 1 minute rate limit
+            } catch (Exception exception) {
+                return null;
+            }
+        }
+
+        return profileCache.get(stringUuid);
     }
 
 

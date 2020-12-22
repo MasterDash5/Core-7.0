@@ -72,22 +72,24 @@ public class ChatListener implements Listener {
 
                 // Definitely a better way to do this
 
-                if (owner && user.inOwnerChat())
-                    user.chat(Channel.OWNER, message);
-                else if (owner && LazyUtils.anyStartsWithIgnoreCase(message, "@oc", "@dc"))
+                if (owner && LazyUtils.anyStartsWithIgnoreCase(message, "@oc", "@dc"))
                     user.chat(Channel.OWNER, trimmed);
-                else if (admin && user.inAdminChat())
-                    user.chat(Channel.ADMIN, message);
                 else if (admin && StringUtils.startsWithIgnoreCase(message, "@ac"))
                     user.chat(Channel.ADMIN, trimmed);
-                else if (staff && user.inStaffChat())
-                    user.chat(Channel.STAFF, message);
                 else if (staff && StringUtils.startsWithIgnoreCase(message, "@sc"))
                     user.chat(Channel.STAFF, trimmed);
+                else if (owner && StringUtils.startsWithIgnoreCase(message, "@lc"))
+                    user.chat(Channel.LOCAL, trimmed);
+                else if (staff && StringUtils.startsWithIgnoreCase(message, "@gc"))
+                    user.chat(Channel.GLOBAL, trimmed);
+                else if (owner && user.inOwnerChat())
+                    user.chat(Channel.OWNER, message);
+                else if (admin && user.inAdminChat())
+                    user.chat(Channel.ADMIN, message);
+                else if (staff && user.inStaffChat())
+                    user.chat(Channel.STAFF, message);
                 else if (user.inLocalChat())
                     user.chat(Channel.LOCAL, message);
-                else if (user.isOwner() && StringUtils.startsWithIgnoreCase(message, "@lc"))
-                    user.chat(Channel.LOCAL, trimmed);
                 else
                     user.chat(Channel.GLOBAL, message);
             }

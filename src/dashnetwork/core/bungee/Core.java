@@ -84,7 +84,6 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandTempban());
         manager.registerCommand(this, new CommandTempipban());
         manager.registerCommand(this, new CommandTempmute());
-        manager.registerCommand(this, new CommandTest());
         manager.registerCommand(this, new CommandUnban());
         manager.registerCommand(this, new CommandUnipban());
         manager.registerCommand(this, new CommandUnmute());

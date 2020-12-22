@@ -10,12 +10,14 @@ commands:
   clearlag:
     aliases: [cl]
   console:
+  killears:
   mommy:
     aliases: [daddy, grandma, grandpa, aunt, uncle]
   nightvision:
     aliases: [nv, see]
   oplist:
     aliases: [ops]
+  peek:
   respawn:
     aliases: [forcerespawn]
   serverinfo:

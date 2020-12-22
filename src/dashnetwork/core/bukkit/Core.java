@@ -51,9 +51,11 @@ public class Core extends JavaPlugin {
         new CommandCenter();
         new CommandClearlag();
         new CommandConsole();
+        new CommandKillears();
         new CommandMommy();
         new CommandNightvision();
         new CommandOplist();
+        new CommandPeek();
         new CommandRespawn();
         new CommandServerinfo();
         new CommandSpin();
