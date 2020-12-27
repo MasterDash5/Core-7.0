@@ -15,7 +15,7 @@ import java.util.List;
 public class CommandPvp extends CoreCommand {
 
     public CommandPvp() {
-        super(true, PermissionType.NONE, "pvp", "kitpvp", "duels", "pvpduels", "botbattles");
+        super(true, PermissionType.NONE, "pvp", "kitpvp", "duels", "pvpduels", "botbattles", "playervsplayer", "playerversusplayer");
     }
 
     @Override

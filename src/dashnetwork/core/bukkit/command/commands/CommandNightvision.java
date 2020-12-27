@@ -24,7 +24,7 @@ public class CommandNightvision extends CoreCommand {
             if (player.hasPotionEffect(PotionEffectType.NIGHT_VISION))
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
             else
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 1000000, 0, true));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 1000000, 0, true, false));
         } else
             MessageUtils.playersOnly();
     }

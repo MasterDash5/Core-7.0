@@ -81,7 +81,7 @@ public class CommandStaffchat extends CoreCommand {
                 player.sendMessage(message.build());
             }
         } else
-            MessageUtils.broadcast(PermissionType.STAFF, "&9&lStaff &6Console &6&l> &6" + StringUtils.unsplit(args, ' '));
+            MessageUtils.broadcast(PermissionType.STAFF, "&9&lStaff&6 Console &6&l>&6 " + StringUtils.unsplit(args, ' '));
     }
 
     @Override

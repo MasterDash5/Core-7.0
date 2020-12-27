@@ -33,17 +33,15 @@ public class CommandRespawn extends CoreCommand {
         for (Player target : targets)
             target.spigot().respawn();
 
-        if (!targets.isEmpty()) {
-            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(targets), false, false);
-            String names = ListUtils.fromList(NameUtils.toNames(targets), false, false);
+        String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(targets), false, false);
+        String names = ListUtils.fromList(NameUtils.toNames(targets), false, false);
 
-            MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» ");
-            message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 forced to respawn");
+        MessageBuilder message = new MessageBuilder();
+        message.append("&6&l» ");
+        message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
+        message.append("&7 forced to respawn");
 
-            sender.sendMessage(message.build());
-        }
+        sender.sendMessage(message.build());
     }
 
     @Override

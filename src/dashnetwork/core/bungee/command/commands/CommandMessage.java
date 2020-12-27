@@ -10,17 +10,17 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class CommandMsg extends CoreCommand {
+public class CommandMessage extends CoreCommand {
 
-    public CommandMsg() {
-        super(true, PermissionType.NONE, "msg", "message", "tell", "whisper", "w");
+    public CommandMessage() {
+        super(true, PermissionType.NONE, "message", "msg", "tell", "whisper", "w");
     }
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         if (sender instanceof ProxiedPlayer) {
             if (args.length <= 1) {
-                MessageUtils.message(sender, "&6&l» &7/msg <player> <message>");
+                MessageUtils.message(sender, "&6&l» &7/message <player> <message>");
                 return;
             }
 

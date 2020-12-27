@@ -6,7 +6,7 @@ import dashnetwork.core.bungee.utils.MessageUtils;
 import dashnetwork.core.bungee.utils.NameUtils;
 import dashnetwork.core.bungee.utils.PermissionType;
 import dashnetwork.core.utils.MessageBuilder;
-import dashnetwork.core.utils.MojangUtils;
+import dashnetwork.core.bungee.utils.MojangUtils;
 import dashnetwork.core.utils.PlayerProfile;
 import dashnetwork.core.utils.PunishData;
 import net.md_5.bungee.api.CommandSender;

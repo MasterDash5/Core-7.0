@@ -12,7 +12,7 @@ public class SpectateTask implements Runnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             Entity entity = player.getSpectatorTarget();
 
-            if (entity != null && entity instanceof Player) {
+            if (entity instanceof Player) {
                 Player target = (Player) entity;
                 User user = User.getUser(target);
 

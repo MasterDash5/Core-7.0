@@ -1,6 +1,5 @@
 package dashnetwork.core.bungee.utils;
 
-import dashnetwork.core.utils.MojangUtils;
 import dashnetwork.core.utils.Username;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;

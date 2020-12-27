@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class PunishUtils {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, hh:mma z");
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("MMM d, hh:mma z");
     private static BungeeCord bungee = BungeeCord.getInstance();
     private static Map<String, PunishData> mutes = DataUtils.getMutes();
     private static Map<String, PunishData> bans = DataUtils.getBans();
@@ -26,18 +26,20 @@ public class PunishUtils {
         String name = NameUtils.getName(punisher);
         String displayname = NameUtils.getDisplayName(punisher);
 
-        MessageBuilder message = new MessageBuilder();
-        message.append("&7You have been kicked from &6&lDashNetwork\n\n");
-        message.append("&7Kicked by &6" + name);
-        message.append("\n&7For &6" + reason);
+        if (!user.isOwner()) {
+            MessageBuilder message = new MessageBuilder();
+            message.append("&7You have been kicked from &6&lDashNetwork\n");
+            message.append("\n&7Kicked by &6" + name);
+            message.append("\n&7For &6" + reason);
 
-        player.disconnect(message.build());
+            player.disconnect(message.build());
+        }
 
         MessageBuilder broadcast = new MessageBuilder();
         broadcast.append("&6&l» &6" + displayname + "&7 kicked &6" + user.getName())
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT,
                         "&6Kicked by &7" + name
-                        + "\n&6Reason: &c" + reason);
+                        + "\n&6For &c" + reason);
 
         MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
     }
@@ -45,7 +47,7 @@ public class PunishUtils {
     public static void mute(UUID uuid, String name, Long expire, CommandSender punisher, String reason) {
         String username = NameUtils.getName(punisher);
         String displayname = NameUtils.getDisplayName(punisher);
-        String date = expire == null ? "never" : dateFormat.format(new Date(expire));
+        String date = expire == null ? "never" : formatter.format(new Date(expire));
 
         mutes.put(uuid.toString(), new PunishData(expire, username, reason));
 
@@ -55,7 +57,7 @@ public class PunishUtils {
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT,
                         "&6Muted by &7" + username
                         + "\n&6Expires &7" + date
-                        + "\n&6Reason: &7" + reason);
+                        + "\n&6For &7" + reason);
 
         MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
 
@@ -68,7 +70,7 @@ public class PunishUtils {
                     .hoverEvent(HoverEvent.Action.SHOW_TEXT,
                             "&6Muted by &7" + username
                                     + "\n&6Expires &7" + date
-                                    + "\n&6Reason: &7" + reason);
+                                    + "\n&6For &7" + reason);
 
             MessageUtils.message(target, message.build());
         }
@@ -77,16 +79,16 @@ public class PunishUtils {
     public static void ban(UUID uuid, String name, Long expire, CommandSender punisher, String reason) {
         String username = NameUtils.getName(punisher);
         String displayname = NameUtils.getDisplayName(punisher);
-        String date = expire == null ? "never" : dateFormat.format(new Date(expire));
+        String date = expire == null ? "never" : formatter.format(new Date(expire));
 
         bans.put(uuid.toString(), new PunishData(expire, name, reason));
 
         ProxiedPlayer target = bungee.getPlayer(uuid);
 
-        if (target != null) {
+        if (target != null && !User.getUser(target).isOwner()) {
             MessageBuilder message = new MessageBuilder();
-            message.append("&7You have been banned from &6&lDashNetwork\n\n");
-            message.append("&7Banned by &6" + username);
+            message.append("&7You have been banned from &6&lDashNetwork\n");
+            message.append("\n&7Banned by &6" + username);
             message.append("\n&7Expires &6" + date);
             message.append("\n&7For &6" + reason);
 
@@ -99,7 +101,7 @@ public class PunishUtils {
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT,
                         "&6Banned by &7" + username
                                 + "\n&6Expires &7" + date
-                                + "\n&6Reason: &7" + reason);
+                                + "\n&6For &7" + reason);
 
         MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
     }
@@ -107,7 +109,7 @@ public class PunishUtils {
     public static void ipban(String address, Long expire, CommandSender punisher, String reason) {
         String name = NameUtils.getName(punisher);
         String displayname = NameUtils.getDisplayName(punisher);
-        String date = expire == null ? "never" : dateFormat.format(new Date(expire));
+        String date = expire == null ? "never" : formatter.format(new Date(expire));
 
         ipbans.put(address, new PunishData(expire, displayname, reason));
 
@@ -117,7 +119,7 @@ public class PunishUtils {
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT,
                         "&6Banned by &7" + name
                                 + "\n&6Expires &7" + date
-                                + "\n&6Reason: &7" + reason);
+                                + "\n&6For &7" + reason);
 
         MessageUtils.broadcast(PermissionType.ADMIN, broadcast.build());
 
@@ -130,7 +132,7 @@ public class PunishUtils {
     }
 
     public static SimpleDateFormat getDateFormat() {
-        return dateFormat;
+        return formatter;
     }
 
 }

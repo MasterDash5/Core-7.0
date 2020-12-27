@@ -81,7 +81,7 @@ public class CommandAdminchat extends CoreCommand {
                 player.sendMessage(message.build());
             }
         } else
-            MessageUtils.broadcast(PermissionType.ADMIN, "&9&lAdmin &6Console &6&l> &3" + StringUtils.unsplit(args, ' '));
+            MessageUtils.broadcast(PermissionType.ADMIN, "&9&lAdmin&6 Console &6&l>&3 " + StringUtils.unsplit(args, ' '));
     }
 
     @Override

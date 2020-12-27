@@ -1,8 +1,10 @@
-package dashnetwork.core.utils;
+package dashnetwork.core.bungee.utils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dashnetwork.core.utils.PlayerProfile;
+import dashnetwork.core.utils.Username;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

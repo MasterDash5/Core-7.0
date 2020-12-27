@@ -53,6 +53,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandAltlist());
         manager.registerCommand(this, new CommandAltspy());
         manager.registerCommand(this, new CommandBan());
+        manager.registerCommand(this, new CommandBungeebuild());
         manager.registerCommand(this, new CommandChat());
         manager.registerCommand(this, new CommandChatsudo());
         manager.registerCommand(this, new CommandClearchat());
@@ -69,7 +70,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandLobby());
         manager.registerCommand(this, new CommandLocalchat());
         manager.registerCommand(this, new CommandMattsarmorstands());
-        manager.registerCommand(this, new CommandMsg());
+        manager.registerCommand(this, new CommandMessage());
         manager.registerCommand(this, new CommandMute());
         manager.registerCommand(this, new CommandNickname());
         manager.registerCommand(this, new CommandOwnerchat());

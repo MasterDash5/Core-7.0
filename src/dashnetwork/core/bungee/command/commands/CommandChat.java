@@ -6,6 +6,7 @@ import dashnetwork.core.bungee.utils.MessageUtils;
 import dashnetwork.core.bungee.utils.NameUtils;
 import dashnetwork.core.bungee.utils.PermissionType;
 import dashnetwork.core.bungee.utils.User;
+import dashnetwork.core.utils.Channel;
 import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -28,7 +29,7 @@ public class CommandChat extends CoreCommand {
             if (sender instanceof ProxiedPlayer) {
                 User user = User.getUser((ProxiedPlayer) sender);
 
-                bungee.getPluginManager().callEvent(new UserChatEvent(user, PermissionType.NONE, message));
+                bungee.getPluginManager().callEvent(new UserChatEvent(user, Channel.GLOBAL, message));
             }
         } else
             MessageUtils.message(sender, "&6&l»&7 /chat <message>");

@@ -81,7 +81,7 @@ public class CommandOwnerchat extends CoreCommand {
                 player.sendMessage(message.build());
             }
         } else
-            MessageUtils.broadcast(PermissionType.OWNER, "&9&lOwner &6Console &6&l> &c" + StringUtils.unsplit(args, ' '));
+            MessageUtils.broadcast(PermissionType.OWNER, "&9&lOwner&6 Console &6&l>&c " + StringUtils.unsplit(args, ' '));
     }
 
     @Override

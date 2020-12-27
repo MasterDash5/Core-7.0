@@ -33,7 +33,7 @@ public class ChatListener implements Listener {
 
             user.updateDisplayName(true);
 
-            if (event.isProxyCommand() || event.isCommand()) {
+            if (event.isCommand()) {
                 MessageBuilder broadcast = new MessageBuilder();
                 broadcast.append("&c&lCS ");
                 broadcast.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + player.getName());

@@ -48,6 +48,7 @@ public class Core extends JavaPlugin {
         scheduler.runTaskTimerAsynchronously(this, new UserTask(), 1, 1);
 
         new CommandAnvil();
+        new CommandBukkitbuild();
         new CommandCenter();
         new CommandClearlag();
         new CommandConsole();
@@ -55,7 +56,7 @@ public class Core extends JavaPlugin {
         new CommandMommy();
         new CommandNightvision();
         new CommandOplist();
-        new CommandPeek();
+        new CommandPing();
         new CommandRespawn();
         new CommandServerinfo();
         new CommandSpin();

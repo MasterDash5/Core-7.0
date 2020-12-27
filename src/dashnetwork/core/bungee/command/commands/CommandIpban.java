@@ -45,7 +45,6 @@ public class CommandIpban extends CoreCommand {
         if (length > 1) {
             List<String> list = new ArrayList<>(Arrays.asList(args));
             list.remove(0);
-            list.remove(0);
 
             reason = StringUtils.unsplit(list, ' ');
         }

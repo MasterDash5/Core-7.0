@@ -67,8 +67,8 @@ public class CommandSpin extends CoreCommand {
         }
 
         if (!removed.isEmpty()) {
-            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(added), false, false);
-            String names = ListUtils.fromList(NameUtils.toNames(added), false, false);
+            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(removed), false, false);
+            String names = ListUtils.fromList(NameUtils.toNames(removed), false, false);
 
             MessageBuilder message = new MessageBuilder();
             message.append("&6&l» ");

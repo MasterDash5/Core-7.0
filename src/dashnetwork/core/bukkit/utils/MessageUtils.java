@@ -4,7 +4,9 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import dashnetwork.core.bukkit.Core;
 import dashnetwork.core.utils.ColorUtils;
+import dashnetwork.core.utils.MessageBuilder;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -63,6 +65,18 @@ public class MessageUtils {
 
     public static void playersOnly() {
         message(plugin.getServer().getConsoleSender(), "&6&l» &cOnly players can do that.");
+    }
+
+    public static void sendException(CommandSender sender, Exception exception) {
+        String stacktrace = "&6" + exception.getClass().getName();
+
+        for (StackTraceElement element : exception.getStackTrace())
+            stacktrace += "\n&6at &7" + element.getClassName() + ": &6" + String.valueOf(element.getLineNumber()).replace("-1", "Unknown source");
+
+        MessageBuilder message = new MessageBuilder();
+        message.append("&6&l» &7An error occurred... hover for more info").hoverEvent(HoverEvent.Action.SHOW_TEXT, stacktrace);
+
+        message(sender, message.build());
     }
 
 }

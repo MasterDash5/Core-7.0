@@ -165,11 +165,13 @@ public class User implements CommandSender {
 
                 MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
 
-                pluginManager.callEvent(new UserChatEvent(this, PermissionType.NONE, message));
+                pluginManager.callEvent(new UserChatEvent(this, Channel.GLOBAL, message));
 
                 break;
             case LOCAL:
-                getPlayer().chat(message); // Doesn't call ChatEvent apparently.
+                player.chat(message); // Doesn't call ChatEvent apparently.
+
+                pluginManager.callEvent(new UserChatEvent(this, Channel.LOCAL, message));
 
                 break;
             case STAFF:
@@ -179,7 +181,7 @@ public class User implements CommandSender {
 
                 MessageUtils.broadcast(PermissionType.STAFF, broadcast.build());
 
-                pluginManager.callEvent(new UserChatEvent(this, PermissionType.STAFF, message));
+                pluginManager.callEvent(new UserChatEvent(this, Channel.STAFF, message));
 
                 break;
             case ADMIN:
@@ -189,7 +191,7 @@ public class User implements CommandSender {
 
                 MessageUtils.broadcast(PermissionType.ADMIN, broadcast.build());
 
-                pluginManager.callEvent(new UserChatEvent(this, PermissionType.ADMIN, message));
+                pluginManager.callEvent(new UserChatEvent(this, Channel.ADMIN, message));
 
                 break;
             case OWNER:
@@ -199,7 +201,7 @@ public class User implements CommandSender {
 
                 MessageUtils.broadcast(PermissionType.OWNER, broadcast.build());
 
-                pluginManager.callEvent(new UserChatEvent(this, PermissionType.OWNER, message));
+                pluginManager.callEvent(new UserChatEvent(this, Channel.OWNER, message));
 
                 break;
         }

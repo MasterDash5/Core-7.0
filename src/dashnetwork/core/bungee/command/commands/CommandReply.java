@@ -24,6 +24,11 @@ public class CommandReply extends CoreCommand {
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         if (sender instanceof ProxiedPlayer) {
+            if (args.length < 1) {
+                MessageUtils.message(sender, "&6&l» &7/reply <message>");
+                return;
+            }
+
             ProxiedPlayer player = (ProxiedPlayer) sender;
             User playerUser = User.getUser(player);
 

@@ -56,7 +56,7 @@ public class PingListener implements Listener {
         PendingConnection connection = event.getConnection();
         String address = ((InetSocketAddress) connection.getSocketAddress()).getAddress().getHostAddress();
 
-        if (!recentPings.contains(address)) {
+        if (!DataUtils.getIpbans().containsKey(address) && !recentPings.contains(address)) {
             recentPings.add(address);
 
             bungee.getScheduler().schedule(plugin, () -> recentPings.remove(address), 1, TimeUnit.MINUTES);

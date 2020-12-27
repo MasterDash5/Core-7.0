@@ -6,6 +6,7 @@ main: dashnetwork.core.bukkit.Core
 
 commands:
   anvil:
+  bukkitbuild:
   center:
   clearlag:
     aliases: [cl]
@@ -17,7 +18,7 @@ commands:
     aliases: [nv, see]
   oplist:
     aliases: [ops]
-  peek:
+  ping:
   respawn:
     aliases: [forcerespawn]
   serverinfo:
