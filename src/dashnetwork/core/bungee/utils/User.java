@@ -14,6 +14,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.PluginManager;
 
@@ -207,6 +208,38 @@ public class User implements CommandSender {
         }
     }
 
+    public void privateMessage(User target, String message) {
+        String playerName = getName();
+        String playerDisplayName = getDisplayName();
+        String targetName = target.getName();
+        String targetDisplayName = target.getDisplayName();
+
+        MessageBuilder socialSpy = new MessageBuilder();
+        socialSpy.append("&c&lSS ");
+        socialSpy.append("&6" + playerDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + playerName);
+        socialSpy.append("&a -> ");
+        socialSpy.append("&6" + targetDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + targetName);
+        socialSpy.append(" &6&l> &7" + message);
+
+        for (User user : User.getUsers(true))
+            if (user.isStaff() && !user.inCommandSpy() && !LazyUtils.anyEquals(user, this, target))
+                MessageUtils.message(user, socialSpy.build());
+
+        MessageBuilder toPlayer = new MessageBuilder();
+        toPlayer.append("&6&l» &aMe -> ");
+        toPlayer.append("&6" + targetDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + targetName);
+        toPlayer.append(" &6&l> &7" + message);
+
+        MessageUtils.message(player, toPlayer.build());
+
+        MessageBuilder toTarget = new MessageBuilder();
+        toTarget.append("&6&l» ");
+        toTarget.append("&6" + playerDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + playerName);
+        toTarget.append("&a -> Me &6&l> &7" + message);
+
+        MessageUtils.message(target, toTarget.build());
+    }
+
     public ProxiedPlayer getPlayer() {
         return player;
     }
@@ -256,6 +289,16 @@ public class User implements CommandSender {
         }
 
         return false;
+    }
+
+    public EnumServer getConnectedServer() {
+        ServerInfo info = player.getServer().getInfo();
+
+        for (EnumServer server : EnumServer.values())
+            if (server.name().equalsIgnoreCase(info.getMotd()))
+                return server;
+
+        return null;
     }
 
     public String getDisplayName() {

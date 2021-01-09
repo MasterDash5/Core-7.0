@@ -54,7 +54,7 @@ public class CommandMessage extends CoreCommand {
             User targetUser = User.getUser(target);
             String targetReply = targetUser.getReplyTarget();
 
-            if (targetUser.isVanished() && !playerUser.isStaff()) {
+            if (!VanishUtils.canSee(player, target)) {
                 MessageUtils.noPlayerFound(sender);
                 return;
             }
@@ -68,38 +68,11 @@ public class CommandMessage extends CoreCommand {
             argList.remove(0);
 
             String message = StringUtils.unsplit(argList, ' ');
-            String playerName = player.getName();
-            String targetName = target.getName();
-            String playerDisplayName = playerUser.getDisplayName();
-            String targetDisplayName = targetUser.getDisplayName();
 
             if (!playerUser.isStaff())
                 message = ColorUtils.filter(message, true, true, true, true, false, false);
 
-            MessageBuilder socialSpy = new MessageBuilder();
-            socialSpy.append("&c&lSS ");
-            socialSpy.append("&6" + playerDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + playerName);
-            socialSpy.append("&a -> ");
-            socialSpy.append("&6" + targetDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + targetName);
-            socialSpy.append(" &6&l> &7" + message);
-
-            for (User user : User.getUsers(true))
-                if (user.isStaff() && !user.inCommandSpy() && !LazyUtils.anyEquals(user, playerUser, targetUser))
-                    MessageUtils.message(user, socialSpy.build());
-
-            MessageBuilder toPlayer = new MessageBuilder();
-            toPlayer.append("&6&l» &aMe -> ");
-            toPlayer.append("&6" + targetDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + targetName);
-            toPlayer.append(" &6&l> &7" + message);
-
-            MessageUtils.message(player, toPlayer.build());
-
-            MessageBuilder toTarget = new MessageBuilder();
-            toTarget.append("&6&l» ");
-            toTarget.append("&6" + playerDisplayName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + playerName);
-            toTarget.append("&a -> Me &6&l> &7" + message);
-
-            MessageUtils.message(target, toTarget.build());
+            playerUser.privateMessage(targetUser, message);
         } else
             MessageUtils.playersOnly();
     }
@@ -107,7 +80,7 @@ public class CommandMessage extends CoreCommand {
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1)
-            return CompletionUtils.players(args[0]);
+            return CompletionUtils.players(sender, args[0]);
         return Collections.EMPTY_LIST;
     }
 

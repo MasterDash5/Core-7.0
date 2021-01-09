@@ -56,7 +56,6 @@ public class Core extends JavaPlugin {
         new CommandMommy();
         new CommandNightvision();
         new CommandOplist();
-        new CommandPing();
         new CommandRespawn();
         new CommandServerinfo();
         new CommandSpin();

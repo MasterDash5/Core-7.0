@@ -2,6 +2,7 @@ package dashnetwork.core.bungee.command.commands;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dashnetwork.core.bungee.Core;
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.utils.MapUtils;
@@ -10,12 +11,15 @@ import dashnetwork.core.utils.PlayerProfile;
 import dashnetwork.core.utils.Username;
 import net.md_5.bungee.api.CommandSender;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CommandNamemc extends CoreCommand {
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("LLL d, yyyy");
+    private SimpleDateFormat formatter = new SimpleDateFormat("LLL d, yyyy");
 
     public CommandNamemc() {
         super(true, PermissionType.STAFF, "namemc", "lookup");
@@ -39,31 +43,57 @@ public class CommandNamemc extends CoreCommand {
                     return;
                 }
             }
-
-            Map<String, String> nameMap = new HashMap<>();
-
-            Username[] usernames = MojangUtils.getNameHistoryFromUuid(uuid);
-            PlayerProfile profile = MojangUtils.getProfileFromUuid(uuid);
-
-            for (Username username : usernames)
-                nameMap.put(username.getName(), dateFormat.format(new Date(username.getChangedAt())));
-
-            name = profile.getName();
-
-            JsonObject object = new JsonParser().parse(new String(Base64.getDecoder().decode(profile.getSkin()))).getAsJsonObject();
-            JsonObject textures = object.get("textures").getAsJsonObject();
-
-            String skin = "";
-
-            if (textures.has("SKIN"))
-                skin = textures.get("SKIN").getAsJsonObject().get("url").getAsString();
         }
+
+        Map<String, String> nameMap = new HashMap<>();
+        PlayerProfile profile = MojangUtils.getProfileFromUuid(uuid);
+        Username[] usernames = MojangUtils.getNameHistoryFromUuid(uuid);
+
+        name = profile.getName();
+
+        for (Username username : usernames) {
+            String date;
+            long changed = username.getChangedAt();
+
+            if (changed == -1)
+                date = "???";
+            else
+                date = formatter.format(new Date(changed));
+
+            nameMap.put(username.getName(), date);
+        }
+
+        JsonObject object = new JsonParser().parse(new String(Base64.getDecoder().decode(profile.getSkin()))).getAsJsonObject();
+        JsonObject textures = object.get("textures").getAsJsonObject();
+
+        BufferedImage head;
+        boolean fromUuid = true;
+
+        if (textures.has("SKIN")) {
+            String url = textures.get("SKIN").getAsJsonObject().get("url").getAsString();
+
+            try {
+                head = ImageIO.read(new URL(url)).getSubimage(8, 8, 8, 8);
+                fromUuid = false;
+            } catch (Exception e) {}
+        }
+
+        if (fromUuid) {
+            boolean steve = uuid.hashCode() % 2 == 0;
+            String png = steve ? "steve.png" : "alex.png";
+
+            try {
+                head = ImageIO.read(Core.class.getClassLoader().getResource(png));
+            } catch (Exception e) {} // This shouldn't happen
+        }
+
+        // TODO: Send a message
     }
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1)
-            return CompletionUtils.players(args[0]);
+            return CompletionUtils.players(sender, args[0]);
         return Collections.EMPTY_LIST;
     }
 

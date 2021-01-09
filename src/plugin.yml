@@ -18,7 +18,6 @@ commands:
     aliases: [nv, see]
   oplist:
     aliases: [ops]
-  ping:
   respawn:
     aliases: [forcerespawn]
   serverinfo:

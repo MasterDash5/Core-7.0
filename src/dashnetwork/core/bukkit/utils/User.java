@@ -72,7 +72,7 @@ public class User implements CommandSender {
     }
 
     public void remove() {
-        // TODO: Save anything
+        // Save anything
 
         users.remove(this);
     }

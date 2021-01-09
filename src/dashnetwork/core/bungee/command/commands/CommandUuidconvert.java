@@ -43,10 +43,10 @@ public class CommandUuidconvert extends CoreCommand {
             String array = ints[0] + ", " + ints[1] + ", " + ints[2] + ", " + ints[3];
 
             MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» &7UUIDMost: &6" + most + "L, &7UUIDLeast: &6" + least + "L")
+            message.append("&6&l» &7Most: &6" + most + "L, &7Least: &6" + least + "L")
                     .clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, mostAndLeast)
                     .hoverEvent(HoverEvent.Action.SHOW_TEXT, "&7Click to copy &6" + mostAndLeast);
-            message.append("\n&6&l» &7UUID: [I;" + array + "]")
+            message.append("\n&6&l» &7Array: &6[I;" + array + "]")
                     .clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, array)
                     .hoverEvent(HoverEvent.Action.SHOW_TEXT, "&7Click to copy &6" + array);
 

@@ -74,6 +74,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandMute());
         manager.registerCommand(this, new CommandNickname());
         manager.registerCommand(this, new CommandOwnerchat());
+        manager.registerCommand(this, new CommandPing());
         manager.registerCommand(this, new CommandPingspy());
         manager.registerCommand(this, new CommandPlayerinfo());
         manager.registerCommand(this, new CommandPvp());

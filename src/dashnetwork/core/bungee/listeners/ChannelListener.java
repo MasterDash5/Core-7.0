@@ -92,23 +92,29 @@ public class ChannelListener implements Listener {
                                 target.getServer().sendData(tag, eachOutput.toByteArray());
                             }
                         } else {
-                            Collection<ProxiedPlayer> players = bungee.getServerInfo(selected).getPlayers();
+                            ServerInfo server = bungee.getServerInfo(selected);
 
-                            online = players.size();
+                            if (server != null) {
+                                Collection<ProxiedPlayer> players = server.getPlayers();
 
-                            for (ProxiedPlayer player : players) {
-                                User user = User.getUser(player);
+                                if (players != null) {
+                                    online = players.size();
 
-                                if (user.isVanished())
-                                    online--;
+                                    for (ProxiedPlayer player : players) {
+                                        User user = User.getUser(player);
+
+                                        if (user.isVanished())
+                                            online--;
+                                    }
+
+                                    output.writeUTF("PlayerCount");
+                                    output.writeUTF(selected);
+                                    output.writeInt(online);
+
+                                    target.getServer().sendData(tag, output.toByteArray());
+                                }
                             }
                         }
-
-                        output.writeUTF("PlayerCount");
-                        output.writeUTF(selected);
-                        output.writeInt(online);
-
-                        target.getServer().sendData(tag, output.toByteArray());
                     }
             }
         }

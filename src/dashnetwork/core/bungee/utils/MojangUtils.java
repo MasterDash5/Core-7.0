@@ -68,7 +68,7 @@ public class MojangUtils {
                 for (int i = 0; i < size; i++) {
                     JsonObject object = json.get(i).getAsJsonObject();
                     String name = object.get("name").getAsString();
-                    long date = 0;
+                    long date = -1;
 
                     if (object.has("changedToAt"))
                         date = object.get("changedToAt").getAsLong();

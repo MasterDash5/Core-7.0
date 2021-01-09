@@ -86,7 +86,7 @@ public class CommandLocalchat extends CoreCommand {
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1)
-            return CompletionUtils.players(args[0]);
+            return CompletionUtils.players(sender, args[0]);
         return Collections.EMPTY_LIST;
     }
 

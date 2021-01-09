@@ -7,40 +7,34 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
-public class CommandClearchat extends CoreCommand {
+public class CommandPing extends CoreCommand {
 
-    public CommandClearchat() {
-        super(true, PermissionType.ADMIN, "clearchat", "cc");
+    public CommandPing() {
+        super(true, PermissionType.NONE, "ping");
     }
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
-        List<ProxiedPlayer> targets = new ArrayList<>();
+        ProxiedPlayer target = null;
 
         if (args.length > 0)
-            targets.addAll(SelectorUtils.getPlayers(sender, args[0]));
-        else
-            targets.addAll(bungee.getPlayers());
+            target = SelectorUtils.getPlayer(sender, args[0]);
+        else if (sender instanceof ProxiedPlayer)
+            target = (ProxiedPlayer) sender;
 
-        if (targets.isEmpty()) {
+        if (target == null || !VanishUtils.canSee(sender, target)) {
             MessageUtils.noPlayerFound(sender);
             return;
         }
 
         MessageBuilder message = new MessageBuilder();
+        message.append("&6&l» ");
+        message.append("&6" + User.getUser(target).getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + target.getName());
+        message.append(" &7ping: &6" + target.getPing() + "ms");
 
-        for (int i = 0; i < 150; i++)
-            message.append("\n");
-
-        message.append("&6&l» &7Chat was cleared by ");
-        message.append("&6" + NameUtils.getDisplayName(sender)).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + NameUtils.getName(sender));
-
-        for (ProxiedPlayer target : targets)
-            target.sendMessage(message.build());
+        MessageUtils.message(sender, message.build());
     }
 
     @Override

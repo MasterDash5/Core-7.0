@@ -48,7 +48,7 @@ public class CommandStaff extends CoreCommand {
                 moved.add(target);
             }
 
-            target.connect(bungee.getServerInfo("staff"));
+            EnumServer.STAFF.send(target);
         }
 
         if (!moved.isEmpty()) {
@@ -58,7 +58,7 @@ public class CommandStaff extends CoreCommand {
             MessageBuilder message = new MessageBuilder();
             message.append("&6&l» ");
             message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (moved.size() > 1 ? "were" : "was") + " moved to &7Staff");
+            message.append("&7 " + (moved.size() > 1 ? "were" : "was") + " moved to &6Staff");
 
             sender.sendMessage(message.build());
         }
@@ -67,7 +67,7 @@ public class CommandStaff extends CoreCommand {
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1 && PermissionType.ADMIN.hasPermission(sender))
-            return CompletionUtils.players(args[0]);
+            return CompletionUtils.players(sender, args[0]);
         return Collections.EMPTY_LIST;
     }
 
