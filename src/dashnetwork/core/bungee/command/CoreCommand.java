@@ -2,6 +2,7 @@ package dashnetwork.core.bungee.command;
 
 import dashnetwork.core.bungee.Core;
 import dashnetwork.core.bungee.utils.MessageUtils;
+import dashnetwork.core.bungee.utils.Messages;
 import dashnetwork.core.bungee.utils.PermissionType;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
@@ -36,7 +37,7 @@ public abstract class CoreCommand extends Command implements TabExecutor {
             else
                 onCommand(sender, args);
         } else
-            MessageUtils.noPermissions(sender);
+            Messages.noPermissions(sender);
     }
 
     private static String[] addAliases(String label, String[] aliases) {

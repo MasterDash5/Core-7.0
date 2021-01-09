@@ -4,6 +4,7 @@ import dashnetwork.core.bukkit.command.CoreCommand;
 import dashnetwork.core.bukkit.utils.MessageUtils;
 import dashnetwork.core.bukkit.utils.PermissionType;
 import dashnetwork.core.utils.ListUtils;
+import dashnetwork.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -25,7 +26,7 @@ public class CommandOplist extends CoreCommand {
         for (OfflinePlayer operator : Bukkit.getOperators())
             operators.add(operator.getName());
 
-        MessageUtils.message(sender, "&6&l» &7Operators: &6" + ListUtils.fromList(operators, false, false));
+        MessageUtils.message(sender, "&6&l» &7Operators: &6" + StringUtils.fromList(operators, false, false));
     }
 
     @Override

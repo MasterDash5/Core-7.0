@@ -2,10 +2,7 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ListUtils;
-import dashnetwork.core.utils.MessageBuilder;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
@@ -28,7 +25,7 @@ public class CommandAltspy extends CoreCommand {
             targets.add((ProxiedPlayer) sender);
 
         if (targets.isEmpty()) {
-            MessageUtils.noPlayerFound(sender);
+            Messages.noPlayerFound(sender);
             return;
         }
 
@@ -54,29 +51,11 @@ public class CommandAltspy extends CoreCommand {
             }
         }
 
-        if (!added.isEmpty()) {
-            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(added), false, false);
-            String names = ListUtils.fromList(NameUtils.toNames(added), false, false);
+        if (!added.isEmpty())
+            Messages.targetNowIn(sender, added, "AltSpy");
 
-            MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» ");
-            message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in AltSpy");
-
-            sender.sendMessage(message.build());
-        }
-
-        if (!removed.isEmpty()) {
-            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(removed), false, false);
-            String names = ListUtils.fromList(NameUtils.toNames(removed), false, false);
-
-            MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» ");
-            message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in AltSpy");
-
-            sender.sendMessage(message.build());
-        }
+        if (!removed.isEmpty())
+            Messages.targetNoLongerIn(sender, removed, "AltSpy");
     }
 
     @Override

@@ -2,10 +2,7 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ListUtils;
-import dashnetwork.core.utils.MessageBuilder;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
@@ -28,40 +25,22 @@ public class CommandCreative extends CoreCommand {
             targets.add((ProxiedPlayer) sender);
 
         if (targets.isEmpty()) {
-            MessageUtils.noPlayerFound(sender);
+            Messages.noPlayerFound(sender);
             return;
         }
 
+        EnumServer server = EnumServer.CREATIVE;
         List<ProxiedPlayer> moved = new ArrayList<>();
 
         for (ProxiedPlayer target : targets) {
             if (target.equals(sender))
-                MessageUtils.message(target, "&6&l» &7Sending you to &6Creative");
-            else {
-                MessageBuilder message = new MessageBuilder();
-                message.append("&6&l» ");
-                message.append("&6" + NameUtils.getDisplayName(sender)).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + NameUtils.getName(sender));
-                message.append("&7 sent you to &6Creative");
-
-                target.sendMessage(message.build());
-
-                moved.add(target);
-            }
-
-            EnumServer.CREATIVE.send(target);
+                Messages.sentToServer(target, server);
+            else
+                Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
         }
 
-        if (!moved.isEmpty()) {
-            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(moved), false, false);
-            String names = ListUtils.fromList(NameUtils.toNames(moved), false, false);
-
-            MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» ");
-            message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (moved.size() > 1 ? "were" : "was") + " moved to &6Creative");
-
-            sender.sendMessage(message.build());
-        }
+        if (!moved.isEmpty())
+            Messages.targetSentToServer(sender, moved, server);
     }
 
     @Override

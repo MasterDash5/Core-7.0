@@ -7,6 +7,7 @@ import dashnetwork.core.bukkit.utils.PermissionType;
 import dashnetwork.core.utils.LazyUtils;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
+import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -51,7 +52,7 @@ public class CommandClearlag extends CoreCommand {
         message.append("&6&l» ");
         message.append("&6" + NameUtils.getDisplayName(sender)).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + NameUtils.getName(sender));
         message.append(" ");
-        message.append("&7cleared &6" + cleared.size() + " entities").hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + ListUtils.fromList(cleared, false, true));
+        message.append("&7cleared &6" + cleared.size() + " entities").hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + StringUtils.fromList(cleared, false, true));
 
         MessageUtils.broadcast(PermissionType.NONE, message.build());
     }

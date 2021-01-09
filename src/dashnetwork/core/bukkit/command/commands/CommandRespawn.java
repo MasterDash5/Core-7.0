@@ -4,6 +4,7 @@ import dashnetwork.core.bukkit.command.CoreCommand;
 import dashnetwork.core.bukkit.utils.*;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
+import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -33,8 +34,8 @@ public class CommandRespawn extends CoreCommand {
         for (Player target : targets)
             target.spigot().respawn();
 
-        String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(targets), false, false);
-        String names = ListUtils.fromList(NameUtils.toNames(targets), false, false);
+        String displaynames = StringUtils.fromList(NameUtils.toDisplayNames(targets), false, false);
+        String names = StringUtils.fromList(NameUtils.toNames(targets), false, false);
 
         MessageBuilder message = new MessageBuilder();
         message.append("&6&l» ");

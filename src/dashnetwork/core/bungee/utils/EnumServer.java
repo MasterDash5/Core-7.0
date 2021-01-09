@@ -5,8 +5,10 @@ import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public enum EnumServer {
 
@@ -74,10 +76,24 @@ public enum EnumServer {
         return this.equals(SKYBLOCK);
     }
 
-    public Collection<ProxiedPlayer> getPlayers() {
+    public Collection<ProxiedPlayer> getPlayers(boolean hideVanished) {
         if (info == null)
             return Collections.EMPTY_LIST;
-        return info.getPlayers();
+
+        Collection<ProxiedPlayer> players = info.getPlayers();
+        List<ProxiedPlayer> filtered = new ArrayList<>();
+
+        if (hideVanished) {
+            for (ProxiedPlayer player : players) {
+                User user = User.getUser(player);
+
+                if (!user.isVanished())
+                    filtered.add(player);
+            }
+        } else
+            return players;
+
+        return filtered;
     }
 
     public void send(ProxiedPlayer player) {

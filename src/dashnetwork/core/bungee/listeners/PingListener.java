@@ -5,6 +5,7 @@ import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.utils.ColorUtils;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
+import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -77,7 +78,7 @@ public class PingListener implements Listener {
                     for (String uuid : ips.get(address))
                         names.add(DataUtils.getNames().getOrDefault(uuid, "Unknown"));
 
-                    String fromNames = ListUtils.fromList(names, false, true);
+                    String fromNames = StringUtils.fromList(names, false, true);
 
                     MessageBuilder message = new MessageBuilder();
                     message.append("&c&lPS &6" + address + " &7pinged the server").hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + fromNames);

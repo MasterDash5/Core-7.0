@@ -3,6 +3,7 @@ package dashnetwork.core.bungee.command.commands;
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.CompletionUtils;
 import dashnetwork.core.bungee.utils.MessageUtils;
+import dashnetwork.core.bungee.utils.Messages;
 import dashnetwork.core.bungee.utils.PermissionType;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.StringUtils;
@@ -33,12 +34,7 @@ public class CommandFakeleave extends CoreCommand {
         String username = args[0];
         String displayname = StringUtils.unsplit(list, ' ');
 
-        MessageBuilder message = new MessageBuilder();
-        message.append("&c&l» ");
-        message.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + username);
-        message.append("&c left the server.");
-
-        MessageUtils.broadcast(PermissionType.NONE, message.build());
+        Messages.leaveServer(username, displayname);
     }
 
     @Override

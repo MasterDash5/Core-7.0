@@ -24,7 +24,7 @@ public class CommandChatsudo extends CoreCommand {
             List<ProxiedPlayer> targets = new ArrayList<>(SelectorUtils.getPlayers(sender, args[0]));
 
             if (targets.isEmpty()) {
-                MessageUtils.noPlayerFound(sender);
+                Messages.noPlayerFound(sender);
                 return;
             }
 

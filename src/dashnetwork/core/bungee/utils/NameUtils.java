@@ -12,19 +12,19 @@ import java.util.UUID;
 
 public class NameUtils {
 
-    private static BungeeCord bungee = BungeeCord.getInstance();
+    private static CommandSender console = BungeeCord.getInstance().getConsole();
 
     public static String getDisplayName(CommandSender sender) {
         if (sender instanceof ProxiedPlayer)
             return User.getUser((ProxiedPlayer) sender).getDisplayName();
-        else if (sender.equals(bungee.getConsole()))
+        else if (sender.equals(console))
             return "Console";
 
         return sender.getName();
     }
 
     public static String getName(CommandSender sender) {
-        if (sender.equals(bungee.getConsole()))
+        if (sender.equals(console))
             return "Console";
 
         return sender.getName();

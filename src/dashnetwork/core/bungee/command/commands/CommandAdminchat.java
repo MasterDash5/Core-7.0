@@ -2,11 +2,8 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ListUtils;
-import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
@@ -31,7 +28,7 @@ public class CommandAdminchat extends CoreCommand {
                 targets.add(player);
 
             if (targets.isEmpty()) {
-                MessageUtils.noPlayerFound(sender);
+                Messages.noPlayerFound(sender);
                 return;
             }
 
@@ -57,29 +54,11 @@ public class CommandAdminchat extends CoreCommand {
                 }
             }
 
-            if (!added.isEmpty()) {
-                String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(added), false, false);
-                String names = ListUtils.fromList(NameUtils.toNames(added), false, false);
+            if (!added.isEmpty())
+                Messages.targetNowIn(sender, added, "AdminChat");
 
-                MessageBuilder message = new MessageBuilder();
-                message.append("&6&l» ");
-                message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-                message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now in AdminChat");
-
-                player.sendMessage(message.build());
-            }
-
-            if (!removed.isEmpty()) {
-                String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(added), false, false);
-                String names = ListUtils.fromList(NameUtils.toNames(added), false, false);
-
-                MessageBuilder message = new MessageBuilder();
-                message.append("&6&l» ");
-                message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-                message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer in AdminChat");
-
-                player.sendMessage(message.build());
-            }
+            if (!removed.isEmpty())
+                Messages.targetNoLongerIn(sender, removed, "AdminChat");
         } else
             MessageUtils.broadcast(PermissionType.ADMIN, "&9&lAdmin&6 Console &6&l>&3 " + StringUtils.unsplit(args, ' '));
     }

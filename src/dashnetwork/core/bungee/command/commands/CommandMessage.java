@@ -28,26 +28,14 @@ public class CommandMessage extends CoreCommand {
             User playerUser = User.getUser(player);
 
             if (playerUser.isMuted()) {
-                PunishData data = DataUtils.getMutes().get(player.getUniqueId().toString());
-                Long expire = data.getExpire();
-                String date = expire == null ? "never" : new SimpleDateFormat("MMM d, hh:mm a z").format(new Date(expire));
-
-                MessageBuilder reponse = new MessageBuilder();
-                reponse.append("&6&l» &7You are muted. &6Hover for details")
-                        .hoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                "&6Muted by &7" + data.getBanner()
-                                        + "\n&6Expires &7" + date
-                                        + "\n&6Reason: &7" + data.getReason());
-
-                MessageUtils.message(player, reponse.build());
-
+                Messages.muted(sender, DataUtils.getMutes().get(player.getUniqueId().toString()));
                 return;
             }
 
             ProxiedPlayer target = SelectorUtils.getPlayer(sender, args[0]);
 
             if (target == null) {
-                MessageUtils.noPlayerFound(sender);
+                Messages.noPlayerFound(sender);
                 return;
             }
 
@@ -55,7 +43,7 @@ public class CommandMessage extends CoreCommand {
             String targetReply = targetUser.getReplyTarget();
 
             if (!VanishUtils.canSee(player, target)) {
-                MessageUtils.noPlayerFound(sender);
+                Messages.noPlayerFound(sender);
                 return;
             }
 
@@ -74,7 +62,7 @@ public class CommandMessage extends CoreCommand {
 
             playerUser.privateMessage(targetUser, message);
         } else
-            MessageUtils.playersOnly();
+            Messages.playersOnly();
     }
 
     @Override

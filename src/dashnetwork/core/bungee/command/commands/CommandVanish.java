@@ -53,29 +53,11 @@ public class CommandVanish extends CoreCommand {
             }
         }
 
-        if (!added.isEmpty()) {
-            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(added), false, false);
-            String names = ListUtils.fromList(NameUtils.toNames(added), false, false);
+        if (!added.isEmpty())
+            Messages.targetNowIn(sender, added, "Vanish");
 
-            MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» ");
-            message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now vanished");
-
-            sender.sendMessage(message.build());
-        }
-
-        if (!removed.isEmpty()) {
-            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(removed), false, false);
-            String names = ListUtils.fromList(NameUtils.toNames(removed), false, false);
-
-            MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» ");
-            message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer vanished");
-
-            sender.sendMessage(message.build());
-        }
+        if (!removed.isEmpty())
+            Messages.targetNoLongerIn(sender, removed, "Vanish");
     }
 
     @Override

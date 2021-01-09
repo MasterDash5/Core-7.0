@@ -7,11 +7,13 @@ import dashnetwork.core.bungee.utils.PermissionType;
 import dashnetwork.core.bungee.utils.User;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
+import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CommandVersionlist extends CoreCommand {
 
@@ -36,14 +38,20 @@ public class CommandVersionlist extends CoreCommand {
 
         for (Map.Entry<String, List<ProxiedPlayer>> entry : versionlist.entrySet()) {
             List<ProxiedPlayer> players = entry.getValue();
-            List<String> displaynames = NameUtils.toDisplayNames(players);
-            List<String> names = NameUtils.toNames(players);
+            List<String> displaynamesList = new CopyOnWriteArrayList<>(NameUtils.toDisplayNames(players));
+            List<String> namesList = new CopyOnWriteArrayList<>(NameUtils.toNames(players));
+
+            for (int i = 0; i < players.size(); i++) {
+                displaynamesList.set(i, displaynamesList.get(i) + "&7");
+                namesList.set(i, namesList.get(i) + "&7");
+            }
 
             if (!message.isEmpty())
                 message.append("\n");
 
-            message.append("&6&l» &7[&6" + entry.getKey() + "&7] " + ListUtils.fromList(displaynames, false, false))
-                    .hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + ListUtils.fromList(names, false, false));
+            message.append("&6&l» &6&l[" + entry.getKey() + "] ");
+            message.append("&7" + StringUtils.fromList(displaynamesList, false, false))
+                    .hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + StringUtils.fromList(namesList, false, false));
         }
 
         if (message.isEmpty())

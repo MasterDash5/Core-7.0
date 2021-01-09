@@ -39,7 +39,7 @@ public class CommandNamemc extends CoreCommand {
                 uuid = MojangUtils.getUuidFromName(args[0]).getUuid();
 
                 if (uuid == null) {
-                    MessageUtils.noPlayerFound(sender);
+                    Messages.noPlayerFound(sender);
                     return;
                 }
             }

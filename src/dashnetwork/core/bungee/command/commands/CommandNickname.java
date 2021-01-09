@@ -34,7 +34,7 @@ public class CommandNickname extends CoreCommand {
             target = (ProxiedPlayer) sender;
 
         if (target == null) {
-            MessageUtils.noPlayerFound(sender);
+            Messages.noPlayerFound(sender);
             return;
         }
 

@@ -4,6 +4,7 @@ import dashnetwork.core.bukkit.command.CoreCommand;
 import dashnetwork.core.bukkit.utils.*;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
+import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -55,8 +56,8 @@ public class CommandSpin extends CoreCommand {
         }
 
         if (!added.isEmpty()) {
-            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(added), false, false);
-            String names = ListUtils.fromList(NameUtils.toNames(added), false, false);
+            String displaynames = StringUtils.fromList(NameUtils.toDisplayNames(added), false, false);
+            String names = StringUtils.fromList(NameUtils.toNames(added), false, false);
 
             MessageBuilder message = new MessageBuilder();
             message.append("&6&l» ");
@@ -67,8 +68,8 @@ public class CommandSpin extends CoreCommand {
         }
 
         if (!removed.isEmpty()) {
-            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(removed), false, false);
-            String names = ListUtils.fromList(NameUtils.toNames(removed), false, false);
+            String displaynames = StringUtils.fromList(NameUtils.toDisplayNames(removed), false, false);
+            String names = StringUtils.fromList(NameUtils.toNames(removed), false, false);
 
             MessageBuilder message = new MessageBuilder();
             message.append("&6&l» ");

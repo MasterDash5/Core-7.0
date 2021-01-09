@@ -3,12 +3,10 @@ package dashnetwork.core.bungee.listeners;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import dashnetwork.core.bungee.Core;
-import dashnetwork.core.bungee.utils.DataUtils;
-import dashnetwork.core.bungee.utils.MessageUtils;
-import dashnetwork.core.bungee.utils.PermissionType;
-import dashnetwork.core.bungee.utils.User;
+import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
+import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -82,7 +80,7 @@ public class ConnectListener implements Listener {
                     message.append("&c&lAlt ");
                     message.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
                     message.append("&c&l > ");
-                    message.append("&7hover for list of &6" + alts.size() + " alts").hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + ListUtils.fromList(alts, false, true));
+                    message.append("&7hover for list of &6" + alts.size() + " alts").hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + StringUtils.fromList(alts, false, true));
 
                     for (User online : User.getUsers(true))
                         if (online.inAltSpy())
@@ -90,12 +88,7 @@ public class ConnectListener implements Listener {
                 }
             });
 
-            MessageBuilder message = new MessageBuilder();
-            message.append("&a&l» ");
-            message.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
-            message.append("&a joined the server.");
-
-            MessageUtils.broadcast(PermissionType.NONE, message.build());
+            Messages.joinServer(name, displayname);
         }
     }
 

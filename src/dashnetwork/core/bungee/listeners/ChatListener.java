@@ -46,19 +46,7 @@ public class ChatListener implements Listener {
                 event.setCancelled(true);
 
                 if (user.isMuted()) {
-                    PunishData data = DataUtils.getMutes().get(player.getUniqueId().toString());
-                    Long expire = data.getExpire();
-                    String date = expire == null ? "never" : new SimpleDateFormat("MMM d, hh:mm a z").format(new Date(expire));
-
-                    MessageBuilder reponse = new MessageBuilder();
-                    reponse.append("&6&l» &7You are muted. &6Hover for details")
-                            .hoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                    "&6Muted by &7" + data.getBanner()
-                                            + "\n&6Expires &7" + date
-                                            + "\n&6Reason: &7" + data.getReason());
-
-                    MessageUtils.message(user, reponse.build());
-
+                    Messages.muted(user, DataUtils.getMutes().get(player.getUniqueId().toString()));
                     return;
                 }
 
@@ -70,7 +58,7 @@ public class ChatListener implements Listener {
                 boolean admin = user.isAdmin();
                 boolean staff = user.isStaff();
 
-                // Definitely a better way to do this
+                // Not really a better way to do this
 
                 if (owner && LazyUtils.anyStartsWithIgnoreCase(message, "@oc", "@dc"))
                     user.chat(Channel.OWNER, trimmed);

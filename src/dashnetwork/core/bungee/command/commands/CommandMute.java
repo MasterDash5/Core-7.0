@@ -37,7 +37,7 @@ public class CommandMute extends CoreCommand {
                 Username[] usernames = MojangUtils.getNameHistoryFromUuid(target);
 
                 if (usernames == null) {
-                    MessageUtils.noPlayerFound(sender);
+                    Messages.noPlayerFound(sender);
                     return;
                 }
 
@@ -52,7 +52,7 @@ public class CommandMute extends CoreCommand {
                 PlayerProfile profile = MojangUtils.getUuidFromName(args[0]);
 
                 if (profile == null) {
-                    MessageUtils.noPlayerFound(sender);
+                    Messages.noPlayerFound(sender);
                     return;
                 }
 

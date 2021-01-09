@@ -46,7 +46,7 @@ public class CommandServer extends CoreCommand {
                         message.append("&6" + name)
                                 .hoverEvent(HoverEvent.Action.SHOW_TEXT, "&7Click to connect to &6" + name
                                         + "\n&7Version: &6" + server.getVersion()
-                                        + "\n&6" + server.getPlayers().size() + "&7 Players")
+                                        + "\n&6" + server.getPlayers(!user.isStaff()).size() + "&7 Players")
                                 .clickEvent(ClickEvent.Action.RUN_COMMAND, "/server " + name);
                     }
                 }
@@ -63,48 +63,35 @@ public class CommandServer extends CoreCommand {
             targets.add((ProxiedPlayer) sender);
 
         if (targets.isEmpty()) {
-            MessageUtils.noPlayerFound(sender);
+            Messages.noPlayerFound(sender);
             return;
         }
 
-        EnumServer server = EnumServer.valueOf(args[0].toUpperCase());
+        EnumServer server;
 
-        if (server == null || !server.getPermission().hasPermission(sender)) {
+        try {
+            server = EnumServer.valueOf(args[0].toUpperCase());
+        } catch (IllegalArgumentException exception) {
+            MessageUtils.message(sender, "&6&l»&7 Couldn't find server &6" + args[0]);
+            return;
+        }
+
+        if (!server.getPermission().hasPermission(sender)) {
             MessageUtils.message(sender, "&6&l»&7 Couldn't find server &6" + args[0]);
             return;
         }
 
         List<ProxiedPlayer> moved = new ArrayList<>();
-        String name = server.getName();
 
         for (ProxiedPlayer target : targets) {
             if (target.equals(sender))
-                MessageUtils.message(target, "&6&l» &7Sending you to &6" + name);
-            else {
-                MessageBuilder message = new MessageBuilder();
-                message.append("&6&l» ");
-                message.append("&6" + NameUtils.getDisplayName(sender)).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + NameUtils.getName(sender));
-                message.append("&7 sent you to &6" + name);
-
-                target.sendMessage(message.build());
-
-                moved.add(target);
-            }
-
-            server.send(target);
+                Messages.sentToServer(target, server);
+            else
+                Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
         }
 
-        if (!moved.isEmpty()) {
-            String displaynames = ListUtils.fromList(NameUtils.toDisplayNames(moved), false, false);
-            String names = ListUtils.fromList(NameUtils.toNames(moved), false, false);
-
-            MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» ");
-            message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (moved.size() > 1 ? "were" : "was") + " moved to &6" + name);
-
-            sender.sendMessage(message.build());
-        }
+        if (!moved.isEmpty())
+            Messages.targetSentToServer(sender, moved, server);
     }
 
     @Override

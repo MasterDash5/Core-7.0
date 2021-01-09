@@ -1,12 +1,8 @@
 package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
-import dashnetwork.core.bungee.utils.DataUtils;
-import dashnetwork.core.bungee.utils.MessageUtils;
-import dashnetwork.core.bungee.utils.NameUtils;
-import dashnetwork.core.bungee.utils.PermissionType;
+import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.utils.MessageBuilder;
-import dashnetwork.core.bungee.utils.MojangUtils;
 import dashnetwork.core.utils.PlayerProfile;
 import dashnetwork.core.utils.PunishData;
 import net.md_5.bungee.api.CommandSender;
@@ -55,7 +51,7 @@ public class CommandUnmute extends CoreCommand {
             PlayerProfile profile = MojangUtils.getUuidFromName(args[0]);
 
             if (profile == null) {
-                MessageUtils.noPlayerFound(sender);
+                Messages.noPlayerFound(sender);
                 return;
             }
 

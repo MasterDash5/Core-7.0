@@ -26,7 +26,7 @@ public class CommandPlayerinfo extends CoreCommand {
             ProxiedPlayer target = SelectorUtils.getPlayer(sender, args[0]);
 
             if (target == null) {
-                MessageUtils.noPlayerFound(sender);
+                Messages.noPlayerFound(sender);
                 return;
             }
 

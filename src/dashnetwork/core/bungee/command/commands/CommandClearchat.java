@@ -27,7 +27,7 @@ public class CommandClearchat extends CoreCommand {
             targets.addAll(bungee.getPlayers());
 
         if (targets.isEmpty()) {
-            MessageUtils.noPlayerFound(sender);
+            Messages.noPlayerFound(sender);
             return;
         }
 

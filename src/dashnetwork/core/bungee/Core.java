@@ -79,7 +79,9 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandPlayerinfo());
         manager.registerCommand(this, new CommandPvp());
         manager.registerCommand(this, new CommandReply());
+        manager.registerCommand(this, new CommandServer());
         manager.registerCommand(this, new CommandSignspy());
+        manager.registerCommand(this, new CommandSkyblock());
         manager.registerCommand(this, new CommandStaff());
         manager.registerCommand(this, new CommandStaffchat());
         manager.registerCommand(this, new CommandSurvival());

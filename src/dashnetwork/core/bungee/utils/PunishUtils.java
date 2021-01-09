@@ -48,8 +48,9 @@ public class PunishUtils {
         String username = NameUtils.getName(punisher);
         String displayname = NameUtils.getDisplayName(punisher);
         String date = expire == null ? "never" : formatter.format(new Date(expire));
+        PunishData punish = new PunishData(expire, username, reason);
 
-        mutes.put(uuid.toString(), new PunishData(expire, username, reason));
+        mutes.put(uuid.toString(), punish);
 
         MessageBuilder broadcast = new MessageBuilder();
         broadcast.append("&6&l» ");
@@ -63,17 +64,8 @@ public class PunishUtils {
 
         ProxiedPlayer target = bungee.getPlayer(uuid);
 
-        if (target != null) {
-            MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» ");
-            message.append("&7you have been muted. &6Hover for details")
-                    .hoverEvent(HoverEvent.Action.SHOW_TEXT,
-                            "&6Muted by &7" + username
-                                    + "\n&6Expires &7" + date
-                                    + "\n&6For &7" + reason);
-
-            MessageUtils.message(target, message.build());
-        }
+        if (target != null)
+            Messages.muted(target, punish);
     }
 
     public static void ban(UUID uuid, String name, Long expire, CommandSender punisher, String reason) {

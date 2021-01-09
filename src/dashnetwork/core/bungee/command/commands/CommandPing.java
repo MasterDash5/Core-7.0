@@ -25,7 +25,7 @@ public class CommandPing extends CoreCommand {
             target = (ProxiedPlayer) sender;
 
         if (target == null || !VanishUtils.canSee(sender, target)) {
-            MessageUtils.noPlayerFound(sender);
+            Messages.noPlayerFound(sender);
             return;
         }
 

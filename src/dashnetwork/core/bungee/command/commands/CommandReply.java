@@ -4,12 +4,9 @@ import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.utils.*;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.UUID;
 
 public class CommandReply extends CoreCommand {
@@ -30,19 +27,7 @@ public class CommandReply extends CoreCommand {
             User playerUser = User.getUser(player);
 
             if (playerUser.isMuted()) {
-                PunishData data = DataUtils.getMutes().get(player.getUniqueId().toString());
-                Long expire = data.getExpire();
-                String date = expire == null ? "never" : new SimpleDateFormat("MMM d, hh:mm a z").format(new Date(expire));
-
-                MessageBuilder reponse = new MessageBuilder();
-                reponse.append("&6&l» &7You are muted. &6Hover for details")
-                        .hoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                "&6Muted by &7" + data.getBanner()
-                                        + "\n&6Expires &7" + date
-                                        + "\n&6Reason: &7" + data.getReason());
-
-                MessageUtils.message(player, reponse.build());
-
+                Messages.muted(sender, DataUtils.getMutes().get(player.getUniqueId().toString()));
                 return;
             }
 
@@ -57,7 +42,7 @@ public class CommandReply extends CoreCommand {
             User targetUser = User.getUser(target);
 
             if (!VanishUtils.canSee(player, target)) {
-                MessageUtils.noPlayerFound(sender);
+                Messages.noPlayerFound(sender);
                 return;
             }
 
@@ -68,7 +53,7 @@ public class CommandReply extends CoreCommand {
 
             playerUser.privateMessage(targetUser, message);
         } else
-            MessageUtils.playersOnly();
+            Messages.playersOnly();
     }
 
     @Override

@@ -2,6 +2,7 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.MessageUtils;
+import dashnetwork.core.bungee.utils.Messages;
 import dashnetwork.core.bungee.utils.PermissionType;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -39,7 +40,7 @@ public class CommandBungeebuild extends CoreCommand {
 
                 MessageUtils.message(sender, "&6&l» &6" + target.getDescription().getName() + " &7jar modified on &6" + date);
             } catch (Exception exception) {
-                MessageUtils.sendException(sender, exception);
+                Messages.exception(sender, exception);
                 exception.printStackTrace();
             }
         } else
