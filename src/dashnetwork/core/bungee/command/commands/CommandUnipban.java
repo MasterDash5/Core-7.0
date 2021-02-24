@@ -28,7 +28,7 @@ public class CommandUnipban extends CoreCommand {
 
         String address = args[0];
 
-        DataUtils.getBans().remove(address);
+        DataUtils.getIpbans().remove(address);
 
         MessageBuilder broadcast = new MessageBuilder();
         broadcast.append("&6&l» ");

@@ -29,7 +29,7 @@ public class CommandBan extends CoreCommand {
 
         try {
             target = UUID.fromString(args[0]);
-            name = names.get(target);
+            name = names.get(target.toString());
 
             if (name == null) {
                 MessageUtils.message(sender, "&6&l» &7Unable to find player locally. Looking up from Mojang...");
@@ -60,11 +60,11 @@ public class CommandBan extends CoreCommand {
                 name = profile.getName();
             } else {
                 target = UUID.fromString(fromName);
-                name = names.get(target);
+                name = names.get(target.toString());
             }
         }
 
-        String reason = "no reason provided";
+        String reason = "reason not provided";
 
         if (length > 1) {
             List<String> list = new ArrayList<>(Arrays.asList(args));

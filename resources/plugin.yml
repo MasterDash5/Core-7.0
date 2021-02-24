@@ -11,6 +11,10 @@ commands:
   clearlag:
     aliases: [cl]
   console:
+  fly:
+    aliases: [flight]
+  gamemode:
+    aliases: [gm, gmc, gms, gma, gmsp]
   killears:
   mommy:
     aliases: [daddy, grandma, grandpa, aunt, uncle]

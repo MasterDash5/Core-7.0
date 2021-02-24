@@ -24,20 +24,11 @@ public class CommandList extends CoreCommand {
         Map<String, List<ProxiedPlayer>> players = new HashMap<>();
         int total = 0;
 
-        for (EnumServer server : EnumServer.values()) {
-            if (!server.getPermission().hasPermission(sender)) {
-                List<ProxiedPlayer> list = new ArrayList<>();
+        for (ServerInfo server : ServerUtils.getServers()) {
+            if (ServerUtils.hasPermission(sender, server)) {
+                List<ProxiedPlayer> list = ServerUtils.getPlayers(server, staff);
 
-                for (ProxiedPlayer player : server.getPlayers(!staff)) {
-                    User user = User.getUser(player);
-
-                    if (!user.isVanished() || staff) {
-                        list.add(player);
-                        total++;
-                    }
-                }
-
-                players.put(server.getName(), list);
+                players.put(server.getMotd(), list);
             }
         }
 
@@ -48,14 +39,11 @@ public class CommandList extends CoreCommand {
             String name = entry.getKey();
             List<ProxiedPlayer> list = entry.getValue();
             List<String> displaynamesList = new CopyOnWriteArrayList<>(NameUtils.toDisplayNames(list));
-            List<String> namesList = new CopyOnWriteArrayList<>(NameUtils.toNames(list));
 
-            for (int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < list.size(); i++)
                 displaynamesList.set(i, displaynamesList.get(i) + "&7");
-                namesList.set(i, namesList.get(i) + "&7");
-            }
 
-            String displaynames = StringUtils.fromList(NameUtils.toDisplayNames(list), false, false);
+            String displaynames = StringUtils.fromList(displaynamesList, false, false);
             String names = StringUtils.fromList(NameUtils.toNames(list), false, false);
 
             message.append("\n&6&l[" + name + "]: ");

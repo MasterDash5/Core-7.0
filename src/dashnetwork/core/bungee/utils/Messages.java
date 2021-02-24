@@ -5,6 +5,7 @@ import dashnetwork.core.utils.*;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.text.SimpleDateFormat;
@@ -16,16 +17,15 @@ public class Messages {
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("MMM d, hh:mma z");
     private static BungeeCord bungee = BungeeCord.getInstance();
 
-    public static void forcedToServer(CommandSender sender, String username, String displayname, EnumServer server) {
-        int players = server.getPlayers(!PermissionType.STAFF.hasPermission(sender)).size();
-        String serverName = server.getName();
+    public static void forcedToServer(CommandSender sender, String username, String displayname, ServerInfo server) {
+        int players = ServerUtils.getPlayers(server, PermissionType.STAFF.hasPermission(sender)).size();
+        String serverName = server.getMotd();
         MessageBuilder message = new MessageBuilder();
 
         message.append("&6&l» ");
         message.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + username);
         message.append("&7 sent you to ");
         message.append("&6" + serverName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6&l" + serverName
-                + "\n&7Version: " + server.getVersion()
                 + "\n&6" + players + " &7Players");
 
         message(sender, message.build());
@@ -84,26 +84,25 @@ public class Messages {
         message(bungee.getConsole(), "&6&l» &cOnly players can do that.");
     }
 
-    public static void exception(CommandSender sender, Exception exception) {
-        String stacktrace = "&6" + exception.getClass().getName();
+    public static void printStackTrace(CommandSender sender, StackTraceElement[] elements) {
+        String stacktrace = "&6" + elements[0].getClassName();
 
-        for (StackTraceElement element : exception.getStackTrace())
+        for (StackTraceElement element : elements)
             stacktrace += "\n&6at &7" + element.getClassName() + ": &6" + String.valueOf(element.getLineNumber()).replace("-1", "Unknown source");
 
         MessageBuilder message = new MessageBuilder();
-        message.append("&6&l» &7An error occurred... hover for more info").hoverEvent(HoverEvent.Action.SHOW_TEXT, stacktrace);
+        message.append("&6&l» &7Printed stacktrace... hover to view").hoverEvent(HoverEvent.Action.SHOW_TEXT, stacktrace);
 
         message(sender, message.build());
     }
 
-    public static void sentToServer(CommandSender sender, EnumServer server) {
-        int players = server.getPlayers(!PermissionType.STAFF.hasPermission(sender)).size();
-        String serverName = server.getName();
+    public static void sentToServer(CommandSender sender, ServerInfo server) {
+        int players = ServerUtils.getPlayers(server, PermissionType.STAFF.hasPermission(sender)).size();
+        String serverName = server.getMotd();
         MessageBuilder message = new MessageBuilder();
 
         message.append("&6&l» &7Sending you to ");
         message.append("&6" + serverName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6&l" + serverName
-                + "\n&7Version: " + server.getVersion()
                 + "\n&6" + players + " &7Players");
 
         message(sender, message.build());
@@ -133,9 +132,9 @@ public class Messages {
         message(sender, message.build());
     }
 
-    public static void targetSentToServer(CommandSender sender, List<ProxiedPlayer> targets, EnumServer server) {
-        int players = server.getPlayers(!PermissionType.STAFF.hasPermission(sender)).size();
-        String serverName = server.getName();
+    public static void targetSentToServer(CommandSender sender, List<ProxiedPlayer> targets, ServerInfo server) {
+        int players = ServerUtils.getPlayers(server, PermissionType.STAFF.hasPermission(sender)).size();
+        String serverName = server.getMotd();
         String displaynames = StringUtils.fromList(NameUtils.toDisplayNames(targets), false, false);
         String names = StringUtils.fromList(NameUtils.toNames(targets), false, false);
 
@@ -144,7 +143,6 @@ public class Messages {
         message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
         message.append("&7 " + (targets.size() > 1 ? "were" : "was") + " moved to ");
         message.append("&6" + serverName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6&l" + serverName
-                + "\n&7Version: " + server.getVersion()
                 + "\n&6" + players + " &7Players");
 
         message(sender, message.build());

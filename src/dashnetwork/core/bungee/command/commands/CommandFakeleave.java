@@ -5,10 +5,8 @@ import dashnetwork.core.bungee.utils.CompletionUtils;
 import dashnetwork.core.bungee.utils.MessageUtils;
 import dashnetwork.core.bungee.utils.Messages;
 import dashnetwork.core.bungee.utils.PermissionType;
-import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.HoverEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;

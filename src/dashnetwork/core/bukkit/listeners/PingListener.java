@@ -18,7 +18,7 @@ public class PingListener implements Listener {
     public PingListener() {
         try {
             ClassLoader loader = Core.class.getClassLoader();
-            BufferedImage image = ImageIO.read(loader.getResource("warning-icon.png"));
+            BufferedImage image = ImageIO.read(loader.getResource("assets/warning.png"));
 
             icon = Bukkit.loadServerIcon(image);
         } catch (Exception exception) {

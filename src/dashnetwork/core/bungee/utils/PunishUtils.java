@@ -38,8 +38,9 @@ public class PunishUtils {
         MessageBuilder broadcast = new MessageBuilder();
         broadcast.append("&6&l» &6" + displayname + "&7 kicked &6" + user.getName())
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        "&6Kicked by &7" + name
-                        + "\n&6For &c" + reason);
+                        "&6" + player.getUniqueId().toString()
+                                + "\n&6Kicked by &7" + name
+                                + "\n&6For &c" + reason);
 
         MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
     }
@@ -56,9 +57,10 @@ public class PunishUtils {
         broadcast.append("&6&l» ");
         broadcast.append("&6" + displayname + "&7 muted &6" + name)
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        "&6Muted by &7" + username
-                        + "\n&6Expires &7" + date
-                        + "\n&6For &7" + reason);
+                        "&6" + uuid.toString()
+                                + "\n&6Muted by &7" + username
+                                + "\n&6Expires &7" + date
+                                + "\n&6For &7" + reason);
 
         MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
 
@@ -91,7 +93,8 @@ public class PunishUtils {
         broadcast.append("&6&l» ");
         broadcast.append("&6" + displayname + "&7 banned &6" + name)
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        "&6Banned by &7" + username
+                        "&6" + uuid.toString()
+                                + "\n&6Banned by &7" + username
                                 + "\n&6Expires &7" + date
                                 + "\n&6For &7" + reason);
 

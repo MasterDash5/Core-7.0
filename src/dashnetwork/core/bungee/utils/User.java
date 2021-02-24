@@ -16,6 +16,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.plugin.PluginManager;
 
 import java.util.Collection;
@@ -291,14 +292,8 @@ public class User implements CommandSender {
         return false;
     }
 
-    public EnumServer getConnectedServer() {
-        ServerInfo info = player.getServer().getInfo();
-
-        for (EnumServer server : EnumServer.values())
-            if (server.name().equalsIgnoreCase(info.getMotd()))
-                return server;
-
-        return null;
+    public ServerInfo getConnectedServer() {
+        return player.getServer().getInfo();
     }
 
     public String getDisplayName() {

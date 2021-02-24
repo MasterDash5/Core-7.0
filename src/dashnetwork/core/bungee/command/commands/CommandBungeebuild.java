@@ -40,8 +40,8 @@ public class CommandBungeebuild extends CoreCommand {
 
                 MessageUtils.message(sender, "&6&l» &6" + target.getDescription().getName() + " &7jar modified on &6" + date);
             } catch (Exception exception) {
-                Messages.exception(sender, exception);
                 exception.printStackTrace();
+                Messages.printStackTrace(sender, exception.getStackTrace());
             }
         } else
             MessageUtils.message(sender, "&6&l» &7/bukkitbuild <plugin>");

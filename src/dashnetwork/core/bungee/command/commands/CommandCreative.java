@@ -3,6 +3,7 @@ package dashnetwork.core.bungee.command.commands;
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class CommandCreative extends CoreCommand {
             return;
         }
 
-        EnumServer server = EnumServer.CREATIVE;
+        ServerInfo server = ServerUtils.getServer("creative");
         List<ProxiedPlayer> moved = new ArrayList<>();
 
         for (ProxiedPlayer target : targets) {
@@ -37,6 +38,8 @@ public class CommandCreative extends CoreCommand {
                 Messages.sentToServer(target, server);
             else
                 Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+
+            target.connect(server);
         }
 
         if (!moved.isEmpty())

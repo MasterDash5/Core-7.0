@@ -2,7 +2,6 @@ package dashnetwork.core.bukkit.command.commands;
 
 import dashnetwork.core.bukkit.command.CoreCommand;
 import dashnetwork.core.bukkit.utils.*;
-import dashnetwork.core.utils.ListUtils;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -13,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandSpin extends CoreCommand {
+public class CommandFly extends CoreCommand {
 
-    public CommandSpin() {
-        super(true, PermissionType.OWNER, "spin");
+    public CommandFly() {
+        super(true, PermissionType.ADMIN, "fly");
     }
 
     @Override
@@ -29,7 +28,7 @@ public class CommandSpin extends CoreCommand {
             targets.add((Player) sender);
 
         if (targets.isEmpty()) {
-            MessageUtils.noPlayerFound(sender);
+            MessageUtils.message(sender, "&6&l» &7/fly <player>");
             return;
         }
 
@@ -38,21 +37,27 @@ public class CommandSpin extends CoreCommand {
 
         for (Player target : targets) {
             User user = User.getUser(target);
-            boolean spinning = !user.isSpinning();
+            boolean flight = !target.getAllowFlight();
+            MessageBuilder message = new MessageBuilder();
 
-            user.setSpinning(spinning);
+            target.setAllowFlight(flight);
+            message.append("&6&l» &7Set fly mode");
 
-            if (spinning) {
-                MessageUtils.message(target, "&6&l» &7You spin me right round baby right round");
+            if (flight) {
+                message.append("&a enabled &7for ");
 
                 if (!target.equals(sender))
                     added.add(target);
             } else {
-                MessageUtils.message(target, "&6&l» &7You are no longer spinning");
+                message.append("&c disabled &7for ");
 
                 if (!target.equals(sender))
                     removed.add(target);
             }
+
+            message.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + target.getName());
+
+            MessageUtils.message(target, message.build());
         }
 
         if (!added.isEmpty()) {
@@ -60,11 +65,10 @@ public class CommandSpin extends CoreCommand {
             String names = StringUtils.fromList(NameUtils.toNames(added), false, false);
 
             MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» ");
+            message.append("&6&l» &7Set fly mode &aenabled &7for ");
             message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (added.size() > 1 ? "are" : "is") + " now spinning");
 
-            sender.sendMessage(message.build());
+            MessageUtils.message(sender, message.build());
         }
 
         if (!removed.isEmpty()) {
@@ -72,11 +76,10 @@ public class CommandSpin extends CoreCommand {
             String names = StringUtils.fromList(NameUtils.toNames(removed), false, false);
 
             MessageBuilder message = new MessageBuilder();
-            message.append("&6&l» ");
+            message.append("&6&l» &7Set fly mode &cdisabled &7for ");
             message.append("&6" + displaynames).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + names);
-            message.append("&7 " + (removed.size() > 1 ? "are" : "is") + " no longer spinning");
 
-            sender.sendMessage(message.build());
+            MessageUtils.message(sender, message.build());
         }
     }
 

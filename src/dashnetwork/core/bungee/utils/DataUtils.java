@@ -14,8 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DataUtils {
 
-    private static Core plugin = Core.getInstance();
-    private static File folder = plugin.getDataFolder();
+    private static File folder = new File(Core.getInstance().getDataFolder(), "data");
     private static File ipsFile = new File(folder, "ips.yml");
     private static File namesFile = new File(folder, "names.yml");
     private static File nicknamesFile = new File(folder, "nicknames.yml");

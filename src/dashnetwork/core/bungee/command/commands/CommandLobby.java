@@ -2,10 +2,8 @@ package dashnetwork.core.bungee.command.commands;
 
 import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
-import dashnetwork.core.utils.ListUtils;
-import dashnetwork.core.utils.MessageBuilder;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ public class CommandLobby extends CoreCommand {
             return;
         }
 
-        EnumServer server = EnumServer.LOBBY;
+        ServerInfo server = ServerUtils.getServer("lobby");
         List<ProxiedPlayer> moved = new ArrayList<>();
 
         for (ProxiedPlayer target : targets) {
@@ -40,6 +38,8 @@ public class CommandLobby extends CoreCommand {
                 Messages.sentToServer(target, server);
             else
                 Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+
+            target.connect(server);
         }
 
         if (!moved.isEmpty())

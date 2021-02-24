@@ -1,7 +1,8 @@
 package dashnetwork.core.bukkit.utils;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import dashnetwork.core.utils.ColorUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -9,8 +10,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.material.MaterialData;
+import org.bukkit.inventory.meta.SkullMeta;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class ItemMaker {
@@ -20,6 +22,7 @@ public class ItemMaker {
     private int amount;
     private String name;
     private Color color;
+    private GameProfile profile;
     private List<String> lore;
     private List<ItemFlag> itemFlags;
     private Map<Enchantment, Integer> enchantments;
@@ -62,6 +65,17 @@ public class ItemMaker {
 
     public ItemMaker color(Color color) {
         this.color = color;
+        return this;
+    }
+
+    public ItemMaker head(GameProfile profile) {
+        this.profile = profile;
+        return this;
+    }
+
+    public ItemMaker head(String texture) {
+        this.profile = new GameProfile(UUID.randomUUID(), null);
+        this.profile.getProperties().put("textures", new Property("textures", texture));
         return this;
     }
 
@@ -110,6 +124,20 @@ public class ItemMaker {
                     leatherArmorMeta.setColor(color);
 
                 item.setItemMeta(leatherArmorMeta);
+            }
+
+            if (meta instanceof SkullMeta) {
+                SkullMeta skullMeta = (SkullMeta) meta;
+
+                if (profile != null) {
+                    try {
+                        Field field = skullMeta.getClass().getDeclaredField("profile");
+                        field.setAccessible(true);
+                        field.set(skullMeta, profile);
+
+                        item.setItemMeta(skullMeta);
+                    } catch (NoSuchFieldException | IllegalAccessException exception) {}
+                }
             }
         }
 

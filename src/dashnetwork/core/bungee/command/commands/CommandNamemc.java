@@ -80,7 +80,7 @@ public class CommandNamemc extends CoreCommand {
 
         if (fromUuid) {
             boolean steve = uuid.hashCode() % 2 == 0;
-            String png = steve ? "steve.png" : "alex.png";
+            String png = steve ? "assets/steve.png" : "assets/alex.png";
 
             try {
                 head = ImageIO.read(Core.class.getClassLoader().getResource(png));

@@ -27,6 +27,9 @@ public class Core extends JavaPlugin {
 
         channelListener = new ChannelListener();
 
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+
         Messenger messenger = getServer().getMessenger();
         messenger.registerOutgoingPluginChannel(this, "dn:broadcast");
         messenger.registerIncomingPluginChannel(this, "dn:displayname", channelListener);
@@ -52,6 +55,8 @@ public class Core extends JavaPlugin {
         new CommandCenter();
         new CommandClearlag();
         new CommandConsole();
+        new CommandFly();
+        new CommandGamemode();
         new CommandKillears();
         new CommandMommy();
         new CommandNightvision();

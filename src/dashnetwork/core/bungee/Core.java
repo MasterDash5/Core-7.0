@@ -2,6 +2,7 @@ package dashnetwork.core.bungee;
 
 import dashnetwork.core.bungee.command.commands.*;
 import dashnetwork.core.bungee.listeners.*;
+import dashnetwork.core.bungee.pain.Pain;
 import dashnetwork.core.bungee.tasks.PunishTask;
 import dashnetwork.core.bungee.tasks.SaveTask;
 import dashnetwork.core.bungee.tasks.UserTask;
@@ -16,15 +17,23 @@ import java.util.concurrent.TimeUnit;
 
 public class Core extends Plugin {
 
+    private static Pain pain;
     private static Core instance;
 
     public static Core getInstance() {
         return instance;
     }
 
+    public static Pain getPain() {
+        return pain;
+    }
+
     @Override
     public void onEnable() {
         instance = this;
+
+        // pain = new Pain(); TODO: Finish Pain
+        // pain.start();
 
         DataUtils.startup();
 
@@ -44,6 +53,7 @@ public class Core extends Plugin {
         manager.registerListener(this, new ChannelListener());
         manager.registerListener(this, new ChatListener());
         manager.registerListener(this, new ConnectListener());
+        manager.registerListener(this, new JoinListener());
         manager.registerListener(this, new KickListener());
         manager.registerListener(this, new LoginListener());
         manager.registerListener(this, new PingListener());
@@ -100,6 +110,8 @@ public class Core extends Plugin {
     public void onDisable() {
         for (User user : User.getUsers(false))
             user.remove();
+
+        pain.stop();
 
         DataUtils.save();
     }

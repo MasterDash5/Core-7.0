@@ -3,10 +3,14 @@ package dashnetwork.core.bungee.utils;
 import dashnetwork.core.utils.StringUtils;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.minecraft.server.v1_8_R3.EnumDirection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CompletionUtils {
 
@@ -28,14 +32,27 @@ public class CompletionUtils {
     public static List<String> servers(CommandSender sender, String argument) {
         List<String> servers = new ArrayList<>();
 
-        for (EnumServer server : EnumServer.values()) {
-            String name = server.getName();
+        for (ServerInfo server : ServerUtils.getServers()) {
+            String name = server.getMotd();
 
-            if (server.getPermission().hasPermission(sender) && StringUtils.startsWithIgnoreCase(name, argument))
+            if (ServerUtils.hasPermission(sender, server) && StringUtils.startsWithIgnoreCase(name, argument))
                 servers.add(name);
         }
 
         return servers;
+    }
+
+    public static List<String> fromEnum(CommandSender sender, String argument, Enum[] array) {
+        List<String> list = new ArrayList<>();
+
+        for (Enum entry : array) {
+            String name = entry.name().toLowerCase();
+
+            if (StringUtils.startsWithIgnoreCase(name, argument))
+                list.add(name);
+        }
+
+        return list;
     }
 
 }

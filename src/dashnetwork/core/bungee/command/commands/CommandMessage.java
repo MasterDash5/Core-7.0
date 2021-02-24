@@ -4,10 +4,8 @@ import dashnetwork.core.bungee.command.CoreCommand;
 import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.utils.*;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CommandMessage extends CoreCommand {
