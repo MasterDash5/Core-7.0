@@ -73,7 +73,9 @@ public class CommandMute extends CoreCommand {
             reason = StringUtils.unsplit(list, ' ');
         }
 
-        PunishUtils.mute(target, name, null, sender, reason);
+        OfflineUser offline = OfflineUser.getOfflineUser(target, name);
+
+        PunishUtils.mute(offline, sender, null, reason);
     }
 
     @Override

@@ -82,7 +82,9 @@ public class CommandTempmute extends CoreCommand {
             reason = StringUtils.unsplit(list, ' ');
         }
 
-        PunishUtils.mute(target, name, duration, sender, reason);
+        OfflineUser offline = OfflineUser.getOfflineUser(target, name);
+
+        PunishUtils.mute(offline, sender, duration, reason);
     }
 
     @Override

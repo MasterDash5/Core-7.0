@@ -1,5 +1,7 @@
 package dashnetwork.core.bungee.utils;
 
+import dashnetwork.core.utils.MapUtils;
+import dashnetwork.core.utils.PlayerProfile;
 import dashnetwork.core.utils.Username;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
@@ -69,5 +71,36 @@ public class NameUtils {
 
         return displayNames;
     }
+
+    public static String getUsername(UUID uuid) {
+        String username = DataUtils.getNames().get(uuid.toString());
+
+        if (username == null) {
+            Username[] usernames = MojangUtils.getNameHistoryFromUuid(uuid);
+
+            if (usernames == null)
+                return null;
+
+            username = usernames[usernames.length - 1].getName();
+        }
+
+        return username;
+    }
+
+    public static UUID getUUID(String username) {
+        String uuid = MapUtils.getKeyFromValue(DataUtils.getNames(), username);
+
+        if (uuid == null) {
+            PlayerProfile profile = MojangUtils.getUuidFromName(username);
+
+            if (profile == null)
+                return null;
+
+            uuid = profile.getUuid().toString();
+        }
+
+        return UUID.fromString(uuid);
+    }
+
 
 }

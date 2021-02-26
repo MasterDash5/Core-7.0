@@ -18,6 +18,7 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class JoinListener implements Listener {
 
@@ -32,13 +33,24 @@ public class JoinListener implements Listener {
 
         Map<String, List<String>> ips = DataUtils.getIps();
         Map<String, String> names = DataUtils.getNames();
-        List<String> uuids = ips.getOrDefault(address, new ArrayList<>());
+        List<String> uuids = ips.getOrDefault(address, new CopyOnWriteArrayList<>());
 
         if (!uuids.contains(uuid))
             uuids.add(uuid);
 
         names.put(player.getUniqueId().toString(), player.getName());
         ips.put(address, uuids);
+
+        for (Map.Entry<String, List<String>> entry : ips.entrySet()) {
+            String ip = entry.getKey();
+
+            if (!ip.equals(address)) {
+                List<String> list = entry.getValue();
+                list.remove(uuid);
+
+                entry.setValue(list);
+            }
+        }
 
         BungeeCord.getInstance().getScheduler().runAsync(Core.getInstance(), () -> {
             List<String> alts = new ArrayList<>();

@@ -73,7 +73,9 @@ public class CommandBan extends CoreCommand {
             reason = StringUtils.unsplit(list, ' ');
         }
 
-        PunishUtils.ban(target, name, null, sender, reason);
+        OfflineUser offline = OfflineUser.getOfflineUser(target, name);
+
+        PunishUtils.ban(offline, sender, null, reason);
     }
 
     @Override

@@ -8,7 +8,6 @@ public class MapUtils {
         for (Map.Entry<K, V> entry : map.entrySet())
             if (entry.getValue().equals(value))
                 return entry.getKey();
-
         return null;
     }
 

@@ -19,13 +19,14 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.plugin.PluginManager;
 
+import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class User implements CommandSender {
+public class User extends OfflineUser implements CommandSender {
 
     private static List<User> users = new CopyOnWriteArrayList<>();
     private static BungeeCord bungee = BungeeCord.getInstance();
@@ -33,25 +34,19 @@ public class User implements CommandSender {
     private static PluginManager pluginManager = bungee.getPluginManager();
     private static LuckPerms lp = LuckPermsProvider.get();
     private ProxiedPlayer player;
-    private String replyTarget, nickname, displayName;
-    private boolean staffChat, adminChat, ownerChat, localChat, commandSpy, altSpy, pingSpy, signSpy, vanished;
+    private String replyTarget, displayName;
+    private boolean localChat, signSpy, vanished;
 
     private User(ProxiedPlayer player) {
+        super(player.getUniqueId(), player.getName());
+
         this.player = player;
         this.replyTarget = null;
-        this.nickname = null;
         this.displayName = null;
-        this.staffChat = false;
-        this.adminChat = false;
-        this.ownerChat = false;
         this.localChat = false;
-        this.commandSpy = false;
-        this.altSpy = false;
-        this.pingSpy = false;
         this.signSpy = false;
         this.vanished = false;
 
-        loadSaves();
         updateDisplayName(false);
 
         users.add(this);
@@ -71,34 +66,9 @@ public class User implements CommandSender {
         return new User(player);
     }
 
-    public void loadSaves() {
-        String uuid = player.getUniqueId().toString();
-        Map<String, String> nicknameMap = DataUtils.getNicknames();
-
-        if (nicknameMap.containsKey(uuid))
-            this.nickname = nicknameMap.get(uuid);
-
-        if (DataUtils.getStaffchat().contains(uuid))
-            this.staffChat = true;
-
-        if (DataUtils.getAdminchat().contains(uuid))
-            this.adminChat = true;
-
-        if (DataUtils.getOwnerchat().contains(uuid))
-            this.ownerChat = true;
-
-        if (DataUtils.getCommandspy().contains(uuid))
-            this.commandSpy = true;
-
-        if (DataUtils.getAltspy().contains(uuid))
-            this.altSpy = true;
-
-        if (DataUtils.getPingspy().contains(uuid))
-            this.pingSpy = true;
-    }
-
     public void save() {
         String uuid = player.getUniqueId().toString();
+        Map<String, Long> lastplayedMap = DataUtils.getLastplayed();
         Map<String, String> nicknameMap = DataUtils.getNicknames();
         List<String> staffchatList = DataUtils.getStaffchat();
         List<String> adminchatList = DataUtils.getAdminchat();
@@ -106,6 +76,8 @@ public class User implements CommandSender {
         List<String> commandspyList = DataUtils.getCommandspy();
         List<String> altspyList = DataUtils.getAltspy();
         List<String> pingspyList = DataUtils.getPingspy();
+
+        lastplayedMap.put(uuid, System.currentTimeMillis());
 
         if (nickname != null && !nickname.equals(getName()))
             nicknameMap.put(uuid, nickname);
@@ -266,30 +238,13 @@ public class User implements CommandSender {
     }
 
     public boolean isAbove(User user) {
-        if (isOwner())
-            return true;
-
         if (isAdmin())
             return !user.isAdmin();
 
         if (isStaff())
             return !user.isStaff();
 
-        return false;
-    }
-
-    public boolean isMuted() {
-        String uuid = getPlayer().getUniqueId().toString();
-        Map<String, PunishData> mutes = DataUtils.getMutes();
-
-        if (mutes.containsKey(uuid)) {
-            PunishData data = mutes.get(uuid);
-
-            if (!data.isExpired())
-                return true;
-        }
-
-        return false;
+        return isOwner();
     }
 
     public ServerInfo getConnectedServer() {
@@ -308,8 +263,10 @@ public class User implements CommandSender {
         boolean hasPrefix = prefix != null;
         boolean hasSuffix = suffix != null;
 
-        if (nickname == null)
-            nickname = getName();
+        String name = getName();
+
+        if (nickname != null)
+            name = nickname;
 
         if (!hasPrefix)
             prefix = "";
@@ -317,7 +274,7 @@ public class User implements CommandSender {
         if (!hasSuffix)
             suffix = "";
 
-        displayName = ColorUtils.translate(hasPrefix ? prefix + " " : "") + nickname + (hasSuffix ? suffix + " " : "");
+        displayName = ColorUtils.translate(hasPrefix ? prefix + " " : "") + name + (hasSuffix ? suffix + " " : "");
 
         if (updateBackends) {
             ByteArrayDataOutput output = ByteStreams.newDataOutput();
@@ -336,32 +293,16 @@ public class User implements CommandSender {
         this.replyTarget = replyTarget;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public boolean inStaffChat() {
-        return staffChat;
     }
 
     public void setStaffChat(boolean staffChat) {
         this.staffChat = staffChat;
     }
 
-    public boolean inAdminChat() {
-        return adminChat;
-    }
-
     public void setAdminChat(boolean adminChat) {
         this.adminChat = adminChat;
-    }
-
-    public boolean inOwnerChat() {
-        return ownerChat;
     }
 
     public void setOwnerChat(boolean ownerChat) {
@@ -376,24 +317,12 @@ public class User implements CommandSender {
         this.localChat = localChat;
     }
 
-    public boolean inCommandSpy() {
-        return commandSpy;
-    }
-
     public void setCommandSpy(boolean commandSpy) {
         this.commandSpy = commandSpy;
     }
 
-    public boolean inAltSpy() {
-        return altSpy;
-    }
-
     public void setAltSpy(boolean altspy) {
         this.altSpy = altspy;
-    }
-
-    public boolean inPingSpy() {
-        return pingSpy;
     }
 
     public void setPingSpy(boolean pingSpy) {
@@ -461,8 +390,13 @@ public class User implements CommandSender {
     }
 
     @Override
+    public String getAddress() {
+        return ((InetSocketAddress) player.getSocketAddress()).getAddress().getHostAddress();
+    }
+
+    @Override
     public String getName() {
-        return player.getName();
+        return name;
     }
 
     @Override

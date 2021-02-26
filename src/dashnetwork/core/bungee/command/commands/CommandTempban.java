@@ -82,7 +82,9 @@ public class CommandTempban extends CoreCommand {
             reason = StringUtils.unsplit(list, ' ');
         }
 
-        PunishUtils.ban(target, name, duration, sender, reason);
+        OfflineUser offline = OfflineUser.getOfflineUser(target, name);
+
+        PunishUtils.ban(offline, sender, duration, reason);
     }
 
     @Override

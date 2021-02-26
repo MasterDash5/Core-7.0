@@ -3,6 +3,7 @@ package dashnetwork.core.bungee.listeners;
 import dashnetwork.core.bungee.utils.*;
 import dashnetwork.core.utils.MessageBuilder;
 import dashnetwork.core.utils.PunishData;
+import dashnetwork.core.utils.TimeUtils;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -34,7 +35,7 @@ public class LoginListener implements Listener {
 
             banner = data.getBanner();
             reason = data.getReason();
-            expire = data.isPermanent() ? "never" : PunishUtils.getDateFormat().format(new Date(data.getExpire()));
+            expire = data.isPermanent() ? "never" : TimeUtils.TIME_FORMAT.format(new Date(data.getExpire()));
         } else if (ipbans.containsKey(address)) {
             PunishData data = ipbans.get(address);
 
@@ -43,7 +44,7 @@ public class LoginListener implements Listener {
 
             banner = data.getBanner();
             reason = data.getReason();
-            expire = data.isPermanent() ? "never" : PunishUtils.getDateFormat().format(new Date(data.getExpire()));
+            expire = data.isPermanent() ? "never" : TimeUtils.TIME_FORMAT.format(new Date(data.getExpire()));
         } else
             return;
 

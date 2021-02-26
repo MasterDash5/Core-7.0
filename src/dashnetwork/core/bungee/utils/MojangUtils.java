@@ -132,5 +132,4 @@ public class MojangUtils {
         return profileCache.get(stringUuid);
     }
 
-
 }

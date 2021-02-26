@@ -29,6 +29,16 @@ public class CompletionUtils {
         return players;
     }
 
+    public static List<String> offline(String argument) {
+        List<String> players = new ArrayList<>();
+
+        for (String name : DataUtils.getNames().values())
+            if (StringUtils.startsWithIgnoreCase(name, argument))
+                players.add(name);
+
+        return players;
+    }
+
     public static List<String> servers(CommandSender sender, String argument) {
         List<String> servers = new ArrayList<>();
 

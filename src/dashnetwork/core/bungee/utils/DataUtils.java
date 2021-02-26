@@ -17,6 +17,7 @@ public class DataUtils {
     private static File folder = new File(Core.getInstance().getDataFolder(), "data");
     private static File ipsFile = new File(folder, "ips.yml");
     private static File namesFile = new File(folder, "names.yml");
+    private static File lastplayedFile = new File(folder, "lastplayed.yml");
     private static File nicknamesFile = new File(folder, "nicknames.yml");
     private static File staffchatFile = new File(folder, "staffchat.yml");
     private static File adminchatFile = new File(folder, "adminchat.yml");
@@ -30,6 +31,7 @@ public class DataUtils {
 
     private static Map<String, List<String>> ips;
     private static Map<String, String> names, nicknames;
+    private static Map<String, Long> lastplayed;
     private static Map<String, PunishData> mutes, bans, ipbans;
     private static List<String> staffchat, adminchat, ownerchat, commandspy, altspy, pingspy;
 
@@ -39,6 +41,7 @@ public class DataUtils {
         try {
             ips = readFile(ipsFile);
             names = readFile(namesFile);
+            lastplayed = readFile(lastplayedFile);
             nicknames = readFile(nicknamesFile);
             staffchat = readFile(staffchatFile);
             adminchat = readFile(adminchatFile);
@@ -58,6 +61,9 @@ public class DataUtils {
 
         if (names == null)
             names = new HashMap<>();
+
+        if (lastplayed == null)
+            lastplayed = new HashMap<>();
 
         if (nicknames == null)
             nicknames = new HashMap<>();
@@ -94,6 +100,7 @@ public class DataUtils {
         try {
             writeFile(ipsFile, ips);
             writeFile(namesFile, names);
+            writeFile(lastplayedFile, lastplayed);
             writeFile(nicknamesFile, nicknames);
             writeFile(staffchatFile, staffchat);
             writeFile(adminchatFile, adminchat);
@@ -115,6 +122,10 @@ public class DataUtils {
 
     public static Map<String, String> getNames() {
         return names;
+    }
+
+    public static Map<String, Long> getLastplayed() {
+        return lastplayed;
     }
 
     public static Map<String, String> getNicknames() {

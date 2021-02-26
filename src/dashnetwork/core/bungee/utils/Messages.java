@@ -14,7 +14,6 @@ import java.util.List;
 
 public class Messages {
 
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("MMM d, hh:mma z");
     private static BungeeCord bungee = BungeeCord.getInstance();
 
     public static void forcedToServer(CommandSender sender, String username, String displayname, ServerInfo server) {
@@ -60,7 +59,7 @@ public class Messages {
 
     public static void muted(CommandSender sender, PunishData punish) {
         Long expire = punish.getExpire();
-        String date = expire == null ? "never" : timeFormat.format(new Date(expire));
+        String date = expire == null ? "never" : TimeUtils.TIME_FORMAT.format(new Date(expire));
 
         MessageBuilder reponse = new MessageBuilder();
         reponse.append("&6&l» &7You are muted. &6Hover for details")

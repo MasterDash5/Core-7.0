@@ -46,7 +46,7 @@ public class ChatListener implements Listener {
                 event.setCancelled(true);
 
                 if (user.isMuted()) {
-                    Messages.muted(user, DataUtils.getMutes().get(player.getUniqueId().toString()));
+                    Messages.muted(user, user.getMute());
                     return;
                 }
 

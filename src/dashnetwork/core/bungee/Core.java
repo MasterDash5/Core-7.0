@@ -47,7 +47,7 @@ public class Core extends Plugin {
         proxy.registerChannel("dn:signspy");
 
         scheduler.schedule(this, new PunishTask(), 0, 1, TimeUnit.HOURS);
-        scheduler.schedule(this, new SaveTask(), 1, 1, TimeUnit.HOURS);
+        scheduler.schedule(this, new SaveTask(), 5, 5, TimeUnit.MINUTES);
         scheduler.schedule(this, new UserTask(), 50, 50, TimeUnit.MILLISECONDS); // 50 ms = 1 tick
 
         manager.registerListener(this, new ChannelListener());
@@ -89,6 +89,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandPlayerinfo());
         manager.registerCommand(this, new CommandPvp());
         manager.registerCommand(this, new CommandReply());
+        manager.registerCommand(this, new CommandSeen());
         manager.registerCommand(this, new CommandServer());
         manager.registerCommand(this, new CommandSignspy());
         manager.registerCommand(this, new CommandSkyblock());
@@ -111,7 +112,7 @@ public class Core extends Plugin {
         for (User user : User.getUsers(false))
             user.remove();
 
-        pain.stop();
+        // pain.stop();
 
         DataUtils.save();
     }
