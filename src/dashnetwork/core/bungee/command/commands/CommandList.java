@@ -29,6 +29,7 @@ public class CommandList extends CoreCommand {
                 List<ProxiedPlayer> list = ServerUtils.getPlayers(server, staff);
 
                 players.put(server.getMotd(), list);
+                total += list.size();
             }
         }
 
