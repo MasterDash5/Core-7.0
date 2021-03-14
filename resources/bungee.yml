@@ -2,4 +2,4 @@ name: Core
 version: 7.0
 author: MasterDash5
 softdepend: LuckPerms
-main: dashnetwork.core.bungee.Core
+main: xyz.dashnetwork.core.bungee.Core

@@ -2,7 +2,7 @@ name: Core
 version: 7.0
 author: MasterDash5
 softdepend: [LuckPerms]
-main: dashnetwork.core.bukkit.Core
+main: xyz.dashnetwork.core.bukkit.Core
 
 commands:
   anvil:
