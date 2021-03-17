@@ -133,12 +133,16 @@ public class User extends OfflineUser implements CommandSender {
 
         switch (channel) {
             case GLOBAL:
-                broadcast.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
-                broadcast.append(" &e&l>&f " + message);
+                if (message.startsWith("/"))
+                    player.chat(message);
+                else {
+                    broadcast.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + name);
+                    broadcast.append(" &e&l>&f " + message);
 
-                MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
+                    MessageUtils.broadcast(PermissionType.NONE, broadcast.build());
 
-                pluginManager.callEvent(new UserChatEvent(this, Channel.GLOBAL, message));
+                    pluginManager.callEvent(new UserChatEvent(this, Channel.GLOBAL, message));
+                }
 
                 break;
             case LOCAL:
