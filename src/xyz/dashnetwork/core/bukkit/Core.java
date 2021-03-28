@@ -55,8 +55,6 @@ public class Core extends JavaPlugin {
         new CommandCenter();
         new CommandClearlag();
         new CommandConsole();
-        new CommandFly();
-        new CommandGamemode();
         new CommandKillears();
         new CommandMommy();
         new CommandNightvision();
@@ -64,6 +62,11 @@ public class Core extends JavaPlugin {
         new CommandRespawn();
         new CommandServerinfo();
         new CommandSpin();
+
+        if (!manager.isPluginEnabled("Essentials")) {
+            new CommandFly();
+            new CommandGamemode();
+        }
     }
 
     @Override

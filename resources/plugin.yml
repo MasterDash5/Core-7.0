@@ -1,7 +1,7 @@
 name: Core
 version: 7.0
 author: MasterDash5
-softdepend: [LuckPerms]
+softdepend: [LuckPerms, Essentials]
 main: xyz.dashnetwork.core.bukkit.Core
 
 commands:
