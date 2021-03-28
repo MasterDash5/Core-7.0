@@ -18,7 +18,7 @@ public class ColorUtils {
         int length = string.length();
 
         for (int i = 0; i < length; i++) {
-            if (length - (i + 7) > 0 && string.charAt(i) == '&') {
+            if (length - (i + 8) > 0 && string.charAt(i) == '&') {
                 String hex = string.substring(i + 1, i + 8);
 
                 if (hex.matches("#-?[0-9a-fA-F]+")) {

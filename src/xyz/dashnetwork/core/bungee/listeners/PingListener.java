@@ -49,7 +49,7 @@ public class PingListener implements Listener {
         list.add(new ServerPing.PlayerInfo(ColorUtils.translate("&6&lDiscord &7discord.dashnetwork.xyz"), UUID.randomUUID()));
 
         component.setText(ColorUtils.translate("&6&lDashNetwork »&7 [1.7 - 1.16]"));
-        component.addExtra(ColorUtils.translate("\n&c&lNew Server IP: &6play.dashnetwork.xyz"));
+        component.addExtra(ColorUtils.translate("\n&c&lServer IP: &6play.dashnetwork.xyz"));
 
         response.setVersion(new ServerPing.Protocol(software, response.getVersion().getProtocol()));
         response.setPlayers(new ServerPing.Players(players.getMax(), online, list.toArray(new ServerPing.PlayerInfo[list.size()])));
