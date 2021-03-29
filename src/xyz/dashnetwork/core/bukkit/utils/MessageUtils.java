@@ -9,14 +9,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dashnetwork.core.bukkit.Core;
+import xyz.dashnetwork.core.bukkit.pain.Pain;
 import xyz.dashnetwork.core.utils.ColorUtils;
 import xyz.dashnetwork.core.utils.MessageBuilder;
 
-import java.util.Collection;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class MessageUtils {
 
     private static Core plugin = Core.getInstance();
+    private static CommandSender console = plugin.getServer().getConsoleSender();
 
     public static void message(CommandSender sender, String message) {
         sender.sendMessage(TextComponent.fromLegacyText(ColorUtils.translate(message)));
@@ -28,23 +31,34 @@ public class MessageUtils {
 
     public static void broadcast(boolean global, PermissionType permission, String message) {
         if (global) {
-            Collection<? extends Player> online = Bukkit.getOnlinePlayers();
+            if (Core.isPainEnabled()) {
+                Pain pain = new Pain("broadcast");
+                DataOutputStream output = pain.getOutput();
 
-            if (!online.isEmpty()) {
-                Player player = online.iterator().next();
+                try {
+                    output.write(permission.toId());
+                    output.writeUTF(message);
+                } catch (IOException exception) {
+                    message(console, "Failed to send global message");
+                }
 
-                ByteArrayDataOutput output = ByteStreams.newDataOutput();
-                output.writeByte(permission.toId());
-                output.writeUTF(message);
+                pain.close();
+            } else {
+                for (Player target : Bukkit.getOnlinePlayers()) {
+                    ByteArrayDataOutput output = ByteStreams.newDataOutput();
+                    output.write(permission.toId());
+                    output.writeUTF(message);
 
-                player.sendPluginMessage(plugin, "dn:broadcast", output.toByteArray());
+                    target.sendPluginMessage(Core.getInstance(), "dn:broadcast", output.toByteArray());
+                    break;
+                }
             }
         } else
             for (User user : User.getUsers(true))
                 if (permission.hasPermission(user))
                     message(user, message);
 
-        message(plugin.getServer().getConsoleSender(), message);
+        message(console, message);
     }
 
     public static void broadcast(PermissionType permission, BaseComponent... message) {
@@ -52,7 +66,7 @@ public class MessageUtils {
             if (permission.hasPermission(user))
                 message(user, message);
 
-        message(plugin.getServer().getConsoleSender(), message);
+        message(console, message);
     }
 
     public static void noPermissions(CommandSender sender) {

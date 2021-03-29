@@ -21,6 +21,10 @@ public abstract class Channel {
         return channels;
     }
 
+    public static void stopAll() {
+        channels.clear();
+    }
+
     public static Channel getChannel(String name) {
         for (Channel channel : channels)
             if (channel.name.equalsIgnoreCase(name))

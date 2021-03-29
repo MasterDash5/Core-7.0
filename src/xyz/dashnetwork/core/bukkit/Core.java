@@ -6,29 +6,45 @@ import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 import xyz.dashnetwork.core.bukkit.command.commands.*;
 import xyz.dashnetwork.core.bukkit.listeners.*;
+import xyz.dashnetwork.core.bukkit.pain.Pain;
 import xyz.dashnetwork.core.bukkit.tasks.SpectateTask;
 import xyz.dashnetwork.core.bukkit.tasks.SpinTask;
 import xyz.dashnetwork.core.bukkit.tasks.UserTask;
+import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
+import xyz.dashnetwork.core.bukkit.utils.PermissionType;
 import xyz.dashnetwork.core.bukkit.utils.TpsUtils;
 import xyz.dashnetwork.core.bukkit.utils.User;
 
 public class Core extends JavaPlugin {
 
     private static Core instance;
+    private static String serverName;
+    private static boolean painEnabled;
     private static ChannelListener channelListener;
 
     public static Core getInstance() {
         return instance;
     }
 
+    public static String getServerName() {
+        return serverName;
+    }
+
+    public static boolean isPainEnabled() {
+        return painEnabled;
+    }
+
     @Override
     public void onEnable() {
         instance = this;
 
-        channelListener = new ChannelListener();
-
         getConfig().options().copyDefaults(true);
         saveConfig();
+
+        serverName = getConfig().getString("server-name");
+        painEnabled = getConfig().getBoolean("pain-enabled");
+
+        channelListener = new ChannelListener();
 
         Messenger messenger = getServer().getMessenger();
         messenger.registerOutgoingPluginChannel(this, "dn:broadcast");
@@ -67,12 +83,16 @@ public class Core extends JavaPlugin {
             new CommandFly();
             new CommandGamemode();
         }
+
+        MessageUtils.broadcast(true, PermissionType.NONE, "&6&l» &6" + serverName + " &7is now &aonline");
     }
 
     @Override
     public void onDisable() {
         for (User user : User.getUsers(false))
             user.remove();
+
+        MessageUtils.broadcast(true, PermissionType.NONE, "&6&l» &6" + serverName + " &7is now &coffline");
     }
 
 }

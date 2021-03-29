@@ -1,2 +1,4 @@
 # Default to Docker container
 bungee-address: 172.18.0.1
+server-name: "Unknown"
+pain-enabled: true

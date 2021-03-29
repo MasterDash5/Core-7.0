@@ -13,7 +13,7 @@ import java.util.Collections;
 
 public class CommandPain extends CoreCommand {
 
-    public enum Argument { START, STOP, STACKTRACE }
+    public enum Argument { START, STOP }
 
     public CommandPain() {
         super(true, PermissionType.OWNER, "pain");
@@ -22,7 +22,7 @@ public class CommandPain extends CoreCommand {
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         if (args.length == 0) {
-            MessageUtils.message(sender, "&6&l» &7/pain <start,stop,stacktrace>");
+            MessageUtils.message(sender, "&6&l» &7/pain <start,stop>");
             return;
         }
 
@@ -31,7 +31,7 @@ public class CommandPain extends CoreCommand {
         try {
             argument = Argument.valueOf(args[0].toUpperCase());
         } catch (IllegalArgumentException exception) {
-            MessageUtils.message(sender, "&6&l» &7/pain <start,stop,stacktrace>");
+            MessageUtils.message(sender, "&6&l» &7/pain <start,stop>");
             return;
         }
 
@@ -45,9 +45,6 @@ public class CommandPain extends CoreCommand {
             case STOP:
                 pain.stop();
                 MessageUtils.message(sender, "&6&l» &7Halted &6Pain &7server");
-                break;
-            case STACKTRACE:
-                Messages.printStackTrace(sender, pain.getStacktrace());
                 break;
         }
     }

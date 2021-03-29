@@ -32,8 +32,8 @@ public class Core extends Plugin {
     public void onEnable() {
         instance = this;
 
-        // pain = new Pain(); TODO: Finish Pain
-        // pain.start();
+        pain = new Pain();
+        pain.start();
 
         DataUtils.startup();
 
@@ -85,6 +85,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandMute());
         manager.registerCommand(this, new CommandNickname());
         manager.registerCommand(this, new CommandOwnerchat());
+        manager.registerCommand(this, new CommandPain());
         manager.registerCommand(this, new CommandPing());
         manager.registerCommand(this, new CommandPingspy());
         manager.registerCommand(this, new CommandPlayerinfo());
@@ -114,7 +115,7 @@ public class Core extends Plugin {
         for (User user : User.getUsers(false))
             user.remove();
 
-        // pain.stop();
+        pain.stop();
 
         DataUtils.save();
     }

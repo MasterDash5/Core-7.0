@@ -8,18 +8,18 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class ChannelStatus extends Channel {
+public class ChannelBroadcast extends Channel {
 
-    public ChannelStatus() {
-        super("status");
+    public ChannelBroadcast() {
+        super("broadcast");
     }
 
     @Override
     public void onChannel(DataInputStream input, DataOutputStream output) throws IOException {
-        String server = input.readUTF();
-        boolean online = input.readBoolean();
+        PermissionType permission = PermissionType.fromId(input.readByte());
+        String message = input.readUTF();
 
-        MessageUtils.broadcast(PermissionType.NONE, "");
+        MessageUtils.broadcast(permission, message);
     }
 
 }
