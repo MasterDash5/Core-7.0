@@ -4,6 +4,7 @@ import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 import xyz.dashnetwork.core.bungee.Core;
+import xyz.dashnetwork.core.utils.LazyUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class ServerList {
 
     public static Server getServer(String name) {
         for (Server server : servers)
-            if (server.getName().equalsIgnoreCase(name))
+            if (server.getName().equalsIgnoreCase(name) || LazyUtils.anyEqualsIgnoreCase(name, server.getAliases()))
                 return server;
         return null;
     }
