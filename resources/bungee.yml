@@ -1,5 +1,5 @@
 name: Core
 version: 7.0
 author: MasterDash5
-softdepend: LuckPerms
+softdepends: [LuckPerms]
 main: xyz.dashnetwork.core.bungee.Core

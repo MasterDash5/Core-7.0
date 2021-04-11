@@ -20,6 +20,7 @@ public abstract class Listener implements Runnable {
         for (Listener listener : listeners)
             if (listener.isRunning())
                 listener.stop();
+        listeners.clear();
     }
 
     public void start() {

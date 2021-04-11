@@ -5,6 +5,7 @@ import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import xyz.dashnetwork.core.bungee.command.CoreCommand;
 import xyz.dashnetwork.core.bungee.utils.*;
+import xyz.dashnetwork.core.utils.ProtocolVersion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,16 +31,22 @@ public class CommandSurvival extends CoreCommand {
             return;
         }
 
-        ServerInfo server = ServerUtils.getServer("survival");
+        Server server = ServerList.getServer("survival");
+        ProtocolVersion version = ProtocolVersion.fromId(server.getVersion());
         List<ProxiedPlayer> moved = new ArrayList<>();
 
         for (ProxiedPlayer target : targets) {
-            if (target.equals(sender))
-                Messages.sentToServer(target, server);
-            else
-                Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+            User user = User.getUser(target);
 
-            target.connect(server);
+            if (user.getVersion().isNewerThanOrEqual(version)) {
+                if (target.equals(sender))
+                    Messages.sentToServer(target, server);
+                else
+                    Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+
+                server.send(target);
+            } else
+                Messages.serverRequiresVersion(sender, server);
         }
 
         if (!moved.isEmpty())

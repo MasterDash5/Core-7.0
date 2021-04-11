@@ -1,7 +1,6 @@
 package xyz.dashnetwork.core.bungee.command.commands;
 
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import xyz.dashnetwork.core.bungee.command.CoreCommand;
 import xyz.dashnetwork.core.bungee.utils.*;
@@ -11,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandPvp extends CoreCommand {
+public class CommandSkygrid extends CoreCommand {
 
-    public CommandPvp() {
-        super(true, PermissionType.NONE, "pvp", "kitpvp", "duels", "pvpduels", "botbattles", "playervsplayer", "playerversusplayer");
+    public CommandSkygrid() {
+        super(true, PermissionType.STAFF, "skygrid");
     }
 
     @Override
@@ -31,7 +30,7 @@ public class CommandPvp extends CoreCommand {
             return;
         }
 
-        Server server = ServerList.getServer("pvp");
+        Server server = ServerList.getServer("skygrid");
         ProtocolVersion version = ProtocolVersion.fromId(server.getVersion());
         List<ProxiedPlayer> moved = new ArrayList<>();
 
@@ -55,8 +54,6 @@ public class CommandPvp extends CoreCommand {
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
-        if (args.length == 1 && PermissionType.ADMIN.hasPermission(sender))
-            return CompletionUtils.players(sender, args[0]);
         return Collections.EMPTY_LIST;
     }
 

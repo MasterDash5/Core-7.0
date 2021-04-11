@@ -60,6 +60,10 @@ public class StringUtils {
         return string.toLowerCase().endsWith(ends.toLowerCase());
     }
 
+    public static boolean containsIgnoreCase(String string, String contains) {
+        return string.toLowerCase().contains(contains.toLowerCase());
+    }
+
     public static String fromList(List<String> list, boolean useAnd, boolean formatDuplicates) {
         String string = "";
 

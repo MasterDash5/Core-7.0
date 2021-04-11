@@ -33,13 +33,16 @@ public class ChannelListener implements Listener {
             ProxiedPlayer target = (ProxiedPlayer) sender;
 
             switch (tag) {
+                case "WDL|INIT":
                 case "wdl:init":
                     event.setCancelled(true);
 
                     output.writeInt(0);
                     output.writeBoolean(User.getUser(target).isOwner());
 
-                    target.sendData("wdl:control", output.toByteArray());
+                    String channel = tag.contains("|") ? "WDL|CONTROL" : "wdl:control";
+
+                    target.sendData(channel, output.toByteArray());
             }
         }
 
@@ -78,6 +81,7 @@ public class ChannelListener implements Listener {
                     target.getServer().sendData("dn:online", output.toByteArray());
 
                     break;
+                case "BungeeCord":
                 case "bungeecord:main":
                     String request = input.readUTF();
 

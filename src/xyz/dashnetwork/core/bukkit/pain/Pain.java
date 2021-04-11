@@ -6,8 +6,26 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Pain {
+
+    public static void main(String[] args) {
+        while (true) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                String message = scanner.nextLine();
+
+                Pain pain = new Pain("broadcast");
+                DataOutputStream output = pain.getOutput();
+
+                output.write(0);
+                output.writeUTF(message);
+
+                pain.close();
+            } catch (Exception exception) {}
+        }
+    }
 
     private Socket socket;
     private DataOutputStream output;

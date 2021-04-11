@@ -3,12 +3,8 @@ package xyz.dashnetwork.core.bungee.utils;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import xyz.dashnetwork.core.utils.MessageBuilder;
-import xyz.dashnetwork.core.utils.PunishData;
-import xyz.dashnetwork.core.utils.StringUtils;
-import xyz.dashnetwork.core.utils.TimeUtils;
+import xyz.dashnetwork.core.utils.*;
 
 import java.util.Date;
 import java.util.List;
@@ -20,18 +16,27 @@ public class Messages {
 
     private static BungeeCord bungee = BungeeCord.getInstance();
 
-    public static void forcedToServer(CommandSender sender, String username, String displayname, ServerInfo server) {
-        int players = ServerUtils.getPlayers(server, PermissionType.STAFF.hasPermission(sender)).size();
-        String serverName = server.getMotd();
+    public static void forcedToServer(CommandSender sender, String username, String displayname, Server server) {
+        int players = server.getPlayers(PermissionType.STAFF.hasPermission(sender)).size();
+        String serverName = server.getName();
         MessageBuilder message = new MessageBuilder();
 
         message.append("&6&l» ");
         message.append("&6" + displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + username);
         message.append("&7 sent you to ");
-        message.append("&6" + serverName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6&l" + serverName
+        message.append("&6" + serverName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + serverName
                 + "\n&6" + players + " &7Players");
 
         message(sender, message.build());
+    }
+
+    public static void welcome(String username, String displayname) {
+        MessageBuilder message = new MessageBuilder();
+        message.append("&6&l» &6Welcome, ");
+        message.append(displayname).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + username);
+        message.append("&6, to &lDashNetwork");
+
+        broadcast(PermissionType.NONE, message.build());
     }
 
     public static void joinServer(String username, String displayname) {
@@ -99,16 +104,30 @@ public class Messages {
         message(sender, message.build());
     }
 
-    public static void sentToServer(CommandSender sender, ServerInfo server) {
-        int players = ServerUtils.getPlayers(server, PermissionType.STAFF.hasPermission(sender)).size();
-        String serverName = server.getMotd();
+    public static void sentToServer(CommandSender sender, Server server) {
+        int players = server.getPlayers(PermissionType.STAFF.hasPermission(sender)).size();
+        String serverName = server.getName();
         MessageBuilder message = new MessageBuilder();
 
         message.append("&6&l» &7Sending you to ");
-        message.append("&6" + serverName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6&l" + serverName
+        message.append("&6" + serverName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + serverName
                 + "\n&6" + players + " &7Players");
 
         message(sender, message.build());
+    }
+
+    public static void serverRequiresVersion(CommandSender sender, Server server) {
+        int players = server.getPlayers(PermissionType.STAFF.hasPermission(sender)).size();
+        String serverName = server.getName();
+        String version = ProtocolVersion.fromId(server.getVersion()).getName();
+        MessageBuilder message = new MessageBuilder();
+
+        message.append("&6&l» ");
+        message.append("&6" + serverName).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + serverName
+                + "\n&6" + players + " &7Players");
+        message.append(" &7requires Minecraft version &6" + version + " or newer");
+
+        MessageUtils.message(sender, message.build());
     }
 
     public static void targetNoLongerIn(CommandSender sender, List<ProxiedPlayer> targets, String channel) {
@@ -135,9 +154,9 @@ public class Messages {
         message(sender, message.build());
     }
 
-    public static void targetSentToServer(CommandSender sender, List<ProxiedPlayer> targets, ServerInfo server) {
-        int players = ServerUtils.getPlayers(server, PermissionType.STAFF.hasPermission(sender)).size();
-        String serverName = server.getMotd();
+    public static void targetSentToServer(CommandSender sender, List<ProxiedPlayer> targets, Server server) {
+        int players = server.getPlayers(PermissionType.STAFF.hasPermission(sender)).size();
+        String serverName = server.getName();
         String displaynames = StringUtils.fromList(NameUtils.toDisplayNames(targets), false, false);
         String names = StringUtils.fromList(NameUtils.toNames(targets), false, false);
 

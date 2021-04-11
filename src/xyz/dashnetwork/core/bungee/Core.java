@@ -11,17 +11,23 @@ import xyz.dashnetwork.core.bungee.tasks.PunishTask;
 import xyz.dashnetwork.core.bungee.tasks.SaveTask;
 import xyz.dashnetwork.core.bungee.tasks.UserTask;
 import xyz.dashnetwork.core.bungee.utils.DataUtils;
+import xyz.dashnetwork.core.bungee.utils.ServerList;
 import xyz.dashnetwork.core.bungee.utils.User;
 
 import java.util.concurrent.TimeUnit;
 
 public class Core extends Plugin {
 
-    private static Pain pain;
     private static Core instance;
+    private static ServerList serverList;
+    private static Pain pain;
 
     public static Core getInstance() {
         return instance;
+    }
+
+    public static ServerList getServerList() {
+        return serverList;
     }
 
     public static Pain getPain() {
@@ -31,6 +37,10 @@ public class Core extends Plugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        serverList = new ServerList();
+        serverList.load();
+        serverList.update();
 
         pain = new Pain();
         pain.start();
@@ -64,6 +74,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandAltlist());
         manager.registerCommand(this, new CommandAltspy());
         manager.registerCommand(this, new CommandBan());
+        manager.registerCommand(this, new CommandBroadcast());
         manager.registerCommand(this, new CommandBungeebuild());
         manager.registerCommand(this, new CommandChat());
         manager.registerCommand(this, new CommandChatsudo());
@@ -96,6 +107,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandServer());
         manager.registerCommand(this, new CommandSignspy());
         manager.registerCommand(this, new CommandSkyblock());
+        manager.registerCommand(this, new CommandSkygrid());
         manager.registerCommand(this, new CommandStaff());
         manager.registerCommand(this, new CommandStaffchat());
         manager.registerCommand(this, new CommandSurvival());

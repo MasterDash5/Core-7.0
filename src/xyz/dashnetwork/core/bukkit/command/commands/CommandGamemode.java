@@ -6,10 +6,7 @@ import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dashnetwork.core.bukkit.command.CoreCommand;
-import xyz.dashnetwork.core.bukkit.utils.CompletionUtils;
-import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
-import xyz.dashnetwork.core.bukkit.utils.PermissionType;
-import xyz.dashnetwork.core.bukkit.utils.User;
+import xyz.dashnetwork.core.bukkit.utils.*;
 import xyz.dashnetwork.core.utils.GrammarUtils;
 import xyz.dashnetwork.core.utils.MessageBuilder;
 
@@ -24,6 +21,7 @@ public class CommandGamemode extends CoreCommand {
     @Override
     public void onCommand(CommandSender sender, String label, String[] args) {
         int length = args.length;
+        boolean multiarg = false;
         GameMode selected = null;
         Player target = null;
 
@@ -40,23 +38,29 @@ public class CommandGamemode extends CoreCommand {
             case "gmsp":
                 selected = GameMode.SPECTATOR;
                 break;
-            default:
+            case "gm":
+            case "gamemode":
                 if (length > 0) {
                     try {
                         selected = GameMode.valueOf(args[0].toUpperCase());
-                    } catch (IllegalArgumentException e1) {}
+                    } catch (IllegalArgumentException exception) {}
                 }
+                multiarg = true;
                 break;
         }
 
-        if (args.length > 1)
-            target = Bukkit.getPlayer(args[1]);
+        if (selected == null) {
+            MessageUtils.message(sender, "&6&l» &7/gamemode <gamemode> <player>");
+            return;
+        }
+
+        if ((length > 0 && !multiarg) || length > 1)
+            target = SelectorUtils.getPlayer(sender, args[length - 1]);
         else if (sender instanceof Player)
             target = (Player) sender;
 
-
-        if (selected == null || target == null) {
-            MessageUtils.message(sender, "&6&l» &7/gamemode <gamemode> <player>");
+        if (target == null) {
+            MessageUtils.noPlayerFound(sender);
             return;
         }
 

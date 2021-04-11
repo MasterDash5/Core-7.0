@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import xyz.dashnetwork.core.bukkit.utils.User;
+import xyz.dashnetwork.core.utils.ColorUtils;
 import xyz.dashnetwork.core.utils.EnumUtils;
 import xyz.dashnetwork.core.utils.MessageBuilder;
 import xyz.dashnetwork.core.utils.StringUtils;
@@ -25,12 +26,16 @@ public class SignListener implements Listener {
 
         StringBuilder lines = new StringBuilder();
 
-        for (String line : event.getLines()) {
+        for (int i = 0; i < 4; i++) {
+            String line = event.getLine(i);
+
             if (!StringUtils.clear(line, " ").isEmpty()) {
                 if (lines.length() > 0)
                     lines.append("\n");
                 lines.append("&6" + line);
             }
+
+            event.setLine(i, ColorUtils.translate(line));
         }
 
         if (lines.length() > 0) {

@@ -20,12 +20,17 @@ public class CommandFly extends CoreCommand {
 
     @Override
     public void onCommand(CommandSender sender, String label, String[] args) {
+        int length = args.length;
         List<Player> targets = new ArrayList<>();
+        boolean force = false;
 
-        if (args.length > 0)
+        if (length > 0)
             targets.addAll(SelectorUtils.getPlayers(sender, args[0]));
         else if (sender instanceof Player)
             targets.add((Player) sender);
+
+        if (length > 1 && args[1].equalsIgnoreCase("-force"))
+            force = true;
 
         if (targets.isEmpty()) {
             MessageUtils.message(sender, "&6&l» &7/fly <player>");
@@ -41,6 +46,10 @@ public class CommandFly extends CoreCommand {
             MessageBuilder message = new MessageBuilder();
 
             target.setAllowFlight(flight);
+
+            if (force)
+                target.setFlying(true);
+
             message.append("&6&l» &7Set fly mode");
 
             if (flight) {

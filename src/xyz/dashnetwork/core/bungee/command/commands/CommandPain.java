@@ -6,7 +6,6 @@ import xyz.dashnetwork.core.bungee.command.CoreCommand;
 import xyz.dashnetwork.core.bungee.pain.Pain;
 import xyz.dashnetwork.core.bungee.utils.CompletionUtils;
 import xyz.dashnetwork.core.bungee.utils.MessageUtils;
-import xyz.dashnetwork.core.bungee.utils.Messages;
 import xyz.dashnetwork.core.bungee.utils.PermissionType;
 
 import java.util.Collections;
@@ -52,7 +51,7 @@ public class CommandPain extends CoreCommand {
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length == 0)
-            CompletionUtils.fromEnum(sender, args[0], Argument.values());
+            CompletionUtils.fromEnum(args[0], Argument.values());
         return Collections.EMPTY_LIST;
     }
 

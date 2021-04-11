@@ -1,0 +1,5 @@
+lobby:
+  name: "Lobby"
+  aliases: ["hub"]
+  version: 4
+  permission: NONE

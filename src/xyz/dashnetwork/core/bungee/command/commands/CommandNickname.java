@@ -2,10 +2,12 @@ package xyz.dashnetwork.core.bungee.command.commands;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import xyz.dashnetwork.core.bungee.command.CoreCommand;
 import xyz.dashnetwork.core.bungee.utils.*;
 import xyz.dashnetwork.core.utils.ColorUtils;
+import xyz.dashnetwork.core.utils.MessageBuilder;
 
 import java.util.Collections;
 
@@ -46,7 +48,17 @@ public class CommandNickname extends CoreCommand {
 
         if (input.equalsIgnoreCase("off")) {
             user.setNickname(null);
-            MessageUtils.message(sender, "&6&l»&7 You no longer have a nickname");
+            MessageUtils.message(target, "&6&l»&7 You no longer have a nickname");
+
+            if (sender != target) {
+                MessageBuilder builder = new MessageBuilder();
+                builder.append("&6&l» ");
+                builder.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + user.getName());
+                builder.append("&7 no longer has a nickname");
+
+                MessageUtils.message(sender, builder.build());
+            }
+
             return;
         }
 
@@ -64,7 +76,16 @@ public class CommandNickname extends CoreCommand {
 
         user.setNickname(nickname);
 
-        MessageUtils.message(sender, "&6&l»&7 Your nickname is now &6" + nickname);
+        MessageUtils.message(target, "&6&l»&7 Your nickname is now &6" + nickname);
+
+        if (sender != target) {
+            MessageBuilder builder = new MessageBuilder();
+            builder.append("&6&l» ");
+            builder.append("&6" + user.getDisplayName()).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + user.getName());
+            builder.append("&7 nickname set to &6" + nickname);
+
+            MessageUtils.message(sender, builder.build());
+        }
     }
 
     @Override

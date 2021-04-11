@@ -8,6 +8,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import xyz.dashnetwork.core.bungee.command.CoreCommand;
 import xyz.dashnetwork.core.bungee.utils.*;
 import xyz.dashnetwork.core.utils.MessageBuilder;
+import xyz.dashnetwork.core.utils.ProtocolVersion;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,12 +35,10 @@ public class CommandServer extends CoreCommand {
                 message.append("&6&l»&7 You are currently on &6" + user.getConnectedServer().getMotd());
                 message.append("\n&6&l»&7 Click a server to connect: ");
 
-                Collection<ServerInfo> servers = ServerUtils.getServers();
-
-                for (ServerInfo server : servers) {
-                    if (ServerUtils.hasPermission(sender, server)) {
-                        String name = server.getMotd();
-                        int online = ServerUtils.getPlayers(server, user.isStaff()).size();
+                for (Server server : ServerList.getServers()) {
+                    if (server.getPermission().hasPermission(sender)) {
+                        String name = server.getName();
+                        int online = server.getPlayers(user.isStaff()).size();
 
                         if (!message.isEmpty())
                             message.append("&7, ");
@@ -67,22 +66,28 @@ public class CommandServer extends CoreCommand {
             return;
         }
 
-        ServerInfo server = ServerUtils.getServer(args[0]);
+        Server server = ServerList.getServer(args[0]);
 
-        if (server == null || !ServerUtils.hasPermission(sender, server)) {
+        if (server == null || !server.getPermission().hasPermission(sender)) {
             MessageUtils.message(sender, "&6&l»&7 Couldn't find server &6" + args[0]);
             return;
         }
 
+        ProtocolVersion version = ProtocolVersion.fromId(server.getVersion());
         List<ProxiedPlayer> moved = new ArrayList<>();
 
         for (ProxiedPlayer target : targets) {
-            if (target.equals(sender))
-                Messages.sentToServer(target, server);
-            else
-                Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+            User user = User.getUser(target);
 
-            target.connect(server);
+            if (user.getVersion().isNewerThanOrEqual(version)) {
+                if (target.equals(sender))
+                    Messages.sentToServer(target, server);
+                else
+                    Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+
+                server.send(target);
+            } else
+                Messages.serverRequiresVersion(sender, server);
         }
 
         if (!moved.isEmpty())

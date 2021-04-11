@@ -42,7 +42,7 @@ public class ColorUtils {
     }
 
     public static String filter(String string, boolean color, boolean bold, boolean italic, boolean strikethrough, boolean underline, boolean magic) {
-        String colors = "0123456789abcdefABCDEF";
+        String colors = "0123456789abcdefxABCDEFX";
         String bolds = "lL";
         String italics = "oO";
         String strikethroughs = "mM";

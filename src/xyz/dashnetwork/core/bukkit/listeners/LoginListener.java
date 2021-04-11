@@ -8,12 +8,11 @@ import xyz.dashnetwork.core.utils.ColorUtils;
 
 public class LoginListener implements Listener {
 
-    private static Core plugin = Core.getInstance();
+    private static String bungee = Core.getBungeeAddress();
 
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
         String address = event.getRealAddress().getHostAddress();
-        String bungee = plugin.getConfig().getString("bungee-address");
 
         if (!address.equals(bungee))
             event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ColorUtils.translate("&6&lDashNetwork\n\n&7Use &6play.dashnetwork.xyz&7 to join"));

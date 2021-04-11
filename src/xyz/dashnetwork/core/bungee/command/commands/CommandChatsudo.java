@@ -33,7 +33,7 @@ public class CommandChatsudo extends CoreCommand {
             try {
                 channel = Channel.valueOf(args[1].toUpperCase());
             } catch (IllegalArgumentException exception) {
-                MessageUtils.message(sender, "&6&l» &7Valid channels: &6global&7, &6local&7, &6staff&7, &6admin&7, &6owner");
+                MessageUtils.message(sender, "&6&l» &7Valid channels: &6Global&7, &6Local&7, &6Staff&7, &6Admin&7, &Owner");
                 return;
             }
 

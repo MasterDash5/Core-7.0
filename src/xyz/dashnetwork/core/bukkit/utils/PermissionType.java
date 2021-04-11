@@ -2,6 +2,7 @@ package xyz.dashnetwork.core.bukkit.utils;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import xyz.dashnetwork.core.utils.Channel;
 
 public enum PermissionType {
 
@@ -18,6 +19,19 @@ public enum PermissionType {
 
     public static PermissionType fromId(byte data) {
         return values()[data];
+    }
+
+    public static PermissionType fromChannel(Channel channel) {
+        switch (channel) {
+            case STAFF:
+                return STAFF;
+            case ADMIN:
+                return ADMIN;
+            case OWNER:
+                return OWNER;
+            default:
+                return NONE;
+        }
     }
 
     public byte toId() {

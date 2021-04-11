@@ -32,6 +32,7 @@ public class User extends OfflineUser implements CommandSender {
     private static Core plugin = Core.getInstance();
     private static PluginManager pluginManager = bungee.getPluginManager();
     private static LuckPerms lp = LuckPermsProvider.get();
+    private List<UserAddon> addons;
     private ProxiedPlayer player;
     private String replyTarget, displayName;
     private boolean localChat, signSpy, vanished;
@@ -39,6 +40,7 @@ public class User extends OfflineUser implements CommandSender {
     private User(ProxiedPlayer player) {
         super(player.getUniqueId(), player.getName());
 
+        this.addons = new CopyOnWriteArrayList<>();
         this.player = player;
         this.replyTarget = null;
         this.displayName = null;
@@ -124,6 +126,30 @@ public class User extends OfflineUser implements CommandSender {
         save();
 
         users.remove(this);
+    }
+
+    public void addAddon(UserAddon addon) {
+        addons.add(addon);
+    }
+
+    public <T>void removeAddon(T clazz) {
+        for (UserAddon addon : addons)
+            if (addon.getClass().equals(clazz))
+                addons.remove(addon);
+    }
+
+    public <T>UserAddon getAddon(T clazz) {
+        for (UserAddon addon : addons)
+            if (addon.getClass().equals(clazz))
+                return addon;
+        return null;
+    }
+
+    public <T>boolean hasAddon(T clazz) {
+        for (UserAddon addon : addons)
+            if (addon.getClass().equals(clazz))
+                return true;
+        return false;
     }
 
     public void chat(Channel channel, String message) {

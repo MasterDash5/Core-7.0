@@ -72,7 +72,10 @@ public class JoinListener implements Listener {
             }
         });
 
-        Messages.joinServer(name, displayname);
+        if (user.hasJoined())
+            Messages.joinServer(name, displayname);
+        else
+            Messages.welcome(name, displayname);
     }
 
 }

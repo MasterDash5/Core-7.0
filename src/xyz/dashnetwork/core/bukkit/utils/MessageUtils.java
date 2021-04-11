@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.dashnetwork.core.bukkit.Core;
 import xyz.dashnetwork.core.bukkit.pain.Pain;
+import xyz.dashnetwork.core.utils.Channel;
 import xyz.dashnetwork.core.utils.ColorUtils;
 import xyz.dashnetwork.core.utils.MessageBuilder;
 
@@ -29,36 +30,65 @@ public class MessageUtils {
         sender.sendMessage(message);
     }
 
-    public static void broadcast(boolean global, PermissionType permission, String message) {
-        if (global) {
-            if (Core.isPainEnabled()) {
-                Pain pain = new Pain("broadcast");
-                DataOutputStream output = pain.getOutput();
-
-                try {
-                    output.write(permission.toId());
-                    output.writeUTF(message);
-                } catch (IOException exception) {
-                    message(console, "Failed to send global message");
-                }
-
-                pain.close();
-            } else {
-                for (Player target : Bukkit.getOnlinePlayers()) {
-                    ByteArrayDataOutput output = ByteStreams.newDataOutput();
-                    output.write(permission.toId());
-                    output.writeUTF(message);
-
-                    target.sendPluginMessage(Core.getInstance(), "dn:broadcast", output.toByteArray());
-                    break;
-                }
-            }
-        } else
-            for (User user : User.getUsers(true))
-                if (permission.hasPermission(user))
+    public static void broadcast(Channel channel, String message) {
+        switch (channel) {
+            case LOCAL:
+                for (User user : User.getUsers(true))
                     message(user, message);
+                break;
+            default:
+                // TODO: Update Pain to use Channel instead of PermissionType
+                byte permission = PermissionType.fromChannel(channel).toId();
+
+                if (Core.isPainEnabled()) {
+                    Pain pain = new Pain("broadcast");
+                    DataOutputStream output = pain.getOutput();
+
+                    try {
+                        output.write(permission);
+                        output.writeUTF(message);
+                    } catch (IOException exception) {
+                        message(console, "Failed to send global message");
+                    }
+
+                    pain.close();
+                } else {
+                    for (Player target : Bukkit.getOnlinePlayers()) {
+                        ByteArrayDataOutput output = ByteStreams.newDataOutput();
+                        output.write(permission);
+                        output.writeUTF(message);
+
+                        target.sendPluginMessage(Core.getInstance(), "dn:broadcast", output.toByteArray());
+                        break;
+                    }
+                }
+        }
 
         message(console, message);
+    }
+
+    @Deprecated
+    public static void broadcast(boolean global, PermissionType permission, String message) {
+        Channel channel;
+
+        switch (permission) {
+            case STAFF:
+                channel = Channel.STAFF;
+                break;
+            case ADMIN:
+                channel = Channel.ADMIN;
+                break;
+            case OWNER:
+                channel = Channel.OWNER;
+                break;
+            default:
+                channel = Channel.LOCAL;
+        }
+
+        if (global)
+            channel = Channel.GLOBAL;
+
+        broadcast(channel, message);
     }
 
     public static void broadcast(PermissionType permission, BaseComponent... message) {

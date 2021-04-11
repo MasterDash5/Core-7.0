@@ -39,17 +39,17 @@ public class CompletionUtils {
     public static List<String> servers(CommandSender sender, String argument) {
         List<String> servers = new ArrayList<>();
 
-        for (ServerInfo server : ServerUtils.getServers()) {
-            String name = server.getMotd();
+        for (Server server : ServerList.getServers()) {
+            String name = server.getName();
 
-            if (ServerUtils.hasPermission(sender, server) && StringUtils.startsWithIgnoreCase(name, argument))
+            if (server.getPermission().hasPermission(sender) && StringUtils.startsWithIgnoreCase(name, argument))
                 servers.add(name);
         }
 
         return servers;
     }
 
-    public static List<String> fromEnum(CommandSender sender, String argument, Enum[] array) {
+    public static List<String> fromEnum(String argument, Enum[] array) {
         List<String> list = new ArrayList<>();
 
         for (Enum entry : array) {

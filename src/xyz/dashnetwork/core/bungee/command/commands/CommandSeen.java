@@ -51,9 +51,8 @@ public class CommandSeen extends CoreCommand {
             long time = System.currentTimeMillis() - seen;
 
             message.append("\n&7 - Last seen &6" + TimeUtils.millisecondsToWords(time) + "&7 ago");
-        } else if (!offline.hasJoined()) {
-            message.append("\n&7 - Has not joined the server");
-        }
+        } else if (!offline.hasJoined())
+            message.append("\n&7 - Has not joined the server before");
 
         message.append("\n&7 - UUID: &6" + stringUuid)
                 .hoverEvent(HoverEvent.Action.SHOW_TEXT, "&7Click to copy &6" + stringUuid)

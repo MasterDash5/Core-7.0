@@ -1,7 +1,7 @@
 name: Core
 version: 7.0
 author: MasterDash5
-softdepend: [LuckPerms, Essentials]
+softdepend: [LuckPerms, ProtocolLib]
 main: xyz.dashnetwork.core.bukkit.Core
 
 commands:
@@ -25,5 +25,6 @@ commands:
   respawn:
     aliases: [forcerespawn]
   serverinfo:
+  sleep:
   spin:
     aliases: [spinmerightround, spinmerightroundbabyrightround]

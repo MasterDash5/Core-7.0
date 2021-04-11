@@ -9,9 +9,7 @@ import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import xyz.dashnetwork.core.bungee.Core;
-import xyz.dashnetwork.core.bungee.utils.DataUtils;
-import xyz.dashnetwork.core.bungee.utils.MessageUtils;
-import xyz.dashnetwork.core.bungee.utils.User;
+import xyz.dashnetwork.core.bungee.utils.*;
 import xyz.dashnetwork.core.utils.ColorUtils;
 import xyz.dashnetwork.core.utils.MessageBuilder;
 import xyz.dashnetwork.core.utils.StringUtils;
@@ -77,7 +75,7 @@ public class PingListener implements Listener {
                     List<String> names = new ArrayList<>();
 
                     for (String uuid : ips.get(address))
-                        names.add(DataUtils.getNames().getOrDefault(uuid, "Unknown"));
+                        names.add(NameUtils.getUsername(UUID.fromString(uuid)));
 
                     String fromNames = StringUtils.fromList(names, false, true);
 

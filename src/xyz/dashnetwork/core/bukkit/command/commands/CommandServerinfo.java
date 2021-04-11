@@ -18,8 +18,8 @@ import java.util.Collections;
 
 public class CommandServerinfo extends CoreCommand {
 
-    private static OperatingSystemMXBean bean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-    private static DecimalFormat formatter = new DecimalFormat("#######.##");
+    private OperatingSystemMXBean bean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+    private DecimalFormat formatter = new DecimalFormat("#######.##");
 
     public CommandServerinfo() {
         super(true, PermissionType.ADMIN, "serverinfo");
