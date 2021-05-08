@@ -1,7 +1,6 @@
 package xyz.dashnetwork.core.bungee.command.commands;
 
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import xyz.dashnetwork.core.bungee.command.CoreCommand;
 import xyz.dashnetwork.core.bungee.utils.*;
@@ -38,15 +37,22 @@ public class CommandStaff extends CoreCommand {
         for (ProxiedPlayer target : targets) {
             User user = User.getUser(target);
 
-            if (user.getVersion().isNewerThanOrEqual(version)) {
-                if (target.equals(sender))
-                    Messages.sentToServer(target, server);
-                else
-                    Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+            if (!server.isBedrock() && user.isBedrock()) {
+                MessageUtils.message(target, "&6&l» &cThis server doesn't support &6Bedrock Edition");
+                continue;
+            }
 
-                server.send(target);
-            } else
-                Messages.serverRequiresVersion(sender, server);
+            if (user.getVersion().isOlderThan(version)) {
+                Messages.serverRequiresVersion(target, server);
+                continue;
+            }
+
+            if (target.equals(sender))
+                Messages.sentToServer(target, server);
+            else
+                Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+
+            server.send(target);
         }
 
         if (!moved.isEmpty())

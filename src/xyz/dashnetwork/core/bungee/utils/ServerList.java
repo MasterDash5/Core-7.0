@@ -1,5 +1,6 @@
 package xyz.dashnetwork.core.bungee.utils;
 
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -31,6 +32,13 @@ public class ServerList {
         return null;
     }
 
+    public static Server getServer(ServerInfo info) {
+        for (Server server : servers)
+            if (server.getServerInfo().equals(info))
+                return server;
+        return null;
+    }
+
     public void load() {
         try {
             if (!file.exists())
@@ -46,19 +54,21 @@ public class ServerList {
         servers.clear();
 
         for (String key : config.getKeys()) {
-            List<String> list;
+            List<String> list = new ArrayList<>();
+            boolean bedrock = true;
 
             if (config.contains(key + ".aliases"))
                 list = config.getStringList(key + ".aliases");
-            else
-                list = new ArrayList<>();
+
+            if (config.contains(key + ".bedrock"))
+                bedrock = config.getBoolean(key + ".bedrock");
 
             String name = config.getString(key + ".name");
             String[] aliases = list.toArray(new String[list.size()]);
             int version = config.getInt(key + ".version");
             PermissionType permission = PermissionType.valueOf(config.getString(key + ".permission"));
 
-            servers.add(new Server(name, aliases, version, permission));
+            servers.add(new Server(name, aliases, version, permission, bedrock));
         }
 
         Collections.sort(servers, Comparator.comparing(Server::getName));

@@ -19,6 +19,13 @@ public class MessageBuilder {
         return messageComponent;
     }
 
+    public MessageComponent append(BaseComponent... append) {
+        MessageComponent messageComponent = new MessageComponent(append);
+        messageComponents.add(messageComponent);
+
+        return messageComponent;
+    }
+
     public boolean isEmpty() {
         return messageComponents.isEmpty();
     }
@@ -43,6 +50,11 @@ public class MessageBuilder {
 
         public MessageComponent(String text) {
             for (BaseComponent component : TextComponent.fromLegacyText(ColorUtils.translate(text)))
+                components.add(component);
+        }
+
+        public MessageComponent(BaseComponent... baseComponents) {
+            for (BaseComponent component : baseComponents)
                 components.add(component);
         }
 

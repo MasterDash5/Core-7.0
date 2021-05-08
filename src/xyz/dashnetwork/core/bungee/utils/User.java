@@ -10,9 +10,9 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.PluginManager;
+import org.geysermc.floodgate.FloodgateAPI;
 import xyz.dashnetwork.core.bungee.Core;
 import xyz.dashnetwork.core.bungee.events.UserChatEvent;
 import xyz.dashnetwork.core.bungee.events.UserVanishEvent;
@@ -259,11 +259,11 @@ public class User extends OfflineUser implements CommandSender {
     }
 
     public boolean isDash() {
-        return LazyUtils.anyEquals(player.getUniqueId().toString(), "4f771152-ce61-4d6f-9541-1d2d9e725d0e", "d1e65ac2-5815-42fd-a900-51f520d286b2", "1dadf63d-c067-43ef-a49f-8428e3cecc78", "23dcf775-d9c4-40a5-8772-18f5773e1536");
+        return LazyUtils.anyEquals(getUniqueId().toString(), "4f771152-ce61-4d6f-9541-1d2d9e725d0e", "d1e65ac2-5815-42fd-a900-51f520d286b2", "1dadf63d-c067-43ef-a49f-8428e3cecc78", "23dcf775-d9c4-40a5-8772-18f5773e1536");
     }
 
     public boolean isMatt() {
-        return player.getUniqueId().toString().equals("0e9c49ee-ed25-462f-b7c4-48cd98a30a62");
+        return getUniqueId().toString().equals("0e9c49ee-ed25-462f-b7c4-48cd98a30a62");
     }
 
     public boolean isAbove(User user) {
@@ -276,8 +276,8 @@ public class User extends OfflineUser implements CommandSender {
         return isOwner();
     }
 
-    public ServerInfo getConnectedServer() {
-        return player.getServer().getInfo();
+    public Server getServer() {
+        return ServerList.getServer(player.getServer().getInfo());
     }
 
     public String getDisplayName() {
@@ -416,6 +416,11 @@ public class User extends OfflineUser implements CommandSender {
 
     public ProtocolVersion getVersion() {
         return ProtocolVersion.fromId(player.getPendingConnection().getVersion());
+    }
+
+    @Override
+    public boolean isBedrock() {
+        return FloodgateAPI.isBedrockPlayer(player);
     }
 
     @Override

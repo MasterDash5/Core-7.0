@@ -32,6 +32,15 @@ public class ChannelListener implements PluginMessageListener {
                 }
 
                 break;
+            case "dn:bedrock":
+                boolean bedrock = input.readBoolean();
+
+                if (target == null)
+                    QueueUtils.getBedrockQueue().add(uuid);
+                else
+                    User.getUser(target).setBedrock(bedrock);
+
+                break;
             case "dn:vanish":
                 boolean vanished = input.readBoolean();
 

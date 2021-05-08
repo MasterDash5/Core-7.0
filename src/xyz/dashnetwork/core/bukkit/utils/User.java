@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -15,6 +16,7 @@ import org.bukkit.plugin.Plugin;
 import xyz.dashnetwork.core.utils.ColorUtils;
 import xyz.dashnetwork.core.utils.LazyUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -24,17 +26,20 @@ public class User implements CommandSender {
     private static List<User> users = new CopyOnWriteArrayList<>();
     private static LuckPerms lp = LuckPermsProvider.get();
     private List<UserAddon> addons;
+    private List<Wolf> wolfpack;
     private Player player;
     private String displayName;
-    private boolean vanished, signSpy, spinning;
+    private boolean vanished, signSpy, spinning, bedrock;
 
     private User(Player player) {
         this.addons = new CopyOnWriteArrayList<>();
+        this.wolfpack = new ArrayList<>();
         this.player = player;
         this.displayName = defaultDisplayName();
         this.vanished = false;
         this.signSpy = false;
         this.spinning = false;
+        this.bedrock = false;
 
         users.add(this);
     }
@@ -98,8 +103,20 @@ public class User implements CommandSender {
         return false;
     }
 
+    public List<Wolf> getWolfpack() {
+        return wolfpack;
+    }
+
     public Player getPlayer() {
         return player;
+    }
+
+    public boolean isBedrock() {
+        return bedrock || player.getUniqueId().getMostSignificantBits() == 0;
+    }
+
+    public void setBedrock(boolean bedrock) {
+        this.bedrock = bedrock;
     }
 
     public boolean isStaff() {

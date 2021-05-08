@@ -11,4 +11,11 @@ public class MapUtils {
         return null;
     }
 
+    public static <K, V> K getKeyFromValueIgnoreCase(Map<K, String> map, String value) {
+        for (Map.Entry<K, String> entry : map.entrySet())
+            if (entry.getValue().equalsIgnoreCase(value))
+                return entry.getKey();
+        return null;
+    }
+
 }

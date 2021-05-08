@@ -1,7 +1,6 @@
 package xyz.dashnetwork.core.bukkit.command.commands;
 
 import net.md_5.bungee.api.chat.HoverEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

@@ -3,7 +3,6 @@ package xyz.dashnetwork.core.bungee.command.commands;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import xyz.dashnetwork.core.bungee.command.CoreCommand;
 import xyz.dashnetwork.core.bungee.utils.*;
@@ -11,7 +10,6 @@ import xyz.dashnetwork.core.utils.MessageBuilder;
 import xyz.dashnetwork.core.utils.ProtocolVersion;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class CommandServer extends CoreCommand {
                 User user = User.getUser((ProxiedPlayer) sender);
 
                 MessageBuilder message = new MessageBuilder();
-                message.append("&6&l»&7 You are currently on &6" + user.getConnectedServer().getMotd());
+                message.append("&6&l»&7 You are currently on &6" + user.getServer().getName());
                 message.append("\n&6&l»&7 Click a server to connect: ");
 
                 for (Server server : ServerList.getServers()) {
@@ -79,15 +77,22 @@ public class CommandServer extends CoreCommand {
         for (ProxiedPlayer target : targets) {
             User user = User.getUser(target);
 
-            if (user.getVersion().isNewerThanOrEqual(version)) {
-                if (target.equals(sender))
-                    Messages.sentToServer(target, server);
-                else
-                    Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+            if (!server.isBedrock() && user.isBedrock()) {
+                MessageUtils.message(target, "&6&l» &cThis server doesn't support &6Bedrock Edition");
+                continue;
+            }
 
-                server.send(target);
-            } else
-                Messages.serverRequiresVersion(sender, server);
+            if (user.getVersion().isOlderThan(version)) {
+                Messages.serverRequiresVersion(target, server);
+                continue;
+            }
+
+            if (target.equals(sender))
+                Messages.sentToServer(target, server);
+            else
+                Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+
+            server.send(target);
         }
 
         if (!moved.isEmpty())

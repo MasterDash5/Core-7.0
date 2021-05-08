@@ -56,6 +56,7 @@ public class Core extends Plugin {
         proxy.registerChannel("dn:displayname");
         proxy.registerChannel("dn:vanish");
         proxy.registerChannel("dn:signspy");
+        proxy.registerChannel("dn:bedrock");
 
         scheduler.schedule(this, new PunishTask(), 0, 1, TimeUnit.HOURS);
         scheduler.schedule(this, new SaveTask(), 5, 5, TimeUnit.MINUTES);
@@ -74,6 +75,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandAltlist());
         manager.registerCommand(this, new CommandAltspy());
         manager.registerCommand(this, new CommandBan());
+        manager.registerCommand(this, new CommandBanlist());
         manager.registerCommand(this, new CommandBroadcast());
         manager.registerCommand(this, new CommandBungeebuild());
         manager.registerCommand(this, new CommandChat());
@@ -87,6 +89,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandFakeleave());
         manager.registerCommand(this, new CommandFurpysong());
         manager.registerCommand(this, new CommandIpban());
+        manager.registerCommand(this, new CommandIpbanlist());
         manager.registerCommand(this, new CommandKick());
         manager.registerCommand(this, new CommandList());
         manager.registerCommand(this, new CommandLobby());
@@ -94,6 +97,7 @@ public class Core extends Plugin {
         manager.registerCommand(this, new CommandMattsarmorstands());
         manager.registerCommand(this, new CommandMessage());
         manager.registerCommand(this, new CommandMute());
+        manager.registerCommand(this, new CommandMutelist());
         manager.registerCommand(this, new CommandNickname());
         manager.registerCommand(this, new CommandOwnerchat());
         manager.registerCommand(this, new CommandPain());

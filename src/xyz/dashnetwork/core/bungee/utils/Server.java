@@ -14,13 +14,15 @@ public class Server {
     private String[] aliases;
     private int version;
     private PermissionType permission;
+    private boolean bedrock;
 
-    protected Server(String name, String[] aliases, int version, PermissionType permission) {
+    protected Server(String name, String[] aliases, int version, PermissionType permission, boolean bedrock) {
         this.serverInfo = BungeeCord.getInstance().getServerInfo(name);
         this.name = name;
         this.aliases = aliases;
         this.version = version;
         this.permission = permission;
+        this.bedrock = bedrock;
     }
 
     public ServerInfo getServerInfo() {
@@ -41,6 +43,10 @@ public class Server {
 
     public PermissionType getPermission() {
         return permission;
+    }
+
+    public boolean isBedrock() {
+        return bedrock;
     }
 
     public void send(ProxiedPlayer player) {

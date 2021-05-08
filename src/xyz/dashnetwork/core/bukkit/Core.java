@@ -9,7 +9,6 @@ import xyz.dashnetwork.core.bukkit.listeners.*;
 import xyz.dashnetwork.core.bukkit.tasks.SpinTask;
 import xyz.dashnetwork.core.bukkit.tasks.UserTask;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
-import xyz.dashnetwork.core.bukkit.utils.PermissionType;
 import xyz.dashnetwork.core.bukkit.utils.TpsUtils;
 import xyz.dashnetwork.core.bukkit.utils.User;
 import xyz.dashnetwork.core.utils.Channel;
@@ -57,6 +56,7 @@ public class Core extends JavaPlugin {
         messenger.registerIncomingPluginChannel(this, "dn:displayname", channelListener);
         messenger.registerIncomingPluginChannel(this, "dn:vanish", channelListener);
         messenger.registerIncomingPluginChannel(this, "dn:signspy", channelListener);
+        messenger.registerIncomingPluginChannel(this, "dn:bedrock", channelListener);
 
         TpsUtils.startup();
 
@@ -94,6 +94,7 @@ public class Core extends JavaPlugin {
         new CommandServerinfo();
         new CommandSleep();
         new CommandSpin();
+        new CommandWolfpack();
 
         MessageUtils.broadcast(Channel.STAFF, "&6&l» &6" + serverName + " &7is now &aonline");
     }
@@ -105,6 +106,8 @@ public class Core extends JavaPlugin {
 
         if (packetListener != null)
             packetListener.stop();
+
+        getServer().shutdown();
     }
 
 }

@@ -27,9 +27,14 @@ public class CommandVersionlist extends CoreCommand {
 
         for (User user : User.getUsers(true)) {
             if (!user.isVanished() || PermissionType.STAFF.hasPermission(sender)) {
-                String version = user.getVersion().getName();
-                List<ProxiedPlayer> players = versionlist.getOrDefault(version, new ArrayList<>());
+                String version;
 
+                if (user.isBedrock())
+                    version = "Bedrock";
+                else
+                    version = user.getVersion().getName();
+
+                List<ProxiedPlayer> players = versionlist.getOrDefault(version, new ArrayList<>());
                 players.add(user.getPlayer());
                 versionlist.put(version, players);
             }

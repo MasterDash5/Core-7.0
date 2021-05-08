@@ -74,6 +74,10 @@ public class OfflineUser {
             this.pingSpy = true;
     }
 
+    public boolean isBedrock() {
+        return uuid.getMostSignificantBits() == 0;
+    }
+
     public boolean hasJoined() {
         return address != null;
     }

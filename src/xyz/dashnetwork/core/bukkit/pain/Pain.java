@@ -45,9 +45,7 @@ public class Pain {
             byte[] signed = SignatureUtils.sign((time + channel).getBytes());
 
             output.write(signed);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
+        } catch (IOException exception) {}
     }
 
     public DataOutputStream getOutput() {

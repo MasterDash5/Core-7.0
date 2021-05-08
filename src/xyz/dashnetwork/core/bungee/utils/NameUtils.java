@@ -3,9 +3,7 @@ package xyz.dashnetwork.core.bungee.utils;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import xyz.dashnetwork.core.utils.MapUtils;
-import xyz.dashnetwork.core.utils.PlayerProfile;
-import xyz.dashnetwork.core.utils.Username;
+import xyz.dashnetwork.core.utils.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,27 +74,41 @@ public class NameUtils {
         String username = DataUtils.getNames().get(uuid.toString());
 
         if (username == null) {
-            Username[] usernames = MojangUtils.getNameHistoryFromUuid(uuid);
+            if (uuid.getMostSignificantBits() == 0) {
+                XboxProfile profile = XboxUtils.fromXUID(uuid.getLeastSignificantBits());
 
-            if (usernames == null)
-                return null;
+                if (profile != null)
+                    username = profile.getGamertag();
+            } else {
+                Username[] usernames = MojangUtils.getNameHistoryFromUuid(uuid);
 
-            username = usernames[usernames.length - 1].getName();
+                if (usernames == null)
+                    return null;
+
+                username = usernames[usernames.length - 1].getName();
+            }
         }
 
         return username;
     }
 
     public static UUID getUUID(String username) {
-        String uuid = MapUtils.getKeyFromValue(DataUtils.getNames(), username);
+        String uuid = MapUtils.getKeyFromValueIgnoreCase(DataUtils.getNames(), username);
 
         if (uuid == null) {
-            PlayerProfile profile = MojangUtils.getUuidFromName(username);
+            if (username.startsWith("*")) {
+                XboxProfile profile = XboxUtils.fromGamertag(username.substring(1));
 
-            if (profile == null)
-                return null;
+                if (profile != null)
+                    uuid = profile.getUUID().toString();
+            } else {
+                PlayerProfile profile = MojangUtils.getUuidFromName(username);
 
-            uuid = profile.getUuid().toString();
+                if (profile == null)
+                    return null;
+
+                uuid = profile.getUuid().toString();
+            }
         }
 
         return UUID.fromString(uuid);

@@ -22,6 +22,7 @@ public class JoinListener implements Listener {
         Map<String, String> displaynameQueue = QueueUtils.getDisplaynameQueue();
         List<String> vanishQueue = QueueUtils.getVanishQueue();
         List<String> signspyQueue = QueueUtils.getSignspyQueue();
+        List<String> bedrockQueue = QueueUtils.getBedrockQueue();
 
         if (displaynameQueue.containsKey(uuid)) {
             user.setDisplayName(displaynameQueue.get(uuid));
@@ -39,6 +40,12 @@ public class JoinListener implements Listener {
             user.setSignSpy(true);
 
             signspyQueue.remove(uuid);
+        }
+
+        if (bedrockQueue.contains(uuid)) {
+            user.setBedrock(true);
+
+            bedrockQueue.remove(uuid);
         }
 
         if (!user.isStaff())

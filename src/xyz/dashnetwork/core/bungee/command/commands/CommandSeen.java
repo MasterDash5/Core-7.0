@@ -40,7 +40,9 @@ public class CommandSeen extends CoreCommand {
         boolean online = offline.isOnline();
         long seen = offline.getLastPlayed();
         String stringUuid = uuid.toString();
+        String stringXuid = "000" + Long.toHexString(uuid.getLeastSignificantBits());
         String nickname = offline.getNickname();
+        boolean bedrock = offline.isBedrock();
         String address = offline.getAddress();
         String status = online ? "&aonline" : "&coffline";
 
@@ -54,9 +56,19 @@ public class CommandSeen extends CoreCommand {
         } else if (!offline.hasJoined())
             message.append("\n&7 - Has not joined the server before");
 
-        message.append("\n&7 - UUID: &6" + stringUuid)
-                .hoverEvent(HoverEvent.Action.SHOW_TEXT, "&7Click to copy &6" + stringUuid)
-                .clickEvent(ClickEvent.Action.SUGGEST_COMMAND, stringUuid);
+        if (bedrock) {
+            message.append("\n&7 - XUID: &6" + stringXuid)
+                    .hoverEvent(HoverEvent.Action.SHOW_TEXT, "&7Click to copy &6" + stringXuid)
+                    .clickEvent(ClickEvent.Action.SUGGEST_COMMAND, stringXuid);
+
+            message.append("\n&7 - Account: &6Xbox Live");
+        } else {
+            message.append("\n&7 - UUID: &6" + stringUuid)
+                    .hoverEvent(HoverEvent.Action.SHOW_TEXT, "&7Click to copy &6" + stringUuid)
+                    .clickEvent(ClickEvent.Action.SUGGEST_COMMAND, stringUuid);
+
+            message.append("\n&7 - Account: &6Minecraft Java");
+        }
 
         if (nickname != null) {
             nickname = nickname.replace(ChatColor.COLOR_CHAR, '&');

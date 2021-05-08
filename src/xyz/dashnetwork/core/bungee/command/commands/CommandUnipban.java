@@ -8,10 +8,14 @@ import xyz.dashnetwork.core.bungee.utils.MessageUtils;
 import xyz.dashnetwork.core.bungee.utils.NameUtils;
 import xyz.dashnetwork.core.bungee.utils.PermissionType;
 import xyz.dashnetwork.core.utils.MessageBuilder;
+import xyz.dashnetwork.core.utils.PunishData;
 
 import java.util.Collections;
+import java.util.Map;
 
 public class CommandUnipban extends CoreCommand {
+
+    private static Map<String, PunishData> ipbans = DataUtils.getIpbans();
 
     public CommandUnipban() {
         super(true, PermissionType.OWNER, "unipban", "unbanip", "pardonip", "ippardon");
@@ -28,7 +32,7 @@ public class CommandUnipban extends CoreCommand {
 
         String address = args[0];
 
-        DataUtils.getIpbans().remove(address);
+        ipbans.remove(address);
 
         MessageBuilder broadcast = new MessageBuilder();
         broadcast.append("&6&l» ");
@@ -40,6 +44,8 @@ public class CommandUnipban extends CoreCommand {
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+        if (args.length == 1)
+            return ipbans.keySet();
         return Collections.EMPTY_LIST;
     }
 

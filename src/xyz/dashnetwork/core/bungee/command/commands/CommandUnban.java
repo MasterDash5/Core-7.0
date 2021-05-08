@@ -5,7 +5,6 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import xyz.dashnetwork.core.bungee.command.CoreCommand;
 import xyz.dashnetwork.core.bungee.utils.*;
 import xyz.dashnetwork.core.utils.MessageBuilder;
-import xyz.dashnetwork.core.utils.PlayerProfile;
 import xyz.dashnetwork.core.utils.PunishData;
 
 import java.util.Collections;
@@ -14,8 +13,7 @@ import java.util.UUID;
 
 public class CommandUnban extends CoreCommand {
 
-    private Map<String, String> names = DataUtils.getNames();
-    private Map<String, PunishData> bans = DataUtils.getBans();
+    private static Map<String, PunishData> bans = DataUtils.getBans();
 
     public CommandUnban() {
         super(true, PermissionType.ADMIN, "unban", "pardon");
@@ -30,36 +28,29 @@ public class CommandUnban extends CoreCommand {
             return;
         }
 
-        String name = null;
-        String uuid = null;
+        UUID uuid;
+        String name;
 
         try {
-            uuid = UUID.fromString(args[0]).toString();
-        } catch (IllegalArgumentException exception) {
-            for (Map.Entry<String, String> entry : names.entrySet()) {
-                String value = entry.getValue();
+            uuid = UUID.fromString(args[0]);
+            name = NameUtils.getUsername(uuid);
 
-                if (value.equalsIgnoreCase(args[0])) {
-                    name = value;
-                    uuid = entry.getKey();
-                    break;
-                }
+            if (name == null) {
+                Messages.noPlayerFound(sender);
+                return;
             }
-        }
+        } catch (IllegalArgumentException invalid) {
+            uuid = NameUtils.getUUID(args[0]);
 
-        if (uuid == null) {
-            PlayerProfile profile = MojangUtils.getUuidFromName(args[0]);
-
-            if (profile == null) {
+            if (uuid == null) {
                 Messages.noPlayerFound(sender);
                 return;
             }
 
-            name = profile.getName();
-            uuid = profile.getUuid().toString();
+            name = NameUtils.getUsername(uuid);
         }
 
-        DataUtils.getBans().remove(uuid);
+        bans.remove(uuid.toString());
 
         MessageBuilder broadcast = new MessageBuilder();
         broadcast.append("&6&l» ");

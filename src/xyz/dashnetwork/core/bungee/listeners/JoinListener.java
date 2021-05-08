@@ -41,6 +41,8 @@ public class JoinListener implements Listener {
         names.put(player.getUniqueId().toString(), player.getName());
         ips.put(address, uuids);
 
+        List<String> removeQueue = new ArrayList<>();
+
         for (Map.Entry<String, List<String>> entry : ips.entrySet()) {
             String ip = entry.getKey();
 
@@ -48,9 +50,15 @@ public class JoinListener implements Listener {
                 List<String> list = entry.getValue();
                 list.remove(uuid);
 
-                entry.setValue(list);
+                if (list.isEmpty())
+                    removeQueue.add(ip);
+                else
+                    entry.setValue(list);
             }
         }
+
+        for (String remove : removeQueue)
+            ips.remove(remove);
 
         BungeeCord.getInstance().getScheduler().runAsync(Core.getInstance(), () -> {
             List<String> alts = new ArrayList<>();

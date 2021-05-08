@@ -16,6 +16,7 @@ import xyz.dashnetwork.core.utils.MessageBuilder;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 
 public class MessageUtils {
 
@@ -31,16 +32,24 @@ public class MessageUtils {
     }
 
     public static void broadcast(Channel channel, String message) {
+        Collection<? extends Player> online = Bukkit.getOnlinePlayers();
+
         switch (channel) {
             case LOCAL:
-                for (User user : User.getUsers(true))
-                    message(user, message);
+                for (Player player : online)
+                    message(player, message);
                 break;
             default:
-                // TODO: Update Pain to use Channel instead of PermissionType
+                // TODO: Update to use Channel instead of PermissionType
                 byte permission = PermissionType.fromChannel(channel).toId();
 
-                if (Core.isPainEnabled()) {
+                if (!online.isEmpty()) {
+                    ByteArrayDataOutput output = ByteStreams.newDataOutput();
+                    output.write(permission);
+                    output.writeUTF(message);
+
+                    online.iterator().next().sendPluginMessage(Core.getInstance(), "dn:broadcast", output.toByteArray());
+                } else if (Core.isPainEnabled()) {
                     Pain pain = new Pain("broadcast");
                     DataOutputStream output = pain.getOutput();
 
@@ -52,15 +61,6 @@ public class MessageUtils {
                     }
 
                     pain.close();
-                } else {
-                    for (Player target : Bukkit.getOnlinePlayers()) {
-                        ByteArrayDataOutput output = ByteStreams.newDataOutput();
-                        output.write(permission);
-                        output.writeUTF(message);
-
-                        target.sendPluginMessage(Core.getInstance(), "dn:broadcast", output.toByteArray());
-                        break;
-                    }
                 }
         }
 

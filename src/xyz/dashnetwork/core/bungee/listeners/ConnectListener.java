@@ -27,6 +27,14 @@ public class ConnectListener implements Listener {
 
         serverInfo.sendData("dn:displayname", displaynameOut.toByteArray());
 
+        if (user.isBedrock()) {
+            ByteArrayDataOutput bedrockOut = ByteStreams.newDataOutput();
+            bedrockOut.writeUTF(uuid);
+            bedrockOut.writeBoolean(true);
+
+            serverInfo.sendData("dn:bedrock", bedrockOut.toByteArray());
+        }
+
         if (user.isVanished()) {
             ByteArrayDataOutput vanishOut = ByteStreams.newDataOutput();
             vanishOut.writeUTF(uuid);

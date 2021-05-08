@@ -3,10 +3,7 @@ package xyz.dashnetwork.core.bungee.command.commands;
 import net.md_5.bungee.api.CommandSender;
 import xyz.dashnetwork.core.bungee.command.CoreCommand;
 import xyz.dashnetwork.core.bungee.utils.*;
-import xyz.dashnetwork.core.utils.MapUtils;
-import xyz.dashnetwork.core.utils.PlayerProfile;
 import xyz.dashnetwork.core.utils.StringUtils;
-import xyz.dashnetwork.core.utils.Username;
 
 import java.util.*;
 
@@ -25,46 +22,26 @@ public class CommandBan extends CoreCommand {
             return;
         }
 
-        Map<String, String> names = DataUtils.getNames();
-
         UUID target;
         String name;
 
         try {
             target = UUID.fromString(args[0]);
-            name = names.get(target.toString());
+            name = NameUtils.getUsername(target);
 
             if (name == null) {
-                MessageUtils.message(sender, "&6&l» &7Unable to find player locally. Looking up from Mojang...");
-
-                Username[] usernames = MojangUtils.getNameHistoryFromUuid(target);
-
-                if (usernames == null) {
-                    Messages.noPlayerFound(sender);
-                    return;
-                }
-
-                name = usernames[usernames.length - 1].getName();
+                Messages.noPlayerFound(sender);
+                return;
             }
         } catch (IllegalArgumentException invalid) {
-            String fromName = MapUtils.getKeyFromValue(names, args[0]);
+            target = NameUtils.getUUID(args[0]);
 
-            if (fromName == null) {
-                MessageUtils.message(sender, "&6&l» &7Unable to find player locally. Looking up from Mojang...");
-
-                PlayerProfile profile = MojangUtils.getUuidFromName(args[0]);
-
-                if (profile == null) {
-                    Messages.noPlayerFound(sender);
-                    return;
-                }
-
-                target = profile.getUuid();
-                name = profile.getName();
-            } else {
-                target = UUID.fromString(fromName);
-                name = names.get(target.toString());
+            if (target == null) {
+                Messages.noPlayerFound(sender);
+                return;
             }
+
+            name = NameUtils.getUsername(target);
         }
 
         String reason = "reason not provided";

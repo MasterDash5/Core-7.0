@@ -28,3 +28,4 @@ commands:
   sleep:
   spin:
     aliases: [spinmerightround, spinmerightroundbabyrightround]
+  wolfpack:

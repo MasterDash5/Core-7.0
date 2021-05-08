@@ -10,6 +10,7 @@ public class QueueUtils {
     private static Map<String, String> displaynameQueue = new HashMap<>();
     private static List<String> vanishQueue = new ArrayList<>();
     private static List<String> signspyQueue = new ArrayList<>();
+    private static List<String> bedrockQueue = new ArrayList<>();
 
     public static Map<String, String> getDisplaynameQueue() {
         return displaynameQueue;
@@ -21,6 +22,10 @@ public class QueueUtils {
 
     public static List<String> getSignspyQueue() {
         return signspyQueue;
+    }
+
+    public static List<String> getBedrockQueue() {
+        return bedrockQueue;
     }
 
 }

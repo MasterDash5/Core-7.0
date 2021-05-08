@@ -37,15 +37,22 @@ public class CommandSkygrid extends CoreCommand {
         for (ProxiedPlayer target : targets) {
             User user = User.getUser(target);
 
-            if (user.getVersion().isNewerThanOrEqual(version)) {
-                if (target.equals(sender))
-                    Messages.sentToServer(target, server);
-                else
-                    Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+            if (!server.isBedrock() && user.isBedrock()) {
+                MessageUtils.message(target, "&6&l» &cThis server doesn't support &6Bedrock Edition");
+                continue;
+            }
 
-                server.send(target);
-            } else
-                Messages.serverRequiresVersion(sender, server);
+            if (user.getVersion().isOlderThan(version)) {
+                Messages.serverRequiresVersion(target, server);
+                continue;
+            }
+
+            if (target.equals(sender))
+                Messages.sentToServer(target, server);
+            else
+                Messages.forcedToServer(target, NameUtils.getName(sender), NameUtils.getDisplayName(sender), server);
+
+            server.send(target);
         }
 
         if (!moved.isEmpty())
