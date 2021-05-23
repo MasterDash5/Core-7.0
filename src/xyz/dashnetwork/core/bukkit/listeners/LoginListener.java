@@ -14,6 +14,9 @@ public class LoginListener implements Listener {
     public void onPlayerLogin(PlayerLoginEvent event) {
         String address = event.getRealAddress().getHostAddress();
 
+        if (bungee.equalsIgnoreCase("disable"))
+            return;
+
         if (!address.equals(bungee))
             event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ColorUtils.translate("&6&lDashNetwork\n\n&7Use &6play.dashnetwork.xyz&7 to join"));
     }

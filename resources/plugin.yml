@@ -22,6 +22,8 @@ commands:
     aliases: [nv, see]
   oplist:
     aliases: [ops]
+  paintbrush:
+  peek:
   respawn:
     aliases: [forcerespawn]
   serverinfo:

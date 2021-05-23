@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import xyz.dashnetwork.core.bukkit.Core;
 import xyz.dashnetwork.core.bukkit.command.CoreCommand;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
 import xyz.dashnetwork.core.bukkit.utils.PermissionType;
@@ -24,13 +25,30 @@ public class CommandWolfpack extends CoreCommand {
 
     @Override
     public void onCommand(CommandSender sender, String label, String[] args) {
+        if (Core.getServerName().equalsIgnoreCase("pvp")) {
+            MessageUtils.message(sender, "&6&l» &7No cheating on my pvp server.");
+            return;
+        }
+
         if (sender instanceof Player) {
+            int length = args.length;
+            int size = 200;
+
+            if (length > 0) {
+                try {
+                    size = Integer.valueOf(args[0]);
+                } catch (IllegalArgumentException exception) {
+                    MessageUtils.message(sender, "&6&l» &7Not a valid integer");
+                    return;
+                }
+            }
+
             Player player = (Player) sender;
             User user = User.getUser(player);
             List<Wolf> wolfpack = user.getWolfpack();
 
             if (wolfpack.isEmpty()) {
-                for (int i = 0; i < 200; i++) {
+                for (int i = 0; i < size; i++) {
                     Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
                     wolf.setTamed(true);
                     wolf.setOwner(player);

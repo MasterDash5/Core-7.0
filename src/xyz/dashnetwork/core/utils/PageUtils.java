@@ -13,12 +13,14 @@ public class PageUtils {
         int length = message.size();
         int end = page * 5;
         int start = end - 5;
-        int total = (int) Math.ceil(length / (page * 5)); // Why does Math.ceil return a double
+        int total = (int) Math.ceil(length / end + 1); // Why does Math.ceil return a double
 
         builder.append("&6&l» &7Page &6" + page + "&7/&6" + total).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + length + " total entries");
 
-        for (int i = start; i < end && i < length; i++)
+        for (int i = start; i < end && i < length; i++) {
+            builder.append("\n");
             builder.append(message.get(i));
+        }
 
         return builder.build();
     }
@@ -30,12 +32,12 @@ public class PageUtils {
         int length = lines.length;
         int end = page * 5;
         int start = end - 5;
-        int total = (int) Math.ceil(length / (page * 5)); // Why does Math.ceil return a double
+        int total = (int) Math.ceil(length / (page * 5));
 
         builder.append("&6&l» &7Page &6" + page + "&7/&6" + total).hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + length + " total entries");
 
         for (int i = start; i < end && i < length; i++)
-            builder.append(lines[i]);
+            builder.append("\n" + lines[i]);
 
         return builder.build();
     }

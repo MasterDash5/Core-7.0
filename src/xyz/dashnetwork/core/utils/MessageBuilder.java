@@ -78,6 +78,12 @@ public class MessageBuilder {
             return this;
         }
 
+        public MessageComponent font(String font) {
+            for (BaseComponent component : components)
+                component.setFont(font);
+            return this;
+        }
+
         private List<BaseComponent> getBaseComponents() {
             return components;
         }

@@ -15,7 +15,7 @@ import java.util.List;
 public class CommandFly extends CoreCommand {
 
     public CommandFly() {
-        super(true, PermissionType.ADMIN, "fly");
+        super(false, PermissionType.ADMIN, "fly");
     }
 
     @Override

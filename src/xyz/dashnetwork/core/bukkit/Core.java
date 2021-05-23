@@ -6,6 +6,8 @@ import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 import xyz.dashnetwork.core.bukkit.command.commands.*;
 import xyz.dashnetwork.core.bukkit.listeners.*;
+import xyz.dashnetwork.core.bukkit.listeners.protocollib.PingPacketListener;
+import xyz.dashnetwork.core.bukkit.listeners.protocollib.SpectateListener;
 import xyz.dashnetwork.core.bukkit.tasks.SpinTask;
 import xyz.dashnetwork.core.bukkit.tasks.UserTask;
 import xyz.dashnetwork.core.bukkit.utils.MessageUtils;
@@ -61,17 +63,20 @@ public class Core extends JavaPlugin {
         TpsUtils.startup();
 
         PluginManager manager = getServer().getPluginManager();
+        manager.registerEvents(new InteractListener(), this);
         manager.registerEvents(new JoinListener(), this);
         manager.registerEvents(new LoginListener(), this);
         manager.registerEvents(new PingListener(), this);
         manager.registerEvents(new QuitListener(), this);
         manager.registerEvents(new SignListener(), this);
-        manager.registerEvents(new SpectateListener(), this);
         manager.registerEvents(new WorldListener(), this);
 
         if (manager.isPluginEnabled("ProtocolLib")) {
             packetListener = new PacketListener();
             packetListener.start();
+
+            manager.registerEvents(new PingPacketListener(), this);
+            manager.registerEvents(new SpectateListener(), this);
         } else
             packetListener = null;
 
@@ -90,6 +95,8 @@ public class Core extends JavaPlugin {
         new CommandMommy();
         new CommandNightvision();
         new CommandOplist();
+        new CommandPaintbrush();
+        new CommandPeek();
         new CommandRespawn();
         new CommandServerinfo();
         new CommandSleep();

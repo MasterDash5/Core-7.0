@@ -29,6 +29,7 @@ public class User implements CommandSender {
     private List<Wolf> wolfpack;
     private Player player;
     private String displayName;
+    private int paintbrush;
     private boolean vanished, signSpy, spinning, bedrock;
 
     private User(Player player) {
@@ -36,6 +37,7 @@ public class User implements CommandSender {
         this.wolfpack = new ArrayList<>();
         this.player = player;
         this.displayName = defaultDisplayName();
+        this.paintbrush = -1;
         this.vanished = false;
         this.signSpy = false;
         this.spinning = false;
@@ -109,6 +111,14 @@ public class User implements CommandSender {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public int getPaintbrush() {
+        return paintbrush;
+    }
+
+    public void setPaintbrush(int paintbrush) {
+        this.paintbrush = paintbrush;
     }
 
     public boolean isBedrock() {

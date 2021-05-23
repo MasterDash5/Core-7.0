@@ -1,4 +1,4 @@
-package xyz.dashnetwork.core.bukkit.listeners;
+package xyz.dashnetwork.core.bukkit.listeners.protocollib;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;

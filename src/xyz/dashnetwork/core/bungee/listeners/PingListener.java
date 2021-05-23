@@ -61,7 +61,7 @@ public class PingListener implements Listener {
         boolean skipPingspy = false;
 
         for (User user : User.getUsers(true))
-            if (address.equals(((InetSocketAddress) user.getPlayer().getSocketAddress()).getAddress().getHostAddress()))
+            if (address.equals(user.getAddress()))
                 skipPingspy = true;
 
         if (DataUtils.getIpbans().containsKey(address))
