@@ -1,11 +1,8 @@
-package xyz.dashnetwork.core.bukkit.listeners;
+package xyz.dashnetwork.core.bukkit.listeners.protocollib;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.ListeningWhitelist;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.events.*;
 import com.comphenix.protocol.injector.GamePhase;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -22,7 +19,7 @@ public class PacketListener extends PacketAdapter {
     private static Set<PacketType> enabledPackets = StreamSupport.stream(PacketType.values().spliterator(), false).filter(type -> type.isSupported()).collect(Collectors.toSet());
 
     public PacketListener() {
-        super(new AdapterParameteters().gamePhase(GamePhase.BOTH).plugin(plugin).types(enabledPackets).listenerPriority(ListenerPriority.HIGHEST));
+        super(new AdapterParameteters().gamePhase(GamePhase.BOTH).plugin(plugin).types(enabledPackets).listenerPriority(ListenerPriority.HIGHEST).options(ListenerOptions.ASYNC));
     }
 
     public void start() {

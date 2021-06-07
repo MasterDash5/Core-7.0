@@ -6,6 +6,7 @@ import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 import xyz.dashnetwork.core.bukkit.command.commands.*;
 import xyz.dashnetwork.core.bukkit.listeners.*;
+import xyz.dashnetwork.core.bukkit.listeners.protocollib.PacketListener;
 import xyz.dashnetwork.core.bukkit.listeners.protocollib.PingPacketListener;
 import xyz.dashnetwork.core.bukkit.listeners.protocollib.SpectateListener;
 import xyz.dashnetwork.core.bukkit.tasks.SpinTask;

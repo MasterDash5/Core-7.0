@@ -5,6 +5,7 @@ import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -47,6 +48,7 @@ public class MessageUtils {
                     ByteArrayDataOutput output = ByteStreams.newDataOutput();
                     output.write(permission);
                     output.writeUTF(message);
+                    output.writeBoolean(false);
 
                     online.iterator().next().sendPluginMessage(Core.getInstance(), "dn:broadcast", output.toByteArray());
                 } else if (Core.isPainEnabled()) {
@@ -56,6 +58,46 @@ public class MessageUtils {
                     try {
                         output.write(permission);
                         output.writeUTF(message);
+                        output.writeBoolean(false);
+                    } catch (IOException exception) {
+                        message(console, "Failed to send global message");
+                    }
+
+                    pain.close();
+                }
+        }
+
+        message(console, message);
+    }
+
+    public static void broadcast(Channel channel, BaseComponent... message) {
+        Collection<? extends Player> online = Bukkit.getOnlinePlayers();
+
+        switch (channel) {
+            case LOCAL:
+                for (Player player : online)
+                    message(player, message);
+                break;
+            default:
+                // TODO: Update to use Channel instead of PermissionType
+                byte permission = PermissionType.fromChannel(channel).toId();
+                String json = ComponentSerializer.toString(message);
+
+                if (!online.isEmpty()) {
+                    ByteArrayDataOutput output = ByteStreams.newDataOutput();
+                    output.write(permission);
+                    output.writeUTF(json);
+                    output.writeBoolean(true);
+
+                    online.iterator().next().sendPluginMessage(Core.getInstance(), "dn:broadcast", output.toByteArray());
+                } else if (Core.isPainEnabled()) {
+                    Pain pain = new Pain("broadcast");
+                    DataOutputStream output = pain.getOutput();
+
+                    try {
+                        output.write(permission);
+                        output.writeUTF(json);
+                        output.writeBoolean(true);
                     } catch (IOException exception) {
                         message(console, "Failed to send global message");
                     }

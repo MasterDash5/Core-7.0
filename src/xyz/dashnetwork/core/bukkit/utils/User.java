@@ -15,6 +15,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 import xyz.dashnetwork.core.utils.ColorUtils;
 import xyz.dashnetwork.core.utils.LazyUtils;
+import xyz.dashnetwork.core.utils.ProtocolVersion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +104,14 @@ public class User implements CommandSender {
             if (addon.getClass().equals(clazz))
                 return true;
         return false;
+    }
+
+    public ProtocolVersion getVersion() {
+        return VersionUtils.getPlayerVersion(player);
+    }
+
+    public int getPing() {
+        return player.spigot().getPing();
     }
 
     public List<Wolf> getWolfpack() {

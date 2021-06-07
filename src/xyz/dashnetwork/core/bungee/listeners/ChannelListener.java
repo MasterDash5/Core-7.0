@@ -9,6 +9,7 @@ import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.event.EventHandler;
 import xyz.dashnetwork.core.bungee.utils.F3Utils;
 import xyz.dashnetwork.core.bungee.utils.MessageUtils;
@@ -61,8 +62,12 @@ public class ChannelListener implements Listener {
 
                     PermissionType permission = PermissionType.fromId(input.readByte());
                     String message = input.readUTF();
+                    boolean json = input.readBoolean();
 
-                    MessageUtils.broadcast(permission, message);
+                    if (json)
+                        MessageUtils.broadcast(permission, ComponentSerializer.parse(message));
+                    else
+                        MessageUtils.broadcast(permission, message);
 
                     break;
                 case "dn:online":
