@@ -12,7 +12,6 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.PluginManager;
-import org.geysermc.floodgate.FloodgateAPI;
 import xyz.dashnetwork.core.bungee.Core;
 import xyz.dashnetwork.core.bungee.events.UserChatEvent;
 import xyz.dashnetwork.core.bungee.events.UserVanishEvent;
@@ -420,7 +419,7 @@ public class User extends OfflineUser implements CommandSender {
 
     @Override
     public boolean isBedrock() {
-        return FloodgateAPI.isBedrockPlayer(player);
+        return false;
     }
 
     @Override

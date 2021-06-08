@@ -2,7 +2,7 @@ package xyz.dashnetwork.core.utils;
 
 public enum ProtocolVersion {
 
-    UNKNOWN(-1, false),
+    UNKNOWN(Integer.MAX_VALUE, false),
     v1_4_7(51, true),
     v1_5_1(60, true),
     v1_5_2(61, true),
@@ -37,7 +37,8 @@ public enum ProtocolVersion {
     v1_16_1(736, false),
     v1_16_2(751, false),
     v1_16_3(753, false),
-    v1_16_5(754, false);
+    v1_16_5(754, false),
+    v1_17(755, false);
 
     private int id;
     private boolean legacy;

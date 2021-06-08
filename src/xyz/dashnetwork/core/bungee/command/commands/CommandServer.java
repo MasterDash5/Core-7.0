@@ -33,13 +33,17 @@ public class CommandServer extends CoreCommand {
                 message.append("&6&l»&7 You are currently on &6" + user.getServer().getName());
                 message.append("\n&6&l»&7 Click a server to connect: ");
 
+                boolean comma = false;
+
                 for (Server server : ServerList.getServers()) {
                     if (server.getPermission().hasPermission(sender)) {
                         String name = server.getName();
                         int online = server.getPlayers(user.isStaff()).size();
 
-                        if (!message.isEmpty())
+                        if (comma)
                             message.append("&7, ");
+                        else
+                            comma = true;
 
                         message.append("&6" + name)
                                 .hoverEvent(HoverEvent.Action.SHOW_TEXT, "&7Click to connect to &6" + name

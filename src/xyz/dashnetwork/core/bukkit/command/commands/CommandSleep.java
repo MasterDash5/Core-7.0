@@ -44,13 +44,9 @@ public class CommandSleep extends CoreCommand {
         for (Player target : targets) {
             try {
                 Class statistic = Class.forName("org.bukkit.Statistic");
-                Object rest = null;
+                Statistic rest = (Statistic) Enum.valueOf(statistic, "TIME_SINCE_REST");
 
-                for (Object constant : statistic.getEnumConstants())
-                    if (constant.toString().equals("TIME_SINCE_REST"))
-                        rest = constant;
-
-                target.setStatistic((Statistic) rest, 0);
+                target.setStatistic(rest, 0);
             } catch (Exception exception) {}
 
             MessageUtils.message(target, "&6&l» &7Your sleep timer has been reset");

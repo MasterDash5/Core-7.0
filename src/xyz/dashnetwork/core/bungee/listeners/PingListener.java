@@ -36,7 +36,6 @@ public class PingListener implements Listener {
         ServerPing response = event.getResponse();
         ServerPing.Players players = response.getPlayers();
         TextComponent component = new TextComponent();
-        boolean hex = ProtocolVersion.fromId(event.getConnection().getVersion()).isNewerThanOrEqual(ProtocolVersion.v1_16);
 
         int online = players.getOnline();
 
@@ -44,16 +43,17 @@ public class PingListener implements Listener {
             if (user.isVanished())
                 online--;
 
-        String software = "DashNetwork 1.7 - 1.16";
+        String software = "DashNetwork 1.7 - 1.17";
 
         List<ServerPing.PlayerInfo> list = new ArrayList<>();
         list.add(new ServerPing.PlayerInfo(ColorUtils.translate("&f             &6&n&lDashNetwork"), UUID.randomUUID()));
         list.add(new ServerPing.PlayerInfo(ColorUtils.translate("&6&lMinecraft &7play.dashnetwork.xyz"), UUID.randomUUID()));
         list.add(new ServerPing.PlayerInfo(ColorUtils.translate("&6&lDiscord &7discord.dashnetwork.xyz"), UUID.randomUUID()));
 
-        String hexMotd = "§x§f§c§5§7§1§7§lD§x§f§b§5§d§1§6§la§x§f§c§6§4§1§5§ls§x§f§c§6§a§1§4§lh§x§f§c§7§1§1§3§lN§x§f§c§7§7§1§1§le§x§f§c§7§e§1§0§lt§x§f§c§8§4§0§f§lw§x§f§c§8§b§0§e§lo§x§f§c§9§1§0§d§lr§x§f§c§9§8§0§b§lk";
+        // Didn't work for some reason
+        // String hexMotd = "§x§f§c§5§7§1§7§lD§x§f§b§5§d§1§6§la§x§f§c§6§4§1§5§ls§x§f§c§6§a§1§4§lh§x§f§c§7§1§1§3§lN§x§f§c§7§7§1§1§le§x§f§c§7§e§1§0§lt§x§f§c§8§4§0§f§lw§x§f§c§8§b§0§e§lo§x§f§c§9§1§0§d§lr§x§f§c§9§8§0§b§lk";
 
-        component.setText(ColorUtils.translate("&6&lDashNetwork &6&l»&7 [1.7 - 1.16]"));
+        component.setText(ColorUtils.translate("&6&lDashNetwork &6&l»&7 [1.7 - 1.17]"));
         component.addExtra(ColorUtils.translate("\n&c&lServer IP: &6play.dashnetwork.xyz"));
 
         response.setVersion(new ServerPing.Protocol(software, response.getVersion().getProtocol()));
