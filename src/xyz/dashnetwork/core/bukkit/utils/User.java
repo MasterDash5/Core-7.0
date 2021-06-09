@@ -24,11 +24,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class User implements CommandSender {
 
-    private static List<User> users = new CopyOnWriteArrayList<>();
-    private static LuckPerms lp = LuckPermsProvider.get();
-    private List<UserAddon> addons;
-    private List<Wolf> wolfpack;
-    private Player player;
+    private static final List<User> users = new CopyOnWriteArrayList<>();
+    private static final LuckPerms lp = LuckPermsProvider.get();
+    private final List<UserAddon> addons;
+    private final List<Wolf> wolfpack;
+    private final Player player;
     private String displayName;
     private int paintbrush;
     private boolean vanished, signSpy, spinning, bedrock;
@@ -87,9 +87,7 @@ public class User implements CommandSender {
     }
 
     public <T>void removeAddon(T clazz) {
-        for (UserAddon addon : addons)
-            if (addon.getClass().equals(clazz))
-                addons.remove(addon);
+        addons.removeIf(addon -> addon.getClass().equals(clazz));
     }
 
     public <T>UserAddon getAddon(T clazz) {
