@@ -26,7 +26,7 @@ public class CommandIpbanlist extends CoreCommand {
 
         if (args.length > 0) {
             try {
-                page = Integer.valueOf(page);
+                page = Integer.valueOf(args[0]);
             } catch (IllegalArgumentException exception) {
                 MessageUtils.message(sender, "&6&l» &7Invalid page number.");
                 return;
