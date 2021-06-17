@@ -87,9 +87,7 @@ public class User implements CommandSender {
     }
 
     public <T>void removeAddon(T clazz) {
-        for (UserAddon addon : addons)
-            if (addon.getClass().equals(clazz))
-                addons.remove(addon);
+        addons.removeIf(addon -> addon.getClass().equals(clazz));
     }
 
     public <T>UserAddon getAddon(T clazz) {
