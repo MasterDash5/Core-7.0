@@ -85,9 +85,14 @@ public class PingListener implements Listener {
                         names.add(NameUtils.getUsername(UUID.fromString(uuid)));
 
                     String fromNames = StringUtils.fromList(names, false, true);
+                    int version = event.getConnection().getVersion();
+                    String protocol = ProtocolVersion.fromId(version).getName();
+
+                    if (protocol.equals("UNKNOWN"))
+                        protocol = String.valueOf(version);
 
                     MessageBuilder message = new MessageBuilder();
-                    message.append("&c&lPS &6" + address + " &7pinged the server").hoverEvent(HoverEvent.Action.SHOW_TEXT, "&6" + fromNames);
+                    message.append("&c&lPS &6" + address + " &7pinged the server").hoverEvent(HoverEvent.Action.SHOW_TEXT, "&7Version: &6" + protocol + "\n&6" + fromNames);
 
                     for (User user : User.getUsers(true))
                         if (user.inPingSpy())

@@ -64,6 +64,8 @@ public class ChannelListener implements Listener {
                     String message = input.readUTF();
                     boolean json = input.readBoolean();
 
+                    System.out.println(json);
+
                     if (json)
                         MessageUtils.broadcast(permission, ComponentSerializer.parse(message));
                     else

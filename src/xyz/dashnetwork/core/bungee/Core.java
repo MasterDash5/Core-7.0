@@ -52,6 +52,7 @@ public class Core extends Plugin {
         PluginManager manager = proxy.getPluginManager();
 
         proxy.registerChannel("wdl:init");
+        proxy.registerChannel("dn:broadcast");
         proxy.registerChannel("dn:online");
         proxy.registerChannel("dn:displayname");
         proxy.registerChannel("dn:vanish");
